@@ -17,6 +17,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 require("lsp.gopls")
 require("lsp.zls")
--- require("lsp.tsserver")
 require("lsp.luals")
-require("vtsls.lua")
+require("lsp.typescript")
