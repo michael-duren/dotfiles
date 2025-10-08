@@ -90,16 +90,6 @@ local keybindings = { -- general
 	{ key = "<leader>lr", command = "<cmd>lua vim.lsp.buf.rename()<CR>", description = "Rename" },
 	{ key = "<leader>R", command = "<cmd>LspRestart<CR>", description = "Restart LSP" },
 	{ key = "<leader>la", command = "<cmd>lua vim.lsp.buf.code_action()<CR>", description = "Code action" },
-	{
-		key = "<leader>ld",
-		command = "<cmd>Telescope diagnostics bufnr=0 theme=get_ivy<cr>",
-		description = "Buffer Diagnostics",
-	},
-	{
-		key = "<leader>lD",
-		command = "<cmd>Telescope lsp_document_diagnostics bufnr=0 theme=get_ivy<cr>",
-		description = "Document Diagnostics",
-	},
 	{ key = "<leader>ll", command = "<cmd>lua vim.lsp.codelens.run()<cr>", description = "CodeLens Action" },
 	{ key = "<leader>li", command = "<cmd>LspInfo<cr>", description = "Info" },
 	{ key = "<leader>lI", command = "<cmd>Mason<cr>", description = "Mason Info" },

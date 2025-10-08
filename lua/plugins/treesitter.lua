@@ -4,7 +4,20 @@ return {
 	config = function()
 		local config = require("nvim-treesitter.configs")
 		config.setup({
-			ensure_installed = { "lua", "go", "typescript", "c_sharp", "zig" },
+			ensure_installed = { 
+        "hyprlang",
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+        "c_sharp",
+        "razor",
+        "lua",
+        "go",
+        "typescript",
+         "zig" 
+     },
 			auto_install = true,
 			highlight = {
 				enable = true,

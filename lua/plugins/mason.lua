@@ -5,15 +5,15 @@ return {{
         require("mason").setup({
             PATH = "prepend",
             registries = { -- additional registries required for rosyln
-            "github:mason-org/mason-registry", "github:Crashdummyy/mason-registry"}
+            "github:mason-org/mason-registry", "github:Crashdummyy/mason-registry"},
+            ensure_installed = {"lua_ls", "gopls", "csharp_ls", "zls", "html", "cssls", "tsserver",
+                                "lua-language-server", "xmlformatter", "csharpier", "prettier", "stylua", "bicep-lsp",
+                                "html-lsp", "eslint-lsp", "typescript-language-server", "json-lsp", "rust-analyzer",
+                                "tailwind-language-server", "roslyn", "rzls"}
         })
     end
 }, {
     "williamboman/mason-lspconfig.nvim",
     lazy = false,
-    config = function()
-        require("mason-lspconfig").setup({
-            ensure_installed = {"lua_ls", "gopls", "csharp_ls", "zls"}
-        })
-    end
+    opts = {}
 }}
