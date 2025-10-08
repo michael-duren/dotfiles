@@ -1,28 +1,27 @@
 return {
 	"folke/noice.nvim",
 	event = "VeryLazy",
-	dependencies = {
-		"MunifTanjim/nui.nvim",
-		"rcarriga/nvim-notify", -- Optional but recommended for notification history
-	},
+	dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
 	opts = {
 		cmdline = {
 			enabled = true,
-			view = "cmdline_popup", -- Centered popup
-			opts = {}, -- cmdline options
+			view = "cmdline_popup",
+			opts = {},
 		},
 		messages = {
-			enabled = false, -- Disable other message handling
+			enabled = false,
 		},
 		popupmenu = {
-			enabled = false, -- Use default completion menu
+			enabled = false,
 		},
 		notify = {
-			enabled = true,
+			enabled = false,
 		},
 		lsp = {
+			progress = {
+				enabled = false,
+			},
 			override = {
-				-- Override markdown rendering for hover/signature help
 				["vim.lsp.util.convert_input_to_markdown_lines"] = false,
 				["vim.lsp.util.stylize_markdown"] = false,
 				["cmp.entry.get_documentation"] = false,
@@ -30,7 +29,7 @@ return {
 		},
 		presets = {
 			bottom_search = false,
-			command_palette = true, -- Center the cmdline
+			command_palette = true,
 			long_message_to_split = true,
 		},
 	},

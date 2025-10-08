@@ -18,3 +18,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("lsp.gopls")
 require("lsp.zls")
 require("lsp.luals")
+require("lsp.tailwind")
+require("lsp.roslyn")
