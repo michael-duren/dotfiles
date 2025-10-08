@@ -21,7 +21,7 @@ local keybindings = { -- general
 	{ key = "<A-j>", command = ":m .+1<CR>==", description = "Move line down" },
 	{ key = "<leader>wd", command = "<C-W>c", description = "Delete Window" },
 	{ key = "<leader>bn", command = ":enew<CR>", description = "New Buffer" },
-	{ key = "<leader>bD", command = ":bd<CR>", description = "Delete Buffer" },
+	{ key = "<leader>bd", command = ":bd<CR>", description = "Delete Buffer" },
 	{ key = "<leader>bq", command = ":bd!<CR>", description = "Force Delete Buffer" },
 	{ key = "<leader>b.", command = ":bnext<CR>", description = "Next Buffer" },
 	{ key = "<S-h", command = ":bprevious<CR>", description = "Previous Buffer" },
