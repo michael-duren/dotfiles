@@ -13,5 +13,7 @@ opt.tabstop = 4
 opt.shiftwidth = 4
 opt.softtabstop = 4
 opt.expandtab = true
+opt.smartcase = true
+opt.ignorecase = true
 
-vim.cmd('highlight CursorLineNr ctermfg=white guifg=white')
+vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
