@@ -5,7 +5,7 @@ return {
 			"rcarriga/nvim-dap-ui",
 		},
 		config = function()
-			require("configs.nvim-dap")
+			require("lsp.dap")
 		end,
 		event = "VeryLazy",
 	},
