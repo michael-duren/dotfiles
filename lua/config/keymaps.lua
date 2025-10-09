@@ -27,6 +27,16 @@ local keybindings = {
 		command = "<cmd>qa!<cr>",
 		opts = { desc = "Force Quit" },
 	},
+	{
+		key = "<leader>qw",
+		command = "<cmd>wqa<cr>",
+		opts = { desc = "Save all and quit" },
+	},
+	{
+		key = "<leader>wa",
+		command = "<cmd>wa<cr>",
+		opts = { desc = "Save all" },
+	},
 
 	-- Line Movement
 	{
