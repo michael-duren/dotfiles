@@ -3,6 +3,8 @@ return {
 	---@type snacks.Config
 	opts = {
 		picker = {
+			hidden = true,
+			ignored = true,
 			enabled = true,
 			mappings = {
 				["<C-k>"] = "previous",
