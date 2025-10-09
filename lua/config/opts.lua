@@ -15,6 +15,7 @@ opt.tabstop = 4
 opt.shiftwidth = 4
 opt.softtabstop = 4
 opt.expandtab = true
+
 opt.smartcase = true
 opt.ignorecase = true
 
@@ -25,3 +26,16 @@ if utils.isWindows() then
 	vim.opt.shellcmdflag = "-nologo -ExecutionPolicy RemoteSigned -command"
 	vim.opt.shellxquote = ""
 end
+
+-- Performance enhancements
+-- Faster syntax highlighting
+-- Experimental, may cause issues with some syntax files
+opt.syntax = "on"
+opt.synmaxcol = 200 -- Don't highlight super long lines
+
+-- Disable swap files (or move to RAM disk)
+opt.swapfile = false
+opt.backup = false
+opt.writebackup = false
+
+opt.ttyfast = true
