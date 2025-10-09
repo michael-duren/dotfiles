@@ -38,6 +38,12 @@ return {
 			},
 		},
 		config = function(_, opts)
+			local icons = require("config.icons")
+
+			-- Add kinds icons to opts
+			opts.appearance = opts.appearance or {}
+			opts.appearance.kind_icons = icons.kinds
+
 			require("blink.cmp").setup(opts)
 			-- Load friendly-snippets
 			require("luasnip.loaders.from_vscode").lazy_load()

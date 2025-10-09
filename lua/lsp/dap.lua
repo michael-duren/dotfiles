@@ -1,6 +1,7 @@
 local dap = require("dap")
 local dapui = require("dapui")
 local utils = require("helpers.utils")
+local icons = require("config.icons")
 
 local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg"
 local delve_path = vim.fn.stdpath("data") .. "/mason/packages/delve/dlv"
@@ -268,6 +269,42 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
 	dapui.close()
 end
+
+-- Setup DAP signs
+vim.fn.sign_define("DapBreakpoint", {
+	text = icons.dap.Breakpoint,
+	texthl = "DapBreakpoint",
+	linehl = "",
+	numhl = ""
+})
+
+vim.fn.sign_define("DapBreakpointCondition", {
+	text = icons.dap.BreakpointCondition,
+	texthl = "DapBreakpointCondition",
+	linehl = "",
+	numhl = ""
+})
+
+vim.fn.sign_define("DapBreakpointRejected", {
+	text = icons.dap.BreakpointRejected[1],
+	texthl = icons.dap.BreakpointRejected[2],
+	linehl = "",
+	numhl = ""
+})
+
+vim.fn.sign_define("DapStopped", {
+	text = icons.dap.Stopped[1],
+	texthl = icons.dap.Stopped[2],
+	linehl = icons.dap.Stopped[3],
+	numhl = ""
+})
+
+vim.fn.sign_define("DapLogPoint", {
+	text = icons.dap.LogPoint,
+	texthl = "DapLogPoint",
+	linehl = "",
+	numhl = ""
+})
 
 -- default configuration
 dapui.setup()

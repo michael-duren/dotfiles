@@ -1,4 +1,5 @@
 local utils = require("helpers.utils")
+local icons = require("config.icons")
 
 vim.g.mapleader = " "
 
@@ -39,3 +40,30 @@ opt.backup = false
 opt.writebackup = false
 
 opt.ttyfast = true
+
+-- Setup diagnostic icons
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+			[vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
+			[vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
+			[vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
+		},
+		linehl = {
+			[vim.diagnostic.severity.ERROR] = "ErrorMsg",
+		},
+		numhl = {
+			[vim.diagnostic.severity.WARN] = "WarningMsg",
+		},
+	},
+	virtual_text = {
+		prefix = "●",
+	},
+	float = {
+		border = "rounded",
+		source = "always",
+		header = "",
+		prefix = "",
+	},
+})
