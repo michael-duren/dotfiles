@@ -8,17 +8,9 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "mdx",
+-- highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
-		-- turn on spell checking for markdown files
-		vim.cmd("setlocal spell spelllang=en_us")
-	end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "mmd",
-	callback = function()
-		-- turn on spell checking for markdown files
-		vim.cmd("setlocal spell spelllang=en_us")
+		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
 	end,
 })
