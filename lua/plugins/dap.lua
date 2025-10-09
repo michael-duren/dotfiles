@@ -5,6 +5,7 @@ return {
 			"rcarriga/nvim-dap-ui",
 			"nvim-neotest/nvim-nio",
 		},
+		lazy = false,
 		keys = {
 			{ "<leader>dB", desc = "Breakpoint Condition" },
 			{ "<leader>db", desc = "Toggle Breakpoint" },
@@ -316,6 +317,7 @@ return {
 		adapters = {
 			require("neotest-dotnet"),
 		},
+		lazy = false,
 		keys = {
 			{ "<leader>t", "", desc = "+test" },
 			{

@@ -345,5 +345,12 @@ local keybindings = {
 		end,
 		opts = { desc = "Open current buffer in Browser" },
 	},
+	-- Check perf
+	{
+		key = "<leader>lp",
+		command = "<cmd>Lazy profile<cr>",
+		opts = { desc = "Lazy Profile" },
+	},
 }
+
 utils.mapKeys(keybindings)
