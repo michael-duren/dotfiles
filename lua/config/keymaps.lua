@@ -1,325 +1,349 @@
--- Open current buffer in Edge
-vim.keymap.set("n", "<leader>ob", function()
-	vim.fn.system('start msedge "' .. vim.fn.expand("%:p") .. '"')
-end, {
-	desc = "Open current buffer in Edge",
-})
-vim.keymap.set("n", "<leader>qq", "<cmd>qa<cr>", {
-	desc = "Quit all",
-})
-local keybindings = { -- general
+local utils = require("helpers.utils")
+
+---@type KeyMap[]
+local keybindings = {
+	-- File Operations
 	{
 		key = "<C-s>",
 		command = ":w<CR>",
-		description = "Save current buffer",
+		opts = { desc = "Save current buffer" },
 	},
+	{
+		key = "<leader>w",
+		command = ":w<CR>",
+		opts = {
+			desc = "Write current buffer",
+		},
+	},
+
+	-- Quit Operations
 	{
 		key = "<leader>qq",
 		command = "<cmd>qa<cr>",
-		description = "Quit all",
+		opts = { desc = "Quit all" },
 	},
 	{
 		key = "<leader>Q",
 		command = "<cmd>qa!<cr>",
-		description = "Force Quit",
+		opts = { desc = "Force Quit" },
 	},
+
+	-- Line Movement
 	{
 		key = "<A-j>",
 		command = ":m .+1<CR>==",
-		description = "Move line down",
-	},
-	{
-		key = "<leader>wd",
-		command = "<C-W>c",
-		description = "Delete Window",
-	},
-	{
-		key = "<leader>bn",
-		command = ":enew<CR>",
-		description = "New Buffer",
-	},
-	{
-		key = "<leader>bd",
-		command = ":bd<CR>",
-		description = "Delete Buffer",
-	},
-	{
-		key = "<leader>bq",
-		command = ":bd!<CR>",
-		description = "Force Delete Buffer",
-	},
-	{
-		key = "<leader>b.",
-		command = ":bnext<CR>",
-		description = "Next Buffer",
-	},
-	{
-		key = "<S-h",
-		command = ":bprevious<CR>",
-		description = "Previous Buffer",
-	},
-	{
-		key = "<S-l>",
-		command = ":bprevious<CR>",
-		description = "Next Buffer",
-	},
-	{
-		key = "<leader>bh",
-		command = ":bfirst<CR>",
-		description = "First Buffer",
-	},
-	{
-		key = "<leader>bb",
-		command = "<cmd>e #<cr>",
-		description = "Switch to Other Buffer",
-	}, -- -- windows
-	-- convert these to correct table format
-	-- map("n", "<leader>-", "<C-W>s", { desc = "Split Window Below", remap = true })
-	-- map("n", "<leader>|", "<C-W>v", { desc = "Split Window Right", remap = true })
-	-- map("n", "<leader>wd", "<C-W>c", { desc = "", remap = true })
-	-- Snacks.toggle.zoom():map("<leader>wm"):map("<leader>uZ")
-	-- Snacks.toggle.zen():map("<leader>uz")
-	{
-		key = "<leader>wd",
-		command = "<C-W>c",
-		description = "Delete Window",
+		opts = { desc = "Move line down" },
 	},
 	{
 		key = "<A-k>",
 		command = ":m .-2<CR>==",
-		description = "Move line up",
-	}, -- Center after scrolling
+		opts = { desc = "Move line up" },
+	},
+
+	-- Scrolling & Centering
 	{
 		key = "<C-d>",
 		command = "<C-d>zz",
+		opts = { desc = "Scroll down and center" },
 	},
 	{
 		key = "<C-u>",
 		command = "<C-u>zz",
+		opts = { desc = "Scroll up and center" },
+	},
+
+	-- Buffer Management
+	{
+		key = "<leader>bn",
+		command = ":enew<CR>",
+		opts = { desc = "New Buffer" },
 	},
 	{
-		key = "<leader>nd",
-		command = "<cmd>Noice dismiss<CR>",
-		description = "Noice dismiss",
-	}, -- windows
+		key = "<leader>bd",
+		command = ":bd<CR>",
+		opts = { desc = "Delete Buffer" },
+	},
+	{
+		key = "<leader>bq",
+		command = ":bd!<CR>",
+		opts = { desc = "Force Delete Buffer" },
+	},
+	{
+		key = "<leader>b.",
+		command = ":bnext<CR>",
+		opts = { desc = "Next Buffer" },
+	},
+	{
+		key = "<S-h>",
+		command = ":bprevious<CR>",
+		opts = { desc = "Previous Buffer" },
+	},
+	{
+		key = "<S-l>",
+		command = ":bnext<CR>",
+		opts = { desc = "Next Buffer" },
+	},
+	{
+		key = "<leader>bh",
+		command = ":bfirst<CR>",
+		opts = { desc = "First Buffer" },
+	},
+	{
+		key = "<leader>bb",
+		command = "<cmd>e #<cr>",
+		opts = { desc = "Switch to Other Buffer" },
+	},
+
+	-- Window Navigation
 	{
 		key = "<C-h>",
 		command = "<C-w>h",
-		description = "Go to left window",
+		opts = { desc = "Go to left window" },
 	},
 	{
 		key = "<C-l>",
 		command = "<C-w>l",
-		description = "Go to right window",
+		opts = { desc = "Go to right window" },
 	},
 	{
 		key = "<C-j>",
 		command = "<C-w>j",
-		description = "Go to bottom window",
+		opts = { desc = "Go to bottom window" },
 	},
 	{
 		key = "<C-k>",
 		command = "<C-w>k",
-		description = "Go to top window",
+		opts = { desc = "Go to top window" },
 	},
+
+	-- Window Management
 	{
-		key = "<leader>H",
-		command = ":noh<CR>",
-		description = "Hide search highlight",
-	}, -- -- Splits
+		key = "<leader>wd",
+		command = "<C-W>c",
+		opts = { desc = "Delete Window" },
+	},
 	{
 		key = "|",
 		command = ":vsplit<CR>",
-		description = "Vertical split",
+		opts = { desc = "Vertical split" },
 	},
 	{
 		key = "-",
 		command = ":split<CR>",
-		description = "Horizontal split",
+		opts = { desc = "Horizontal split" },
 	},
 	{
 		key = "<M-w>",
 		command = ":close<CR>",
-		description = "Close current split",
-	}, -- Misc
+		opts = { desc = "Close current split" },
+	},
+
+	-- Search & Highlight
+	{
+		key = "<leader>H",
+		command = ":noh<CR>",
+		opts = { desc = "Hide search highlight" },
+	},
+
+	-- LSP - Basic Navigation
+	{
+		key = "gd",
+		command = "<cmd>lua vim.lsp.buf.definition()<CR>",
+		opts = { desc = "LSP go to definition" },
+	},
+	{
+		key = "gD",
+		command = "<cmd>lua vim.lsp.buf.declaration()<CR>",
+		opts = { desc = "LSP go to declaration" },
+	},
+	{
+		key = "gr",
+		command = "<cmd>lua vim.lsp.buf.references()<CR>",
+		opts = { desc = "LSP find references" },
+	},
+	{
+		key = "gi",
+		command = "<cmd>lua vim.lsp.buf.implementation()<CR>",
+		opts = { desc = "LSP go to implementation" },
+	},
+	{
+		key = "K",
+		command = "<cmd>lua vim.lsp.buf.hover()<CR>",
+		opts = { desc = "LSP hover" },
+	},
+
+	-- LSP - Leader Menu
+	{
+		key = "<leader>lf",
+		command = "<cmd>lua vim.lsp.buf.format()<CR>",
+		opts = { desc = "LSP format" },
+	},
+	{
+		key = "<leader>lr",
+		command = "<cmd>lua vim.lsp.buf.rename()<CR>",
+		opts = { desc = "Rename" },
+	},
+	{
+		key = "<leader>la",
+		command = "<cmd>lua vim.lsp.buf.code_action()<CR>",
+		opts = { desc = "Code action" },
+	},
+	{
+		key = "<leader>ll",
+		command = "<cmd>lua vim.lsp.codelens.run()<cr>",
+		opts = { desc = "CodeLens Action" },
+	},
+	{
+		key = "<leader>li",
+		command = "<cmd>LspInfo<cr>",
+		opts = { desc = "Info" },
+	},
+	{
+		key = "<leader>lI",
+		command = "<cmd>Mason<cr>",
+		opts = { desc = "Mason Info" },
+	},
+	{
+		key = "<leader>lq",
+		command = "<cmd>lua vim.diagnostic.setloclist()<cr>",
+		opts = { desc = "Quickfix" },
+	},
+	{
+		key = "<leader>ls",
+		command = "<cmd>Telescope lsp_document_symbols<cr>",
+		opts = { desc = "Document Symbols" },
+	},
+	{
+		key = "<leader>lS",
+		command = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+		opts = { desc = "Workspace Symbols" },
+	},
+	{
+		key = "<leader>le",
+		command = "<cmd>Telescope quickfix<cr>",
+		opts = { desc = "Telescope Quickfix" },
+	},
+	{
+		key = "<leader>R",
+		command = "<cmd>LspRestart<CR>",
+		opts = { desc = "Restart LSP" },
+	},
+
+	-- Diagnostics
+	{
+		key = "<leader>kj",
+		command = function()
+			vim.diagnostic.jump({ count = 1 })
+		end,
+		opts = {
+			desc = "go to next error",
+		},
+	},
+	{
+		key = "<leader>kk",
+		command = function()
+			vim.diagnostic.jump({ count = -1 })
+		end,
+		opts = {
+			desc = "go to previous error",
+		},
+	},
+	-- LuaSnip Navigation (Insert Mode)
+	{
+		mode = "i",
+		key = "<C-j>",
+		command = "<cmd>lua require('luasnip').jump(1)<CR>",
+		opts = { desc = "Jump forward" },
+	},
+	{
+		mode = "i",
+		key = "<C-k>",
+		command = "<cmd>lua require('luasnip').jump(-1)<CR>",
+		opts = { desc = "Jump backward" },
+	},
+
+	-- LuaSnip Navigation (Select Mode)
+	{
+		mode = "s",
+		key = "<C-j>",
+		command = "<cmd>lua require('luasnip').jump(1)<CR>",
+		opts = { desc = "Jump forward" },
+	},
+	{
+		mode = "s",
+		key = "<C-k>",
+		command = "<cmd>lua require('luasnip').jump(-1)<CR>",
+		opts = { desc = "Jump backward" },
+	},
+
+	-- Terminal Mode
+	{
+		mode = "t",
+		key = "<Esc>",
+		command = "<C-\\><C-n>",
+		opts = { desc = "Exit terminal mode" },
+	},
+	{
+		mode = "t",
+		key = "<C-c>",
+		command = "<C-\\><C-n>:stop<CR>",
+		opts = { desc = "Stop running process" },
+	},
+
+	-- Git
+	{
+		key = "<leader>gB",
+		command = "<cmd>Gitsigns blame_line<CR>",
+		opts = { desc = "Blame line" },
+	},
+
+	-- Plugins & Tools
+	{
+		key = "<leader>mp",
+		command = "<cmd>MarkdownPreviewToggle<CR>",
+		opts = { desc = "Markdown preview" },
+	},
+	{
+		key = "<leader>U",
+		command = "<cmd>Lazy update<CR>",
+		opts = { desc = "Lazy update" },
+	},
+	{
+		key = "<leader>W",
+		command = "<cmd>set wrap!<CR>",
+		opts = { desc = "Toggle wrap" },
+	},
+	{
+		key = "<leader>nd",
+		command = "<cmd>Noice dismiss<CR>",
+		opts = { desc = "Noice dismiss" },
+	},
+
+	-- Config & Settings
 	{
 		key = "<leader><CR>",
 		command = ":so ~/.config/nvim/init.lua<CR>",
-		options = {
-			noremap = true,
+		opts = {
 			silent = false,
 			desc = "Reload init.lua",
 		},
 	},
 	{
-		key = "<leader>w",
-		command = ":w<CR>",
-		options = {
-			noremap = true,
-			silent = true,
-			desc = "Write current buffer",
-		},
-	},
-	{
 		key = "<leader>?",
 		command = ":e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>",
-		description = "Open settings",
-	}, -- LSP
-	-- basic
-	{
-		key = "gd",
-		command = "<cmd>lua vim.lsp.buf.definition()<CR>",
-		description = "LSP go to definition",
+		opts = { desc = "Open settings" },
 	},
+	-- Misc.
 	{
-		key = "gD",
-		command = "<cmd>lua vim.lsp.buf.declaration()<CR>",
-		description = "LSP go to declaration",
-	},
-	{
-		key = "gr",
-		command = "<cmd>lua vim.lsp.buf.references()<CR>",
-		description = "LSP find references",
-	},
-	{
-		key = "gi",
-		command = "<cmd>lua vim.lsp.buf.implementation()<CR>",
-		description = "LSP go to implementation",
-	},
-	{
-		key = "K",
-		command = "<cmd>lua vim.lsp.buf.hover()<CR>",
-		description = "LSP hover",
-	},
-	{
-		key = "<leader>lf",
-		command = "<cmd>lua vim.lsp.buf.format()<CR>",
-		description = "LSP format",
-	}, -- LSP Menu
-	{
-		key = "<leader>kj",
-		command = vim.diagnostic.goto_next,
-		description = "go to next error",
-	},
-	{
-		key = "<leader>kk",
-		command = vim.diagnostic.goto_prev,
-		description = "go to previous error",
-	},
-	{
-		key = "<leader>lr",
-		command = "<cmd>lua vim.lsp.buf.rename()<CR>",
-		description = "Rename",
-	},
-	{
-		key = "<leader>R",
-		command = "<cmd>LspRestart<CR>",
-		description = "Restart LSP",
-	},
-	{
-		key = "<leader>la",
-		command = "<cmd>lua vim.lsp.buf.code_action()<CR>",
-		description = "Code action",
-	},
-	{
-		key = "<leader>ll",
-		command = "<cmd>lua vim.lsp.codelens.run()<cr>",
-		description = "CodeLens Action",
-	},
-	{
-		key = "<leader>li",
-		command = "<cmd>LspInfo<cr>",
-		description = "Info",
-	},
-	{
-		key = "<leader>lI",
-		command = "<cmd>Mason<cr>",
-		description = "Mason Info",
-	},
-	{
-		key = "<leader>lq",
-		command = "<cmd>lua vim.diagnostic.setloclist()<cr>",
-		description = "Quickfix",
-	},
-	{
-		key = "<leader>ls",
-		command = "<cmd>Telescope lsp_document_symbols<cr>",
-		description = "Document Symbols",
-	},
-	{
-		key = "<leader>lS",
-		command = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
-		description = "Workspace Symbols",
-	},
-	{
-		key = "<leader>le",
-		command = "<cmd>Telescope quickfix<cr>",
-		description = "Telescope Quickfix",
-	}, -- luasnip
-	{
-		mode = "i",
-		key = "<C-j>",
-		command = "<cmd>lua require('luasnip').jump(1)<CR>",
-		description = "Jump forward",
-	},
-	{
-		mode = "i",
-		key = "<C-k>",
-		command = "<cmd>lua require('luasnip').jump(-1)<CR>",
-		description = "Jump backward",
-	},
-	{
-		mode = "s",
-		key = "<C-j>",
-		command = "<cmd>lua require('luasnip').jump(1)<CR>",
-		description = "Jump forward",
-	},
-	{
-		mode = "s",
-		key = "<C-k>",
-		command = "<cmd>lua require('luasnip').jump(-1)<CR>",
-		description = "Jump backward",
-	}, -- markdown preview
-	{
-		key = "<leader>mp",
-		command = "<cmd>MarkdownPreviewToggle<CR>",
-		description = "Markdown preview",
-	}, -- toggle term
-	{
-		mode = "t",
-		key = "<Esc>",
-		command = "<C-\\><C-n>",
-		description = "Exit terminal mode",
-	}, -- stop running process in toggle term
-	{
-		mode = "t",
-		key = "<C-c",
-		command = "<C-\\><C-n>:stop<CR>",
-		description = "Stop running process",
-	}, -- copilot
-	{
-		key = "<leader>gB",
-		command = "<cmd>Gitsigns blame_line<CR>",
-		description = "Blame line",
-	},
-	{
-		key = "<leader>U",
-		command = "<cmd>Lazy update<CR>",
-		description = "Lazy update",
-	},
-	{
-		key = "<leader>W",
-		command = "<cmd>set wrap!<CR>",
-		description = "Toggle wrap",
+		key = "<leader>ob",
+		command = function()
+			if utils.isWindows() then
+				vim.fn.system('start msedge "' .. vim.fn.expand("%:p") .. '"')
+				return
+			end
+			vim.fn.system('open -a "Google Chrome" "' .. vim.fn.expand("%:p") .. '"')
+		end,
+		opts = { desc = "Open current buffer in Browser" },
 	},
 }
-for _, bind in ipairs(keybindings) do
-	if bind.mode == nil then
-		bind.mode = "n"
-	end
-	vim.keymap.set(bind.mode, bind.key, bind.command, bind.options or {
-		desc = bind.description,
-		noremap = true,
-		silent = true,
-	})
-end
+utils.mapKeys(keybindings)

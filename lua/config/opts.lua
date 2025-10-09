@@ -1,3 +1,5 @@
+local utils = require("helpers.utils")
+
 vim.g.mapleader = " "
 
 local opt = vim.opt
@@ -17,3 +19,9 @@ opt.smartcase = true
 opt.ignorecase = true
 
 vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
+
+if utils.isWindows() then
+	vim.opt.shell = "pwsh"
+	vim.opt.shellcmdflag = "-nologo -ExecutionPolicy RemoteSigned -command"
+	vim.opt.shellxquote = ""
+end
