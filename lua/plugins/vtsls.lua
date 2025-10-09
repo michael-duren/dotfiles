@@ -31,6 +31,17 @@ return {
 						propertyDeclarationTypes = { enabled = true },
 						functionLikeReturnTypes = { enabled = true },
 					},
+					updateImportsOnFileMove = "always", -- "always" | "prompt" | "never"
+				},
+				javascript = {
+					inlayHints = {
+						parameterNames = { enabled = "literals" },
+						parameterTypes = { enabled = true },
+						variableTypes = { enabled = true },
+						propertyDeclarationTypes = { enabled = true },
+						functionLikeReturnTypes = { enabled = true },
+					},
+					updateImportsOnFileMove = "always", -- "always" | "prompt" | "never"
 				},
 			},
 		}
