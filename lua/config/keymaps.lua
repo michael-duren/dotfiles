@@ -94,6 +94,13 @@ local keybindings = {
 		opts = { desc = "Next Buffer" },
 	},
 	{
+		key = "<leader>ba",
+		command = function()
+			Snacks.bufdelete.all()
+		end,
+		opts = { desc = "Delete All Buffers" },
+	},
+	{
 		key = "<leader>bh",
 		command = ":bfirst<CR>",
 		opts = { desc = "First Buffer" },
