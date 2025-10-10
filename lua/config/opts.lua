@@ -66,7 +66,6 @@ vim.diagnostic.config({
 	},
 	float = {
 		border = "rounded",
-		source = "always",
 		header = "",
 		prefix = "",
 	},

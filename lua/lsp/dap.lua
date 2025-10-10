@@ -151,6 +151,26 @@ local keys = {
 		end,
 		opts = { desc = "Down" },
 	},
+
+	{
+		key = "<leader>du",
+		command = function()
+			require("dapui").toggle({})
+		end,
+		opts = {
+			desc = "Dap UI",
+		},
+	},
+	{
+		mode = { "n", "v" },
+		key = "<leader>de",
+		command = function()
+			require("dapui").eval()
+		end,
+		opts = {
+			desc = "Eval",
+		},
+	},
 	{
 		key = "<leader>dk",
 		command = function()

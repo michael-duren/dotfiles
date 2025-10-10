@@ -44,7 +44,7 @@ M.action = setmetatable({}, {
 ---@class KeyMap
 ---@field key string
 ---@field command string | function
----@field mode string?
+---@field mode string | nil | string[]
 ---@field opts KeyMapOptions
 
 ---@param keybindings KeyMap[]
