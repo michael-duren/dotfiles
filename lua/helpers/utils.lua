@@ -48,7 +48,8 @@ M.action = setmetatable({}, {
 ---@field opts KeyMapOptions
 
 ---@param keybindings KeyMap[]
-M.mapKeys = function(keybindings)
+---@param global_opts? vim.keymap.set.Opts
+M.mapKeys = function(keybindings, global_opts)
 	for _, bind in ipairs(keybindings) do
 		local mode = bind.mode or "n"
 		local opts = bind.opts or {}
@@ -61,11 +62,16 @@ M.mapKeys = function(keybindings)
 			end
 		end
 
-		vim.keymap.set(mode, bind.key, bind.command, {
-			desc = opts.desc,
-			noremap = opts.noremap ~= false,
-			silent = opts.silent ~= false,
-		})
+		vim.keymap.set(
+			mode,
+			bind.key,
+			bind.command,
+			M.merge_keyed_tables(global_opts, {
+				desc = opts.desc,
+				noremap = opts.noremap ~= false,
+				silent = opts.silent ~= false,
+			})
+		)
 	end
 end
 
@@ -84,6 +90,18 @@ M.get_args = function(config)
 		return require("dap.utils").splitstr(new_args)
 	end
 	return config
+end
+
+M.merge_keyed_tables = function(t1, t2)
+	local merged = vim.deepcopy(t1)
+	for key, value in pairs(t2) do
+		if type(value) == "table" and type(merged[key]) == "table" then
+			merged[key] = M.merge_keyed_tables(merged[key], value)
+		else
+			merged[key] = value
+		end
+	end
+	return merged
 end
 
 return M

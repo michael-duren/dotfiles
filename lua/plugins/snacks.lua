@@ -3,12 +3,10 @@ return {
 	---@type snacks.Config
 	opts = {
 		picker = {
-			hidden = true,
-			ignored = true,
 			enabled = true,
 			mappings = {
-				["<C-k>"] = "previous",
-				["<D-k>"] = "previous",
+				["<C-n>"] = "next",
+				["<C-p>"] = "previous",
 			},
 		},
 		lazygit = {
@@ -48,7 +46,6 @@ return {
 			end,
 			desc = "GitUi (Root Dir)",
 		},
-		-- Top Pickers & Explorer
 		{
 			"<leader>ff",
 			function()
@@ -59,13 +56,11 @@ return {
 			desc = "Find Files",
 		},
 		{
-			"<leader>e",
+			"<leader>fa",
 			function()
-				require("snacks").explorer({
-					auto_close = true,
-				})
+				Snacks.picker.resume()
 			end,
-			desc = "Reveal File Explorer",
+			desc = "Find Again",
 		},
 		{
 			"<leader><space>",
@@ -102,13 +97,6 @@ return {
 			end,
 			desc = "Notification History",
 		},
-		{
-			"<leader>e",
-			function()
-				Snacks.explorer()
-			end,
-			desc = "File Explorer",
-		}, -- find
 		{
 			"<leader>fb",
 			function()
