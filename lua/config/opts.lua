@@ -30,6 +30,19 @@ if utils.isWindows() then
 	vim.g.loaded_ruby_provider = 0
 	vim.g.loaded_node_provider = 0
 	vim.g.python3_host_prog = ""
+
+	-- Disable some built-in plugins
+	vim.g.loaded_netrw = 1
+	vim.g.loaded_netrwPlugin = 1
+	vim.g.loaded_matchit = 1
+	vim.g.loaded_matchparen = 1
+	vim.g.loaded_tarPlugin = 1
+	vim.g.loaded_zipPlugin = 1
+	vim.g.loaded_gzip = 1
+	vim.g.loaded_2html_plugin = 1
+	vim.g.loaded_tutor_plugin = 1
+
+	vim.lsp.set_log_level("OFF")
 end
 
 -- Performance enhancements
