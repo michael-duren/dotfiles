@@ -1,7 +1,7 @@
 local M = {}
 
 ---@returns boolean
-M.isWindows = function()
+M.is_windows = function()
 	---@diagnostic disable-next-line
 	return vim.loop.os_uname().sysname:find("Windows") ~= nil or vim.fn.has("win32") == 1
 end
@@ -49,7 +49,7 @@ M.action = setmetatable({}, {
 
 ---@param keybindings KeyMap[]
 ---@param global_opts? vim.keymap.set.Opts
-M.mapKeys = function(keybindings, global_opts)
+M.map_keys = function(keybindings, global_opts)
 	for _, bind in ipairs(keybindings) do
 		local mode = bind.mode or "n"
 		local opts = bind.opts or {}

@@ -32,6 +32,7 @@ local keybindings = {
 		command = "<cmd>wqa<cr>",
 		opts = { desc = "Save all and quit" },
 	},
+	-- Saving
 	{
 		key = "<leader>wa",
 		command = "<cmd>wa<cr>",
@@ -339,7 +340,7 @@ local keybindings = {
 	{
 		key = "<leader>ob",
 		command = function()
-			if utils.isWindows() then
+			if utils.is_windows() then
 				vim.fn.system('start msedge "' .. vim.fn.expand("%:p") .. '"')
 				return
 			end
@@ -355,4 +356,4 @@ local keybindings = {
 	},
 }
 
-utils.mapKeys(keybindings)
+utils.map_keys(keybindings)

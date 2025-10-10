@@ -24,7 +24,7 @@ return {
 				"markdown",
 				"zig",
 			},
-			auto_install = not utils.isWindows(),
+			auto_install = not utils.is_windows(),
 			highlight = {
 				enable = true,
 			},

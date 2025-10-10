@@ -266,7 +266,7 @@ local keys = {
 	},
 }
 
-utils.mapKeys(keys)
+utils.map_keys(keys)
 dap.listeners.after.event_initialized["dapui_config"] = function()
 	dapui.open()
 end

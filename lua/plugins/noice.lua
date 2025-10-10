@@ -1,3 +1,9 @@
+local utils = require("helpers.utils")
+
+if utils.is_windows() then
+	return {}
+end
+
 return {
 	"folke/noice.nvim",
 	event = "VeryLazy",

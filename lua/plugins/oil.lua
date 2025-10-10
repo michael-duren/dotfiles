@@ -10,15 +10,19 @@ return {
 			end,
 			desc = "Open Oil",
 		},
+		{
+			"<Esc>",
+			function()
+				require("oil").close()
+			end,
+			desc = "Open Oil",
+		},
 	},
 	---@module 'oil'
-	---@type oil.SetupOpts
 	opts = {
 		columns = {
 			"icon",
-			-- "permissions",
-			-- "size",
-			-- "mtime",
+			"size",
 		},
 		keymaps = {
 			["g?"] = "actions.show_help",
@@ -39,12 +43,13 @@ return {
 			["g\\"] = "actions.toggle_trash",
 		},
 		use_default_keymaps = true,
+		skip_confirm_for_simple_edits = true,
 		view_options = {
 			show_hidden = false,
-			is_hidden_file = function(name, bufnr)
+			is_hidden_file = function(name)
 				return vim.startswith(name, ".")
 			end,
-			is_always_hidden = function(name, bufnr)
+			is_always_hidden = function()
 				return false
 			end,
 		},

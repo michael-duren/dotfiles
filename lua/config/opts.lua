@@ -20,7 +20,7 @@ opt.ignorecase = true
 
 vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
-if utils.isWindows() then
+if utils.is_windows() then
 	vim.opt.shell = "pwsh"
 	vim.opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
 	vim.opt.shellxquote = ""
