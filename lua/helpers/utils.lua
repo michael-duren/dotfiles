@@ -66,7 +66,7 @@ M.mapKeys = function(keybindings, global_opts)
 			mode,
 			bind.key,
 			bind.command,
-			M.merge_keyed_tables(global_opts, {
+			M.merge_keyed_tables(global_opts or {}, {
 				desc = opts.desc,
 				noremap = opts.noremap ~= false,
 				silent = opts.silent ~= false,
