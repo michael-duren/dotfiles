@@ -5,12 +5,10 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 	},
 	config = function()
-		-- Ensure vtsls is installed
 		require("mason-lspconfig").setup({
 			ensure_installed = { "vtsls" },
 		})
 
-		-- Use the new vim.lsp.config API
 		vim.lsp.config.vtsls = {
 			cmd = { "vtsls", "--stdio" },
 			filetypes = {
@@ -31,7 +29,7 @@ return {
 						propertyDeclarationTypes = { enabled = true },
 						functionLikeReturnTypes = { enabled = true },
 					},
-					updateImportsOnFileMove = "always", -- "always" | "prompt" | "never"
+					updateImportsOnFileMove = "always",
 				},
 				javascript = {
 					inlayHints = {
@@ -41,22 +39,19 @@ return {
 						propertyDeclarationTypes = { enabled = true },
 						functionLikeReturnTypes = { enabled = true },
 					},
-					updateImportsOnFileMove = "always", -- "always" | "prompt" | "never"
+					updateImportsOnFileMove = "always",
 				},
 			},
 		}
 
-		-- Enable it
-		vim.lsp.enable("vtsls")
-
-		-- LSP keymaps
-		vim.api.nvim_create_autocmd("LspAttach", {
-			callback = function(args)
-				local opts = { buffer = args.buf }
-				vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-				vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+			callback = function(ev)
+				vim.lsp.start({
+					name = "vtsls",
+					cmd = { "vtsls", "--stdio" },
+					root_dir = vim.fs.root(ev.buf, { "package.json", "tsconfig.json", "jsconfig.json", ".git" }),
+				})
 			end,
 		})
 	end,

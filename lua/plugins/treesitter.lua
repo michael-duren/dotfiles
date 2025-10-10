@@ -1,3 +1,5 @@
+utils = require("helpers.utils")
+
 return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
@@ -6,7 +8,7 @@ return {
 	config = function()
 		local config = require("nvim-treesitter.configs")
 		config.setup({
-			ensure_installed = { 
+			ensure_installed = {
 				"hyprlang",
 				"vim",
 				"lua",
@@ -20,11 +22,18 @@ return {
 				"javascript",
 				"json",
 				"markdown",
-				"zig" 
+				"zig",
 			},
-			auto_install = true,
+			auto_install = not utils.isWindows(),
 			highlight = {
 				enable = true,
+				disable = function(lang, buf)
+					local max_filesize = 100 * 1024 -- 100 KB
+					local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+					if ok and stats and stats.size > max_filesize then
+						return true
+					end
+				end,
 			},
 			indent = {
 				enable = true,

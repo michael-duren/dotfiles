@@ -24,8 +24,14 @@ vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
 if utils.isWindows() then
 	vim.opt.shell = "pwsh"
-	vim.opt.shellcmdflag = "-nologo -ExecutionPolicy RemoteSigned -command"
+	vim.opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
 	vim.opt.shellxquote = ""
+
+	vim.opt.fsync = false
+	vim.g.loaded_perl_provider = 0
+	vim.g.loaded_ruby_provider = 0
+	vim.g.loaded_node_provider = 0
+	vim.g.python3_host_prog = ""
 end
 
 -- Performance enhancements

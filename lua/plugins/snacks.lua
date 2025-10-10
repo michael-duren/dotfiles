@@ -2,6 +2,9 @@ return {
 	"folke/snacks.nvim",
 	---@type snacks.Config
 	opts = {
+		bufdelete = {
+			enabled = true,
+		},
 		picker = {
 			enabled = true,
 			mappings = {
@@ -27,6 +30,14 @@ return {
 				style = "lazygit",
 			},
 		},
+		bigfile = { enabled = false },
+		notifier = { enabled = false },
+		quickfile = { enabled = false },
+		statuscolumn = { enabled = false },
+		words = { enabled = false },
+		scroll = { enabled = false },
+		indent = { enabled = false },
+		zen = { enabled = false },
 	},
 	priority = 1000,
 	lazy = false,

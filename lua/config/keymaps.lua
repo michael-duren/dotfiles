@@ -37,6 +37,94 @@ local keybindings = {
 		command = "<cmd>wa<cr>",
 		opts = { desc = "Save all" },
 	},
+	-- LSP - Basic Navigation
+	{
+		key = "K",
+		command = "<cmd>lua vim.lsp.buf.hover()<CR>",
+		opts = { desc = "LSP hover" },
+	},
+
+	-- LSP - Leader Menu
+	{
+		key = "<leader>lf",
+		command = "<cmd>lua vim.lsp.buf.format()<CR>",
+		opts = { desc = "LSP format" },
+	},
+	{
+		key = "<leader>lr",
+		command = "<cmd>lua vim.lsp.buf.rename()<CR>",
+		opts = { desc = "Rename" },
+	},
+	{
+		key = "<leader>la",
+		command = "<cmd>lua vim.lsp.buf.code_action()<CR>",
+		opts = { desc = "Code action" },
+	},
+	{
+		key = "<leader>ll",
+		command = "<cmd>lua vim.lsp.codelens.run()<cr>",
+		opts = { desc = "CodeLens Action" },
+	},
+	{
+		key = "<leader>li",
+		command = "<cmd>LspInfo<cr>",
+		opts = { desc = "Info" },
+	},
+	{
+		key = "<leader>lI",
+		command = "<cmd>Mason<cr>",
+		opts = { desc = "Mason Info" },
+	},
+	{
+		key = "<leader>lq",
+		command = "<cmd>lua vim.diagnostic.setloclist()<cr>",
+		opts = { desc = "Quickfix" },
+	},
+	{
+		key = "<leader>ls",
+		command = "<cmd>Telescope lsp_document_symbols<cr>",
+		opts = { desc = "Document Symbols" },
+	},
+	{
+		key = "<leader>lS",
+		command = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+		opts = { desc = "Workspace Symbols" },
+	},
+	{
+		key = "<leader>le",
+		command = "<cmd>Telescope quickfix<cr>",
+		opts = { desc = "Telescope Quickfix" },
+	},
+	{
+		key = "<leader>R",
+		command = "<cmd>LspRestart<CR>",
+		opts = { desc = "Restart LSP" },
+	},
+
+	-- Diagnostics
+	{
+		key = "<leader>kj",
+		command = function()
+			vim.diagnostic.jump({ count = 1 })
+		end,
+		opts = {
+			desc = "go to next error",
+		},
+	},
+	{
+		key = "<leader>kk",
+		command = function()
+			vim.diagnostic.jump({ count = -1 })
+		end,
+		opts = {
+			desc = "go to previous error",
+		},
+	},
+	{
+		key = "<leader>ca",
+		command = "<cmd>lua vim.lsp.buf.code_action()<CR>",
+		opts = { desc = "Code action" },
+	},
 
 	-- Line Movement
 	{
