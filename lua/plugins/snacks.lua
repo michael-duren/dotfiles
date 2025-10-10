@@ -1,3 +1,5 @@
+local utils = require("helpers.utils")
+
 return {
 	"folke/snacks.nvim",
 	---@type snacks.Config
@@ -13,6 +15,7 @@ return {
 			},
 		},
 		lazygit = {
+			enabled = not utils.is_windows(),
 			-- automatically configure lazygit to use the current colorscheme
 			-- and integrate edit with the current neovim instance
 			configure = true,
