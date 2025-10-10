@@ -10,16 +10,10 @@ return {
 			end,
 			desc = "Open Oil",
 		},
-		{
-			"<Esc>",
-			function()
-				require("oil").close()
-			end,
-			desc = "Open Oil",
-		},
 	},
 	---@module 'oil'
 	opts = {
+		default_file_explorer = true,
 		columns = {
 			"icon",
 			"size",
@@ -45,7 +39,7 @@ return {
 		use_default_keymaps = true,
 		skip_confirm_for_simple_edits = true,
 		view_options = {
-			show_hidden = false,
+			show_hidden = true,
 			is_hidden_file = function(name)
 				return vim.startswith(name, ".")
 			end,
