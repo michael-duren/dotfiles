@@ -34,27 +34,14 @@ dap.configurations.cs = {
 			-- return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/src/", "file")
 			return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net9.0/", "file")
 		end,
-
-		-- justMyCode = false,
-		-- stopAtEntry = false,
-		-- -- program = function()
-		-- --   -- todo: request input from ui
-		-- --   return "/path/to/your.dll"
-		-- -- end,
-		-- env = {
-		--   ASPNETCORE_ENVIRONMENT = function()
-		--     -- todo: request input from ui
-		--     return "Development"
-		--   end,
-		--   ASPNETCORE_URLS = function()
-		--     -- todo: request input from ui
-		--     return "http://localhost:5050"
-		--   end,
-		-- },
-		-- cwd = function()
-		--   -- todo: request input from ui
-		--   return vim.fn.getcwd()
-		-- end,
+	},
+	{
+		type = "coreclr",
+		name = "attach - netcoredbg",
+		request = "attach",
+		processId = function()
+			return require("dap.utils").pick_process()
+		end,
 	},
 }
 
@@ -275,35 +262,35 @@ vim.fn.sign_define("DapBreakpoint", {
 	text = icons.dap.Breakpoint,
 	texthl = "DapBreakpoint",
 	linehl = "",
-	numhl = ""
+	numhl = "",
 })
 
 vim.fn.sign_define("DapBreakpointCondition", {
 	text = icons.dap.BreakpointCondition,
 	texthl = "DapBreakpointCondition",
 	linehl = "",
-	numhl = ""
+	numhl = "",
 })
 
 vim.fn.sign_define("DapBreakpointRejected", {
 	text = icons.dap.BreakpointRejected[1],
 	texthl = icons.dap.BreakpointRejected[2],
 	linehl = "",
-	numhl = ""
+	numhl = "",
 })
 
 vim.fn.sign_define("DapStopped", {
 	text = icons.dap.Stopped[1],
 	texthl = icons.dap.Stopped[2],
 	linehl = icons.dap.Stopped[3],
-	numhl = ""
+	numhl = "",
 })
 
 vim.fn.sign_define("DapLogPoint", {
 	text = icons.dap.LogPoint,
 	texthl = "DapLogPoint",
 	linehl = "",
-	numhl = ""
+	numhl = "",
 })
 
 -- default configuration

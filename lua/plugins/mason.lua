@@ -11,6 +11,8 @@ return {
 					"github:Crashdummyy/mason-registry",
 				},
 				ensure_installed = {
+					"netcoredbg",
+					"delve",
 					"lua_ls",
 					"gopls",
 					"csharp_ls",
