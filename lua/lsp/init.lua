@@ -116,7 +116,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 				opts = { desc = "Code action" },
 			},
 		}
-		utils.mapKeys(lspMaps)
+
+		utils.mapKeys(lspMaps, opts)
 	end,
 })
 require("lsp.gopls")
