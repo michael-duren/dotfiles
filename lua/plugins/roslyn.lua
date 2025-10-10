@@ -12,7 +12,6 @@ return {
 			config = true,
 		},
 	},
-	lazy = false,
 	config = function()
 		-- Use one of the methods in the Integration section to compose the command.
 		local mason_registry = require("mason-registry")
