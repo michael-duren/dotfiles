@@ -1,4 +1,4 @@
-utils = require("helpers.utils")
+local utils = require("helpers.utils")
 
 return {
 	"nvim-treesitter/nvim-treesitter",
