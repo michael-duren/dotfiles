@@ -8,6 +8,4 @@ return {
 	{ "folke/noice.nvim", enabled = false },
 	{ "folke/todo-comments.nvim", enabled = false },
 	{ "zaldih/themery.nvim", enabled = false },
-	{ "windwp/nvim-ts-autotag", enabled = false },
-	{ "github/copilot.vim", enabled = false },
 }
