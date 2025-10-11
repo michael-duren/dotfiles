@@ -1,4 +1,5 @@
 local utils = require("helpers.utils")
+local diagnostics = require("helpers.diagnostics")
 
 ---@type KeyMap[]
 local keybindings = {
@@ -104,10 +105,18 @@ local keybindings = {
 
 	-- Diagnostics
 	{
+		key = "<leader>kc",
+		command = function()
+			vim.diagnostic.open_float()
+		end,
+		opts = {
+			desc = "go to next error",
+		},
+	},
+	{
 		key = "<leader>kj",
 		command = function()
-			vim.diagnostic.jump({ count = 1 })
-			vim.diagnostic.open_float()
+			diagnostics.diagnostic_goto(true)
 		end,
 		opts = {
 			desc = "go to next error",
@@ -116,8 +125,7 @@ local keybindings = {
 	{
 		key = "<leader>kk",
 		command = function()
-			vim.diagnostic.jump({ count = -1 })
-			vim.diagnostic.open_float()
+			diagnostics.diagnostic_goto(false)
 		end,
 		opts = {
 			desc = "go to previous error",
@@ -126,8 +134,7 @@ local keybindings = {
 	{
 		key = "]d",
 		command = function()
-			vim.diagnostic.jump({ count = 1 })
-			vim.diagnostic.open_float()
+			diagnostics.diagnostic_goto(true)
 		end,
 		opts = {
 			desc = "Next Diagnostic",
@@ -136,8 +143,7 @@ local keybindings = {
 	{
 		key = "[d",
 		command = function()
-			vim.diagnostic.jump({ count = -1 })
-			vim.diagnostic.open_float()
+			diagnostics.diagnostic_goto(false)
 		end,
 		opts = {
 			desc = "Prev Diagnostic",

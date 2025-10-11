@@ -20,6 +20,7 @@ opt.ignorecase = true
 
 vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
+-- windows work machine is super slow
 if utils.is_windows() then
 	vim.opt.shell = "pwsh"
 	vim.opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
@@ -43,20 +44,19 @@ if utils.is_windows() then
 	vim.g.loaded_tutor_plugin = 1
 
 	vim.lsp.set_log_level("OFF")
+
+	opt.swapfile = false
+	opt.backup = false
+	opt.writebackup = false
+
+	opt.ttyfast = true
+
+	-- Performance enhancements
+	-- Faster syntax highlighting
+	-- Experimental, may cause issues with some syntax files
+	opt.syntax = "on"
+	opt.synmaxcol = 200 -- Don't highlight super long lines
 end
-
--- Performance enhancements
--- Faster syntax highlighting
--- Experimental, may cause issues with some syntax files
-opt.syntax = "on"
-opt.synmaxcol = 200 -- Don't highlight super long lines
-
--- Disable swap files (or move to RAM disk)
-opt.swapfile = false
-opt.backup = false
-opt.writebackup = false
-
-opt.ttyfast = true
 
 -- Setup diagnostic icons
 vim.diagnostic.config({
