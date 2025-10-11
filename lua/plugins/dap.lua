@@ -4,6 +4,10 @@ return {
 		dependencies = {
 			"rcarriga/nvim-dap-ui",
 			"nvim-neotest/nvim-nio",
+			{
+				"leoluz/nvim-dap-go",
+				opts = {},
+			},
 		},
 		lazy = true, -- Don't load on startup
 		-- Load when you actually need debugging
@@ -53,8 +57,21 @@ return {
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"Issafalcon/neotest-dotnet",
+			"fredrikaverpil/neotest-golang",
 		},
 		lazy = true, -- Load on demand
+		opts = {
+			adapters = {
+				["neotest-golang"] = {
+					-- Here we can set options for neotest-golang, e.g.
+					-- go_test_args = { "-v", "-race", "-count=1", "-timeout=60s" },
+					dap_go_enabled = true, -- requires leoluz/nvim-dap-go
+				},
+				["neotest-dotnet"] = {
+					-- Here we can set options for neotest-dotnet
+				},
+			},
+		},
 		keys = {
 			{ "<leader>t", "", desc = "+test" },
 			{
@@ -67,6 +84,7 @@ return {
 			{
 				"<leader>tT",
 				function()
+					---@diagnostic disable-next-line: undefined-field
 					require("neotest").run.run(vim.uv.cwd())
 				end,
 				desc = "Run All Test Files",
@@ -129,7 +147,7 @@ return {
 				desc = "Toggle Watch",
 			},
 		},
-		config = function()
+		config = function(_, opts)
 			local neotest_ns = vim.api.nvim_create_namespace("neotest")
 			vim.diagnostic.config({
 				virtual_text = {
@@ -141,12 +159,7 @@ return {
 				},
 			}, neotest_ns)
 
-			---@diagnostic disable-next-line: missing-fields
-			require("neotest").setup({
-				adapters = {
-					require("neotest-dotnet"),
-				},
-			})
+			require("neotest").setup(opts)
 		end,
 	},
 	{
