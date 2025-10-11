@@ -23,6 +23,14 @@ return {
 		modified = " ",
 		removed = " ",
 	},
+	git_signs = {
+		add = "▎",
+		change = "▎",
+		delete = "",
+		topdelete = "",
+		changedelete = "▎",
+		untracked = "▎",
+	},
 	kinds = {
 		Array = " ",
 		Boolean = "󰨙 ",

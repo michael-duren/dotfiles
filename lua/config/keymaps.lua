@@ -107,6 +107,7 @@ local keybindings = {
 		key = "<leader>kj",
 		command = function()
 			vim.diagnostic.jump({ count = 1 })
+			vim.diagnostic.open_float()
 		end,
 		opts = {
 			desc = "go to next error",
@@ -116,9 +117,30 @@ local keybindings = {
 		key = "<leader>kk",
 		command = function()
 			vim.diagnostic.jump({ count = -1 })
+			vim.diagnostic.open_float()
 		end,
 		opts = {
 			desc = "go to previous error",
+		},
+	},
+	{
+		key = "]d",
+		command = function()
+			vim.diagnostic.jump({ count = 1 })
+			vim.diagnostic.open_float()
+		end,
+		opts = {
+			desc = "Next Diagnostic",
+		},
+	},
+	{
+		key = "[d",
+		command = function()
+			vim.diagnostic.jump({ count = -1 })
+			vim.diagnostic.open_float()
+		end,
+		opts = {
+			desc = "Prev Diagnostic",
 		},
 	},
 	{
