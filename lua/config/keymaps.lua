@@ -106,45 +106,35 @@ local keybindings = {
 	-- Diagnostics
 	{
 		key = "<leader>kc",
-		command = function()
-			vim.diagnostic.open_float()
-		end,
+		command = diagnostics.line_diagnostics,
 		opts = {
 			desc = "go to next error",
 		},
 	},
 	{
 		key = "<leader>kj",
-		command = function()
-			diagnostics.diagnostic_goto(true)
-		end,
+		command = diagnostics.goto_next,
 		opts = {
 			desc = "go to next error",
 		},
 	},
 	{
 		key = "<leader>kk",
-		command = function()
-			diagnostics.diagnostic_goto(false)
-		end,
+		command = diagnostics.goto_prev,
 		opts = {
 			desc = "go to previous error",
 		},
 	},
 	{
 		key = "]d",
-		command = function()
-			diagnostics.diagnostic_goto(true)
-		end,
+		command = diagnostics.goto_next,
 		opts = {
 			desc = "Next Diagnostic",
 		},
 	},
 	{
 		key = "[d",
-		command = function()
-			diagnostics.diagnostic_goto(false)
-		end,
+		command = diagnostics.goto_prev,
 		opts = {
 			desc = "Prev Diagnostic",
 		},
