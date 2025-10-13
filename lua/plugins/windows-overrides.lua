@@ -6,7 +6,7 @@ end
 
 return {
 	{ "folke/noice.nvim", enabled = false },
-	{ "folke/todo-comments.nvim", enabled = false },
+	-- { "folke/todo-comments.nvim", enabled = false },
 	{ "zaldih/themery.nvim", enabled = false },
 	{ "lewis6991/gitsigns.nvim", enabled = false },
 }

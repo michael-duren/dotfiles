@@ -1,3 +1,10 @@
+local utils = require("helpers.utils")
+
+local timeout_ms = 1500
+if utils.is_windows() then
+	timeout_ms = 2000
+end
+
 return {
 	"stevearc/conform.nvim",
 	event = { "BufWritePre" },
@@ -27,8 +34,15 @@ return {
 		},
 
 		format_on_save = {
-			timeout_ms = 1500,
+			timeout_ms = timeout_ms,
 			lsp_fallback = true,
+		},
+		formatters = {
+			csharpier = {
+				command = "dotnet",
+				args = { "csharpier", "--write-stdout" },
+				stdin = true,
+			},
 		},
 	},
 	keys = {
