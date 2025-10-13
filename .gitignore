@@ -6,3 +6,4 @@ repo.*
 *~
 *.log
 *.tmp
+lazy-lock
