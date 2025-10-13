@@ -1,4 +1,4 @@
-local all = false
+local utils = require("helpers.utils")
 
 local themes = {
 	{
@@ -102,6 +102,7 @@ local themes = {
 					which_key = true,
 				},
 			})
+
 			vim.cmd.colorscheme("catppuccin")
 		end,
 	},
@@ -115,8 +116,12 @@ local themes = {
 		lazy = false, -- make sure we load this during startup if it is your main colorscheme
 		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
-			-- load the colorscheme here
+			--
 			require("night-owl").setup()
+			-- load the colorscheme here
+			if utils.is_windows() then
+				vim.cmd.colorscheme("night-owl")
+			end
 		end,
 	},
 	{
@@ -235,10 +240,6 @@ local themes = {
 		end,
 	},
 }
-
-if all then
-	return themes
-end
 
 -- color themes:
 -- 1. kanagawa

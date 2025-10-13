@@ -1,9 +1,8 @@
-local utils = require("helpers.utils")
-
-return { -- Highlight, edit, and navigate code
+return {
 	"nvim-treesitter/nvim-treesitter",
+	branch = "master", -- Use master for ensure_installed
+	lazy = false,
 	build = ":TSUpdate",
-	main = "nvim-treesitter.configs",
 	opts = {
 		ensure_installed = {
 			"bash",
@@ -19,28 +18,23 @@ return { -- Highlight, edit, and navigate code
 			"vimdoc",
 			"go",
 			"gomod",
+			"gosum", -- "gowork" if it works
 			"gowork",
-			"gosum",
-			"hyprlang",
 			"css",
 			"c_sharp",
-			"razor",
 			"typescript",
 			"javascript",
 			"json",
 			"zig",
 		},
-		-- Autoinstall languages that are not installed
-		auto_install = not utils.is_windows(),
+		auto_install = true,
 		highlight = {
 			enable = true,
+			additional_vim_regex_highlighting = false,
 		},
 		indent = { enable = true },
 	},
-	-- There are additional nvim-treesitter modules that you can use to interact
-	-- with nvim-treesitter. You should go explore a few and see what interests you:
-	--
-	--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-	--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-	--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+	config = function(_, opts)
+		require("nvim-treesitter.configs").setup(opts)
+	end,
 }
