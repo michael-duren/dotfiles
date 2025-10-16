@@ -43,6 +43,9 @@ if utils.is_windows() then
 	vim.g.loaded_2html_plugin = 1
 	vim.g.loaded_tutor_plugin = 1
 
+	-- Use forward slash on Windows
+	vim.opt.shellslash = true
+
 	vim.lsp.set_log_level("OFF")
 
 	opt.swapfile = false

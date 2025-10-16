@@ -1,3 +1,5 @@
+local utils = require("helpers.utils")
+
 local sql_ft = { "sql", "mysql", "plsql" }
 return {
 	{
@@ -35,6 +37,10 @@ return {
 			vim.g.db_ui_use_nerd_fonts = true
 			vim.g.db_ui_use_nvim_notify = true
 			vim.g.db_ui_execute_on_save = false
+
+			if utils.is_windows() then
+				vim.g.db_ui_default_query_tool = "/opt/mssql-tools/bin/sqlcmd"
+			end
 		end,
 	},
 }

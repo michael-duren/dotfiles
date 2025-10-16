@@ -7,3 +7,5 @@ repo.*
 *.log
 *.tmp
 lazy-lock
+tmp/
+db.lua
