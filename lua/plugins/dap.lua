@@ -46,9 +46,17 @@ return {
 			local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg"
 			local delve_path = vim.fn.stdpath("data") .. "/mason/packages/delve/dlv"
 
+			local function get_netcoredbg_path()
+				if utils.is_windows() then
+					return mason_path .. "/netcoredbg.exe"
+				else
+					return mason_path .. "/netcoredbg"
+				end
+			end
+
 			local netcoredbg_adapter = {
 				type = "executable",
-				command = mason_path,
+				command = get_netcoredbg_path(),
 				args = { "--interpreter=vscode" },
 			}
 
@@ -72,7 +80,7 @@ return {
 					name = "launch - netcoredbg",
 					request = "launch",
 					program = function()
-						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net9.0/", "file")
+						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net8.0/", "file")
 					end,
 				},
 				{
