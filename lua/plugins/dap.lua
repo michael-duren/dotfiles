@@ -82,6 +82,9 @@ return {
 					program = function()
 						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net8.0/", "file")
 					end,
+					env = {
+						ASPNETCORE_ENVIRONMENT = "Development",
+					},
 				},
 				{
 					type = "coreclr",
