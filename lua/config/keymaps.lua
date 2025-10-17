@@ -196,6 +196,11 @@ local keybindings = {
 		opts = { desc = "Previous Buffer" },
 	},
 	{
+		key = "<leader>bo",
+		command = function() vim.cmd(":%bd|e#|bd#") end,
+		opts = { desc = "Close other buffers" },
+	},
+	{
 		key = "<S-l>",
 		command = ":bnext<CR>",
 		opts = { desc = "Next Buffer" },
