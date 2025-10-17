@@ -197,20 +197,15 @@ local keybindings = {
 	},
 	{
 		key = "<leader>bo",
-		command = function() vim.cmd(":%bd|e#|bd#") end,
+		command = function()
+			vim.cmd(":%bd|e#|bd#")
+		end,
 		opts = { desc = "Close other buffers" },
 	},
 	{
 		key = "<S-l>",
 		command = ":bnext<CR>",
 		opts = { desc = "Next Buffer" },
-	},
-	{
-		key = "<leader>ba",
-		command = function()
-			Snacks.bufdelete.all()
-		end,
-		opts = { desc = "Delete All Buffers" },
 	},
 	{
 		key = "<leader>bh",

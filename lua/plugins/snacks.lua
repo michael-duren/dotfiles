@@ -119,6 +119,20 @@ return {
 			desc = "Buffers",
 		},
 		{
+			"<leader>ba",
+			function()
+				Snacks.bufdelete.all()
+			end,
+			desc = "Delete All Buffers",
+		},
+		{
+			"<leader>bm",
+			function()
+				Snacks.picker.buffers({ modified = true })
+			end,
+			desc = "Modified buffers",
+		},
+		{
 			"<leader>fc",
 			function()
 				Snacks.picker.files({
