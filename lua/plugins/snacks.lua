@@ -126,6 +126,13 @@ return {
 			desc = "Delete All Buffers",
 		},
 		{
+			"<leader>bo",
+			function()
+				Snacks.bufdelete.other()
+			end,
+			desc = "Close other buffers",
+		},
+		{
 			"<leader>bm",
 			function()
 				Snacks.picker.buffers({ modified = true })
