@@ -6,6 +6,6 @@ repo.*
 *~
 *.log
 *.tmp
-lazy-lock
+lazy-lock.*
 tmp/
 db.lua
