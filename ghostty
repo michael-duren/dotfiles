@@ -1,11 +1,7 @@
 theme = Black Metal (Dark Funeral)
 background-opacity = 1.0
 
-# Scrollback
 scrollback-limit = 10000
-
-# Key bindings - tmux-style workflow
-# Note: Ghostty doesn't have a leader key, so we'll use direct bindings
 
 keybind = ctrl+h=goto_split:left
 keybind = ctrl+j=goto_split:bottom
