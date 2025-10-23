@@ -43,15 +43,17 @@ local themes = {
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
-		opts = {
-			style = "moon",
-			transparent = false,
-
-			styles = {
-				sidebars = "transparent",
-				floats = "transparent",
-			},
-		},
+		config = function()
+			require("tokyonight").setup({
+				style = "moon",
+				transparent = true,
+				styles = {
+					sidebars = "transparent",
+					floats = "transparent",
+				},
+			})
+			vim.cmd.colorscheme("tokyonight")
+		end,
 	},
 	{
 		"catppuccin/nvim",
@@ -239,6 +241,24 @@ local themes = {
 			})
 		end,
 	},
+	{
+		"metalelf0/black-metal-theme-neovim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("black-metal").setup({
+				-- Can be one of: bathory | burzum | dark-funeral | darkthrone | emperor | gorgoroth | immortal | impaled-nazarene | khold | marduk | mayhem | nile | taake | thyrfing | venom | windir
+				theme = "marduk",
+				transparent = true,
+				diagnostics = {
+					darker = true,
+					undercurl = true,
+					background = false,
+				},
+			})
+			require("black-metal").load()
+		end,
+	},
 }
 
 -- color themes:
@@ -255,6 +275,6 @@ local themes = {
 -- 12. tokyodark
 -- 13. poimandres
 -- 14. rose
---
+-- 15. black-metal
 
-return themes[5]
+return themes[4]
