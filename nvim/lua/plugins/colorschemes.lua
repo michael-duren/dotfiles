@@ -1,5 +1,9 @@
 local utils = require("helpers.utils")
 
+local setColorscheme = function(scheme)
+	vim.cmd.colorscheme(scheme)
+end
+
 local themes = {
 	{
 		"rebelot/kanagawa.nvim",
@@ -239,6 +243,7 @@ local themes = {
 					transparent = true,
 				},
 			})
+			setColorscheme("rose-pine")
 		end,
 	},
 	{
@@ -248,7 +253,7 @@ local themes = {
 		config = function()
 			require("black-metal").setup({
 				-- Can be one of: bathory | burzum | dark-funeral | darkthrone | emperor | gorgoroth | immortal | impaled-nazarene | khold | marduk | mayhem | nile | taake | thyrfing | venom | windir
-				theme = "marduk",
+				theme = "dark-funeral",
 				transparent = true,
 				diagnostics = {
 					darker = true,
@@ -273,8 +278,17 @@ local themes = {
 -- 10. kanagawa-paper
 -- 11. lackluster (somewhat broken)
 -- 12. tokyodark
--- 13. poimandres
--- 14. rose
--- 15. black-metal
+-- 13. solarized-osaka
+-- 14. onedark
+-- 15. everforest
+-- 16. material
+-- 17. onedarkpro
+-- 18. nordic
+-- 19. edge
+-- 20. zenbones
+-- 21. neon
+-- 22. poimandres
+-- 23. rose-pine
+-- 24. black-metal
 
-return themes[4]
+return themes[23]

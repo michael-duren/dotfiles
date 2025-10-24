@@ -2,6 +2,7 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local act = wezterm.action
+config.color_scheme = "Black Metal (Dark Funeral) (base16)"
 config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 
 -- Shell configuration
@@ -47,22 +48,22 @@ config.keys = {
 	{
 		key = "h",
 		mods = "LEADER",
-		action = act.SplitPane({ direction = "Left", domain = "CurrentPaneDomain" }),
+		action = act.SplitPane({ direction = "Left" }),
 	},
 	{
 		key = "j",
 		mods = "LEADER",
-		action = act.SplitPane({ direction = "Down", domain = "CurrentPaneDomain" }),
+		action = act.SplitPane({ direction = "Down" }),
 	},
 	{
 		key = "k",
 		mods = "LEADER",
-		action = act.SplitPane({ direction = "Up", domain = "CurrentPaneDomain" }),
+		action = act.SplitPane({ direction = "Up" }),
 	},
 	{
 		key = "l",
 		mods = "LEADER",
-		action = act.SplitPane({ direction = "Right", domain = "CurrentPaneDomain" }),
+		action = act.SplitPane({ direction = "Right" }),
 	},
 	{
 		key = "f",
