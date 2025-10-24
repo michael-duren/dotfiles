@@ -3,10 +3,10 @@ background-opacity = 1.0
 
 scrollback-limit = 10000
 
-keybind = ctrl+h=goto_split:left
-keybind = ctrl+j=goto_split:bottom
-keybind = ctrl+k=goto_split:top
-keybind = ctrl+l=goto_split:right
+keybind = ctrl+shift+h=goto_split:left
+keybind = ctrl+shift+j=goto_split:bottom
+keybind = ctrl+shift+k=goto_split:top
+keybind = ctrl+shift+l=goto_split:right
 
 keybind = ctrl+a>h=new_split:left
 keybind = ctrl+a>j=new_split:down
@@ -20,4 +20,3 @@ keybind = ctrl+a>p=previous_tab
 keybind = super+r=reload_config
 
 window-save-state = always
-keybind = ctrl+shift+l=clear_screen

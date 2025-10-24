@@ -1,3 +1,4 @@
+-- wezterm use on windows since ghostty isn't available
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 local act = wezterm.action
@@ -44,6 +45,31 @@ config.keys = {
 		action = wezterm.action.CloseCurrentPane({ confirm = true }),
 	},
 	{
+		key = "h",
+		mods = "LEADER",
+		action = act.SplitPane({ direction = "Left", domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "j",
+		mods = "LEADER",
+		action = act.SplitPane({ direction = "Down", domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "k",
+		mods = "LEADER",
+		action = act.SplitPane({ direction = "Up", domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "l",
+		mods = "LEADER",
+		action = act.SplitPane({ direction = "Right", domain = "CurrentPaneDomain" }),
+	},
+	{
+		key = "f",
+		mods = "LEADER",
+		action = act.TogglePaneZoomState,
+	},
+	{
 		key = "|",
 		mods = "LEADER|SHIFT",
 		action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }),
@@ -57,22 +83,22 @@ config.keys = {
 	-- Vim-like pane navigation with Ctrl+h/l
 	{
 		key = "h",
-		mods = "CTRL",
+		mods = "CTRL|SHIFT",
 		action = act.ActivatePaneDirection("Left"),
 	},
 	{
 		key = "l",
-		mods = "CTRL",
+		mods = "CTRL|SHIFT",
 		action = act.ActivatePaneDirection("Right"),
 	},
 	{
 		key = "k",
-		mods = "CTRL",
+		mods = "CTRL|SHIFT",
 		action = act.ActivatePaneDirection("Up"),
 	},
 	{
 		key = "j",
-		mods = "CTRL",
+		mods = "CTRL|SHIFT",
 		action = act.ActivatePaneDirection("Down"),
 	},
 
