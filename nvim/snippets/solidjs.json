@@ -1,0 +1,18 @@
+{
+  "Solid Component": {
+    "prefix": "scomp",
+    "body": [
+      "import { Component } from 'solid-js';",
+      "",
+      "const ${1:ComponentName}: Component = () => {",
+      "  return (",
+      "    <div>",
+      "      $0",
+      "    </div>",
+      "  );",
+      "};",
+      "",
+      "export default ${1:ComponentName};"
+    ]
+  }
+}
