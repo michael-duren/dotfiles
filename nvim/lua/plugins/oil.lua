@@ -36,6 +36,7 @@ return {
 			["g."] = "actions.toggle_hidden",
 			["g\\"] = "actions.toggle_trash",
 		},
+		watch_for_changes = true,
 		use_default_keymaps = true,
 		skip_confirm_for_simple_edits = true,
 		view_options = {
