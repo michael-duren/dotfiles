@@ -291,4 +291,4 @@ local themes = {
 -- 23. rose-pine
 -- 24. black-metal
 
-return themes[23]
+return themes[4]
