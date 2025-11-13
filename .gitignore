@@ -9,3 +9,4 @@ repo.*
 lazy-lock.*
 tmp/
 db.lua
+sources.json
