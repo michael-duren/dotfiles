@@ -1,3 +1,8 @@
+-- don't use dad bod since it doesn't work with sql server
+if true then
+	return {}
+end
+
 local utils = require("helpers.utils")
 
 local sql_ft = { "sql", "mysql", "plsql" }
