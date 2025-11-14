@@ -16,6 +16,7 @@ return {
 					"lua_ls",
 					"gopls",
 					"csharp_ls",
+					"csharpier",
 					"zls",
 					"html",
 					"cssls",
