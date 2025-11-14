@@ -1,0 +1,8 @@
+[
+  {
+    "id": "optional_identifier",
+    "name": "My Database",
+    "type": "sqlite",
+    "url": "~/path/to/mydb.db"
+  }
+]
