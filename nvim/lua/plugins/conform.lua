@@ -37,13 +37,13 @@ return {
 			timeout_ms = timeout_ms,
 			lsp_fallback = true,
 		},
-		formatters = {
-			csharpier = {
-				command = "dotnet",
-				args = { "csharpier", "--write-stdout" },
-				stdin = true,
-			},
-		},
+		-- formatters = {
+		-- 	csharpier = {
+		-- 		command = "csharpier",
+		-- 		args = { "--write-stdout" },
+		-- 		stdin = true,
+		-- 	},
+		-- },
 	},
 	keys = {
 		{
