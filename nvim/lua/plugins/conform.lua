@@ -27,6 +27,7 @@ return {
 			yaml = { "prettier" },
 			vue = { "prettier" },
 			svelte = { "prettier" },
+			astro = { "prettier" },
 
 			go = { "goimports", "gofmt" },
 			cs = { "csharpier" },

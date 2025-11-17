@@ -9,4 +9,5 @@ return {
 	-- { "folke/todo-comments.nvim", enabled = false },
 	{ "zaldih/themery.nvim", enabled = false },
 	{ "CopilotC-Nvim/CopilotChat.nvim", enabled = false },
+	{ "MagicDuck/grug-far.nvim", enabled = false },
 }

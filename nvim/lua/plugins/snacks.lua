@@ -90,6 +90,13 @@ return {
 			end,
 			desc = "Buffers",
 		},
+		-- {
+		-- 	"<C-q>",
+		-- 	desc = "Send to Quickfix",
+		-- 	function()
+		-- 		Snacks.picker.send_to_qflist()
+		-- 	end,
+		-- },
 		{
 			"<leader>/",
 			function()
