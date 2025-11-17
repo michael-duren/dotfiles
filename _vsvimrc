@@ -223,16 +223,3 @@ nnoremap <leader>wd :vsc Window.CloseDocumentWindow<CR>
 " 1. Tools -> Options -> Environment -> Keyboard
 " 2. Search for the command you want
 " 3. Use the command name with :vsc prefix
-"
-" Common VsVim issues:
-" - If <S-l>/<S-h> don't work, check if VS has conflicting keybindings
-" - Go to Tools -> Options -> Environment -> Keyboard
-" - Search for "Window.NextTab" and "Window.PreviousTab"
-" - Remove any conflicting shortcuts
-"
-" Installation:
-" 1. This file should be named "_vsvimrc" (Windows) or ".vsvimrc" (Mac/Linux)
-" 2. Place it in your home directory:
-"    - Windows: C:\Users\YourUsername\_vsvimrc
-"    - Mac/Linux: ~/.vsvimrc
-" 3. Restart Visual Studio
