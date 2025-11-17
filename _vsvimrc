@@ -198,6 +198,18 @@ nnoremap <leader>R :vsc File.Exit<CR>
 nnoremap <C-o> :vsc View.NavigateBackward<CR>
 nnoremap <C-i> :vsc View.NavigateForward<CR>
 
+nnoremap <S-\> :vsc Window.NewVerticalTabGroup<CR>
+
+nnoremap <leader>wv :vsc Window.NewVerticalTabGroup<CR>
+nnoremap <Bar> :vsc Window.NewVerticalTabGroup<CR>
+
+" Split horizontally (new horizontal tab group)
+nnoremap <leader>wh :vsc Window.NewHorizontalTabGroup<CR>
+nnoremap - :vsc Window.NewHorizontalTabGroup<CR>
+
+" Close current window/tab group
+nnoremap <leader>wd :vsc Window.CloseDocumentWindow<CR>
+
 " ============================================================================
 " Notes
 " ============================================================================
