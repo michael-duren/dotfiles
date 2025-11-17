@@ -1,9 +1,8 @@
--- don't use dad bod since it doesn't work with sql server
-if true then
+local utils = require("helpers.utils")
+
+if utils.is_windows() then
 	return {}
 end
-
-local utils = require("helpers.utils")
 
 local sql_ft = { "sql", "mysql", "plsql" }
 return {

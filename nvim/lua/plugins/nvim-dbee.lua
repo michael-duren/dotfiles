@@ -1,3 +1,9 @@
+local utils = require("helpers.utils")
+
+if not utils.is_windows() then
+	return {}
+end
+
 return {
 	{
 		"kndndrj/nvim-dbee",

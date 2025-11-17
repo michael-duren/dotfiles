@@ -123,8 +123,6 @@ return {
 				},
 			}, neotest_ns)
 
-			-- THIS IS THE KEY PART YOU'RE MISSING:
-			-- Actually instantiate the adapters
 			opts.adapters = {
 				require("neotest-golang")(opts.adapters["neotest-golang"] or {}),
 				require("neotest-dotnet")(opts.adapters["neotest-dotnet"] or {}),
