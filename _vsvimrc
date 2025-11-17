@@ -1,0 +1,226 @@
+" VsVim Configuration for Visual Studio
+
+" ============================================================================
+" Basic Settings
+" ============================================================================
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set number
+set relativenumber
+set scrolloff=8
+set clipboard=unnamed
+
+" Keep cursor block in all modes (VsVim syntax)
+set vsvim_useeditordefaults
+
+" ============================================================================
+" Leader Key
+" ============================================================================
+let mapleader = " "
+
+" ============================================================================
+" File Operations
+" ============================================================================
+nnoremap <C-s> :w<CR>
+nnoremap <leader>w :w<CR>
+
+" ============================================================================
+" Buffer Management (Tab Navigation in Visual Studio)
+" ============================================================================
+" In VsVim, buffers map to VS document tabs
+" These use Visual Studio commands via :vsc
+
+" Navigate between tabs (buffers)
+nnoremap <S-h> :vsc Window.PreviousTab<CR>
+nnoremap <S-l> :vsc Window.NextTab<CR>
+
+" Alternative buffer navigation
+nnoremap <leader>b. :vsc Window.NextTab<CR>
+nnoremap <leader>bn :vsc File.NewFile<CR>
+nnoremap <leader>bd :vsc File.Close<CR>
+
+" Switch to previous buffer (alternate file)
+nnoremap <leader>bb :vsc Window.NextTab<CR>
+
+" ============================================================================
+" Window Navigation
+" ============================================================================
+" Note: VsVim has limited window split support
+" These map to Visual Studio window navigation
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" ============================================================================
+" Code Navigation & LSP-like Features
+" ============================================================================
+" Go to definition
+nnoremap gd :vsc Edit.GoToDefinition<CR>
+nnoremap gD :vsc Edit.GoToDeclaration<CR>
+
+" Go to implementation
+nnoremap gi :vsc Edit.GoToImplementation<CR>
+
+" Find references
+nnoremap gr :vsc Edit.FindAllReferences<CR>
+
+" Peek definition
+nnoremap K :vsc Edit.QuickInfo<CR>
+
+" Code actions
+nnoremap <leader>ca :vsc View.QuickActions<CR>
+nnoremap <leader>la :vsc View.QuickActions<CR>
+
+" Rename symbol
+nnoremap <leader>lr :vsc Refactor.Rename<CR>
+
+" Format document
+nnoremap <leader>lf :vsc Edit.FormatDocument<CR>
+
+" ============================================================================
+" Diagnostics/Errors
+" ============================================================================
+" Next/Previous error
+nnoremap ]d :vsc View.NextError<CR>
+nnoremap [d :vsc View.PreviousError<CR>
+nnoremap <leader>kj :vsc View.NextError<CR>
+nnoremap <leader>kk :vsc View.PreviousError<CR>
+
+" Show error list
+nnoremap <leader>le :vsc View.ErrorList<CR>
+
+" ============================================================================
+" Search & Find
+" ============================================================================
+" Quick find
+nnoremap <leader>ff :vsc Edit.GoToAll<CR>
+nnoremap <leader>/ :vsc Edit.FindinFiles<CR>
+nnoremap <C-p> :vsc Edit.GoToAll<CR>
+
+" Find in files
+nnoremap <leader>fg :vsc Edit.FindinFiles<CR>
+
+" Clear search highlighting
+nnoremap <Esc><Esc> :nohlsearch<CR>
+nnoremap <leader>uh :nohlsearch<CR>
+
+" ============================================================================
+" Line Movement
+" ============================================================================
+" Move lines up/down
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" ============================================================================
+" Scrolling & Centering
+" ============================================================================
+nnoremap <C-d> <C-d>zz
+nnoremap <C-u> <C-u>zz
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" ============================================================================
+" Visual Mode
+" ============================================================================
+" Stay in visual mode when indenting
+vnoremap < <gv
+vnoremap > >gv
+
+" Better paste in visual mode (don't yank replaced text)
+vnoremap p "_dP
+
+" ============================================================================
+" Quit Operations
+" ============================================================================
+nnoremap <leader>qq :vsc File.Exit<CR>
+nnoremap <leader>qw :vsc File.SaveAll<CR>:vsc File.Exit<CR>
+
+" ============================================================================
+" Build & Debug (VS Specific)
+" ============================================================================
+" Build solution
+nnoremap <leader>cb :vsc Build.BuildSolution<CR>
+
+" Start debugging
+nnoremap <leader>dd :vsc Debug.Start<CR>
+
+" Stop debugging
+nnoremap <leader>dq :vsc Debug.StopDebugging<CR>
+
+" Toggle breakpoint
+nnoremap <leader>db :vsc Debug.ToggleBreakpoint<CR>
+
+" Step over
+nnoremap <leader>dj :vsc Debug.StepOver<CR>
+
+" Step into
+nnoremap <leader>di :vsc Debug.StepInto<CR>
+
+" Step out
+nnoremap <leader>do :vsc Debug.StepOut<CR>
+
+" Continue
+nnoremap <leader>dc :vsc Debug.Continue<CR>
+
+" ============================================================================
+" Solution Explorer
+" ============================================================================
+nnoremap <leader>e :vsc View.SolutionExplorer<CR>
+
+" ============================================================================
+" Comments
+" ============================================================================
+" Toggle comment (works with Visual Studio's comment command)
+nnoremap gcc :vsc Edit.ToggleComment<CR>
+vnoremap gc :vsc Edit.ToggleComment<CR>
+
+" ============================================================================
+" Git Integration (if using VS Git tools)
+" ============================================================================
+nnoremap <leader>gg :vsc Team.Git.ManageBranches<CR>
+nnoremap <leader>gc :vsc Team.Git.Commit<CR>
+
+" ============================================================================
+" Additional Useful VS Commands
+" ============================================================================
+" Open containing folder
+nnoremap <leader>of :vsc File.OpenContainingFolder<CR>
+
+" Restart Visual Studio (useful for LSP-like issues)
+nnoremap <leader>R :vsc File.Exit<CR>
+
+" Navigate back/forward
+nnoremap <C-o> :vsc View.NavigateBackward<CR>
+nnoremap <C-i> :vsc View.NavigateForward<CR>
+
+" ============================================================================
+" Notes
+" ============================================================================
+" VsVim Limitations:
+" - No plugin support (no telescope, harpoon, etc.)
+" - Limited autocommand support
+" - Some Vim commands not implemented
+" - Must use :vsc for Visual Studio commands
+"
+" To find Visual Studio command names:
+" 1. Tools -> Options -> Environment -> Keyboard
+" 2. Search for the command you want
+" 3. Use the command name with :vsc prefix
+"
+" Common VsVim issues:
+" - If <S-l>/<S-h> don't work, check if VS has conflicting keybindings
+" - Go to Tools -> Options -> Environment -> Keyboard
+" - Search for "Window.NextTab" and "Window.PreviousTab"
+" - Remove any conflicting shortcuts
+"
+" Installation:
+" 1. This file should be named "_vsvimrc" (Windows) or ".vsvimrc" (Mac/Linux)
+" 2. Place it in your home directory:
+"    - Windows: C:\Users\YourUsername\_vsvimrc
+"    - Mac/Linux: ~/.vsvimrc
+" 3. Restart Visual Studio
