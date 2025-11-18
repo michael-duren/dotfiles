@@ -1,0 +1,200 @@
+" Plugins
+Plug 'machakann/vim-highlightedyank' " Highlight copied text
+" Plug 'tpope/vim-surround'            " Delete/change/add parentheses/quotes/XML-tags/much more with ease
+Plug 'preservim/nerdtree'            " NERDTree
+Plug 'justinmk/vim-sneak'            " More efficient jumps than f/F
+
+" Opts
+set relativenumber
+set number 
+set showmarks
+set scrolloff=5          " Minimal number of lines above and below the cursor
+set clipboard=unnamedplus
+map <S-l> 20zl
+map <S-h> 20zh
+nnoremap <leader>h :noh<CR>
+" Show partial commands at the bottom
+set showcmd
+" Show current mode (INSERT, VISUAL, etc)
+set showmode
+
+" Show which keys you're pressing, including leader key
+set ideavim_show_visual_marks
+
+" You might also want this for better leader key visibility
+set notimeout
+set timeoutlen=1000
+
+" VIM leader key
+let mapleader=" "
+
+" Search settings
+set incsearch
+set hlsearch
+
+" Smartcase
+set ignorecase
+set smartcase
+
+" Basic settings
+set visualbell
+set noerrorbells
+
+set smartcase
+
+" Navigation mappings
+nnoremap L :action NextTab<CR>
+nnoremap H :action PreviousTab<CR>
+
+" Harpoon-like functionality
+nnoremap <leader>ha :action ToggleBookmark<CR>
+nnoremap <leader>hh :action ShowBookmarks<CR>
+nmap <leader>hn <Action>(GotoNextBookmark)
+nmap <leader>hp <Action>(GotoPreviousBookmark)
+
+" File navigation
+nnoremap <leader>ff :action GotoFile<CR>
+nnoremap <leader>fr :action RevealIn<CR>
+map <leader>/ <Action>(FindInPath)
+map <leader>fr <Action>(ReplaceInPath)
+
+" Window management
+nnoremap <leader>v :action SplitVertically<CR>
+nnoremap <leader>wd :action CloseAllEditorsButActive<CR>
+nnoremap <leader>zc :action CollapseRegion<CR>
+nnoremap <leader>zo :action ExpandRegion<CR>
+
+" Debugger mappings
+nnoremap <leader>db :action ToggleLineBreakpoint<CR>
+nnoremap <leader>dB :action EditBreakpoint<CR>
+nnoremap <leader>dc :action Resume<CR>
+nnoremap <leader>da :action Debug<CR>
+nnoremap <leader>do :action StepOver<CR>
+nnoremap <leader>dO :action StepOut<CR>
+nnoremap <leader>di :action StepInto<CR>
+nnoremap <leader>ds :action Stop<CR>
+
+" SQL Stuff
+map <leader>S <Action>(Console.Jdbc.Execute)
+
+" Vim specific remaps
+nnoremap <leader>H :nohlsearch<CR>
+
+" map black whole register
+noremap \ "_
+
+" paste over without overwriting default register
+xnoremap p P
+
+" jump between angle brackets
+set matchpairs+=<:>
+
+" smart line joining
+set ideajoin
+
+" open config
+noremap <leader>? :edit ~/.ideavimrc<cr>
+
+" source config
+noremap <leader>cs :source ~/.ideavimrc<cr>:nohlsearch<cr>
+
+" go to the left split
+map <C-h> <C-w>h
+" go to the bottom split
+map <C-j> <C-w>j
+" go to the top split
+map <C-k> <C-w>k
+" go to the right split
+map <C-l> <C-w>l
+
+" switch tabs
+" nmap <C-Right> <Action>(NextTab)
+" nmap <C-Left> <Action>(PreviousTab)
+
+" remap to ctlr u/d to include centering
+map <C-u> <C-u>zz
+map <C-d> <C-d>zz
+map <C-b> <C-b>zz
+map <C-f> <C-f>zz
+
+" Folding
+map zf <Action>(ExpandCollapseToggleAction)
+map za <Action>(CollapseAllRegions)
+map zA <Action>(ExpandAllRegions)
+xmap zs <Action>(CollapseSelection)<ESC>
+
+map <C-|> <Action>(SplitVertically)
+map - <Action>(SplitHorizontally)
+map <Leader>wm <Action>(MoveEditorToOppositeTabGroup)
+map <leader>ww <Action>(Unsplit)
+map <leader>wa <Action>(UnsplitAll)
+
+map <leader>sc <Action>(GotoClass)
+map <leader>sf <Action>(GotoFile)
+map <leader>ss <Action>(GotoSymbol)
+map <leader>sa <Action>(GotoAction)
+map <leader>gd <Action>(GotoDeclaration)
+map <leader>gy <Action>(GotoTypeDeclaration)
+map <leader>gi <Action>(GotoImplementation)
+map <leader>gt <Action>(GotoTest)
+map <leader>gm <Action>(GotoSuperMethod)
+map <leader>gl <Action>(GotoLine)
+
+map <leader>ug <Action>(FindUsages)
+map <leader>uu <Action>(ShowUsages)
+map <leader>vs <Action>(ViewSource)
+map <leader>im <Action>(QuickImplementations)
+map <leader>td <Action>(QuickTypeDefinition)
+map <leader>ti <Action>(ExpressionTypeInfo)
+map <leader>sh <Action>(ShowHoverInfo)
+map <leader>oo <Action>(FileStructurePopup)
+
+map <leader>rn <Action>(RenameElement)
+map <leader>rm <Action>(ExtractMethod)
+map <leader>rv <Action>(IntroduceVariable)
+map <leader>rf <Action>(IntroduceField)
+map <leader>rs <Action>(ChangeSignature)
+map <leader>rr <Action>(Refactorings.QuickListPopupAction)
+
+map <leader>aa <Action>(ShowIntentionActions)
+map <leader>sw <Action>(SurroundWith)
+map <S-space> <Action>(Generate)
+
+map <leader>kj <Action>(GotoNextError)
+map <leader>kk <Action>(GotoPreviousError)
+map <leader>lc <Action>(JumpToLastChange)
+map <leader>ll <Action>(RecentLocations)
+
+map <leader><leader> <Action>(ReformatCode)
+map <leader>oi <Action>(OptimizeImports)
+map <leader>ra <Action>(RearrangeCode)
+
+map <leader>fs <Action>(NewScratchFile)
+map <leader>sS <Action>(Scratch.ShowFilesPopup)
+map <leader>qq <Action>(CloseContent)
+map <leader>qa <Action>(CloseAllEditors)
+map <leader>nf <Action>(NewFile)
+map <leader>nd <Action>(NewDir)
+map <leader>re <Action>(RenameFile)
+map <leader>of <Action>(OpenFile)
+map <leader>ri <Action>(RestartIde)
+map <leader>bp <Action>(BuildProject)
+map <leader>bd <Action>(CloseContent)
+map <leader>e :NERDTreeToggle<CR>
+
+" buffer back
+nnoremap <leader>bb :action Switcher<CR>
+
+" git blame
+map <leader>gb <Action>(Annotate)
+
+" copilot
+map <leader>aa <Action>(ActivateGitHubCopilotChatToolWindow)
+map <leader>pe <Action>(copilot.enableCopilot)
+map <leader>pd <Action>(copilot.disableCopilot)
+map <leader>pc <Action>(ActivateGitHubCopilotChatToolWindow)
+
+" which key
+set which-key
+set notimeout
+set guicursor=a:block
