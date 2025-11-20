@@ -22,6 +22,18 @@ return {
 			},
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer" },
+				providers = {
+					dbee = {
+						name = "dbee",
+						module = "helpers.blink-nvim-dbee",
+						score_offset = 10,
+					},
+				},
+				per_filetype = {
+					sql = { "lsp", "dbee", "path", "snippets", "buffer" },
+					mysql = { "lsp", "dbee", "path", "snippets", "buffer" },
+					plsql = { "lsp", "dbee", "path", "snippets", "buffer" },
+				},
 			},
 			snippets = {
 				preset = "luasnip",
