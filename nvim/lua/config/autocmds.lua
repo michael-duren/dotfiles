@@ -14,3 +14,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
 	end,
 })
+
+vim.api.nvim_create_augroup("RazorVirtualFiles", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "BufLeave", "BufReadPost" }, {
+	group = "RazorVirtualFiles",
+	pattern = "*__virtual*",
+	callback = function(args)
+		vim.bo[args.buf].modified = false
+		vim.bo[args.buf].bufhidden = "wipe"
+		vim.bo[args.buf].buflisted = false
+		vim.bo[args.buf].buftype = "nofile"
+		vim.bo[args.buf].swapfile = false
+	end,
+})
