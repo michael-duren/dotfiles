@@ -12,14 +12,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		end
 	end,
 })
-
--- Removes the modified flag from virtual buffers created by rzls for Razor files.
--- This prevents being prompted to save the buffer when closing it.
-vim.api.nvim_create_autocmd("BufEnter", {
-	pattern = "*__virtual*",
-	callback = function()
-		vim.bo.modified = false
-		vim.bo.bufhidden = "wipe"
-		vim.bo.buflisted = false
-	end,
-})

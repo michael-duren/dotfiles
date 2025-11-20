@@ -34,6 +34,7 @@ return {
 					"rust-analyzer",
 					"tailwind-language-server",
 					"roslyn",
+					"html-lsp",
 					"rzls",
 					"markdownlint-cli2",
 					"markdown-toc",
