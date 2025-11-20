@@ -261,6 +261,11 @@ local keybindings = {
 		command = ":noh<CR>",
 		opts = { desc = "Hide search highlight" },
 	},
+	{
+		key = "<Esc><Esc>",
+		command = ":noh<CR>",
+		opts = { desc = "Hide search highlight" },
+	},
 
 	-- LuaSnip Navigation (Insert Mode)
 	{
