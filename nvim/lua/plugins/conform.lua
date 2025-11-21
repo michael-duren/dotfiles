@@ -32,6 +32,8 @@ return {
 			go = { "goimports", "gofmt" },
 			cs = { "csharpier" },
 			lua = { "stylua" },
+			razor = { "html" },
+			cshtml = { "html" },
 		},
 
 		format_on_save = {
