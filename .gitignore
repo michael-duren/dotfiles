@@ -10,3 +10,4 @@ lazy-lock.*
 tmp/
 db.lua
 sources.json
+hosts.ini
