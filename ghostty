@@ -20,3 +20,4 @@ keybind = ctrl+a>p=previous_tab
 keybind = super+r=reload_config
 
 window-save-state = always
+font-family = OperatorMonoLig Nerd Font
