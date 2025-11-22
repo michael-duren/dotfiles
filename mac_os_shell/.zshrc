@@ -145,7 +145,3 @@ r() {
 
 
 alias gs="git status"
-
-alias ssh-db="ssh mduren@192.168.40.179"
-alias ssh-ws="ssh mduren@192.168.40.160"
-alias ssh-monitor="ssh mduren@192.168.40.226"

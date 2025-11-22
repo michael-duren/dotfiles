@@ -4,7 +4,7 @@
   become: yes
   vars:
     neovim_version: "0.11.5"
-    nvim_config_repo: "https://github.com/michael-duren/nvim-new.git"
+    nvim_config_repo: "https://github.com/michael-duren/dotfiles.git"
     node_version: "24"
     go_version: "1.23.2"
 
@@ -218,9 +218,26 @@
       become_user: "{{ ansible_user }}"
       git:
         repo: "{{ nvim_config_repo }}"
-        dest: "~/.config/nvim"
+        dest: "/tmp/dotfiles"
         version: main
         force: yes
+
+    - name: Copy Neovim config to user's config directory
+      become: yes
+      become_user: "{{ ansible_user }}"
+      shell: |
+        mkdir -p "$HOME/.config"
+        cp -r /tmp/dotfiles/nvim "$HOME/.config/nvim"
+      args:
+        executable: /bin/bash
+
+    - name: Copy configs to root user
+      become: yes
+      shell: |
+        mkdir -p /root/.config
+        cp -r /tmp/dotfiles/nvim /root/.config/nvim
+      args:
+        executable: /bin/bash
 
     - name: Create data directory for lazy.nvim
       become: yes
