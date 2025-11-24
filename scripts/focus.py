@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-# A simple script to enable or disable redirect blocking by modifying the /etc/hosts file.
+# Name: Focus
+# Description: A simple script to enable or disable redirect blocking by modifying the /etc/hosts file.
+# Author: Michael Duren
+# Date: 11-24-2025
 
+import os
 import sys
 
 blocklist = """
@@ -69,6 +73,10 @@ def disable_blocking():
 
 
 if __name__ == "__main__":
+    if os.geteuid() != 0:
+        print("Must run script as super user to update /etc/hosts directory.")
+        os.execvp("sudo", ["sudo", sys.executable] + sys.argv)
+
     if len(sys.argv) != 2 or sys.argv[1] not in ("on", "off"):
         print("Usage: block on|off")
         sys.exit(1)
