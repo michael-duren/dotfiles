@@ -143,5 +143,7 @@ r() {
         -sound Crystal
 }
 
+# add python3 scripts to path
+export PATH="$HOME/.local/scripts:$PATH"
 
 alias gs="git status"
