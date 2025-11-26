@@ -15,6 +15,7 @@ return {
 				["<C-b>"] = { "scroll_documentation_up", "fallback" },
 				["<C-f>"] = { "scroll_documentation_down", "fallback" },
 				["<C-e>"] = { "hide", "fallback" },
+				["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
 			},
 			appearance = {
 				use_nvim_cmp_as_default = true,
@@ -34,6 +35,10 @@ return {
 					mysql = { "lsp", "dbee", "path", "snippets", "buffer" },
 					plsql = { "lsp", "dbee", "path", "snippets", "buffer" },
 				},
+			},
+			signature = {
+				enabled = true,
+				window = { border = "rounded" },
 			},
 			snippets = {
 				preset = "luasnip",

@@ -18,31 +18,27 @@ return {
 		lazy = false,
 		opts = {
 			ensure_installed = {
-				-- TODO: Fix these LSPs some server names are incorrect
-				-- "netcoredbg",
-				-- "delve",
-				-- "lua_ls",
-				-- "gopls",
-				-- "csharp_ls",
-				-- "csharpier",
-				-- "zls",
-				-- "html",
-				-- "cssls",
-				-- "tsserver",
-				-- "csharpier",
-				-- "stylua",
-				-- "bicep-lsp",
-				-- "html-lsp",
-				-- "eslint-lsp",
-				-- "typescript-language-server",
-				-- "json-lsp",
-				-- "rust-analyzer",
-				-- "tailwind-language-server",
-				-- "roslyn",
-				-- "html-lsp",
-				-- "rzls",
-				-- "markdownlint-cli2",
-				-- "markdown-toc",
+				"lua_ls",
+				"gopls",
+				"zls",
+				"html",
+				"cssls",
+				"jsonls",
+				"yamlls",
+				"tailwindcss",
+				"eslint",
+				"astro",
+				"marksman",
+			},
+			automatic_enable = {
+				exclude = {
+					"roslyn", -- Custom config in roslyn.lua
+					"lua_ls", -- Custom config in lsp/luals.lua
+					"gopls", -- Custom config in lsp/gopls.lua
+					"zls", -- Custom config in lsp/zls.lua
+					"vtsls", -- Custom config in vtsls.lua
+					"tailwindcss", -- Custom config in lsp/web.lua
+				},
 			},
 		},
 	},
