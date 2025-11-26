@@ -10,7 +10,8 @@ set hlsearch
 set number
 set relativenumber
 set scrolloff=8
-set clipboard=unnamed
+" SUPER SLOW in VsVim
+"set clipboard=unnamed
 
 " Keep cursor block in all modes (VsVim syntax)
 set vsvim_useeditordefaults
