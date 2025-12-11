@@ -54,9 +54,10 @@ nmap <leader>hp <Action>(GotoPreviousBookmark)
 
 " File navigation
 nnoremap <leader>ff :action GotoFile<CR>
-nnoremap <leader>fr :action RevealIn<CR>
+" nnoremap <leader>fr :action RevealIn<CR>
+map <leader>fr <Action>(RecentFiles)
 map <leader>/ <Action>(FindInPath)
-map <leader>fr <Action>(ReplaceInPath)
+ map <leader>rf <Action>(ReplaceInPath)
 
 " Window management
 nnoremap <leader>v :action SplitVertically<CR>
@@ -152,7 +153,7 @@ map <leader>oo <Action>(FileStructurePopup)
 map <leader>rn <Action>(RenameElement)
 map <leader>rm <Action>(ExtractMethod)
 map <leader>rv <Action>(IntroduceVariable)
-map <leader>rf <Action>(IntroduceField)
+" map <leader>rf <Action>(IntroduceField)
 map <leader>rs <Action>(ChangeSignature)
 map <leader>rr <Action>(Refactorings.QuickListPopupAction)
 
