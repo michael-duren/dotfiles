@@ -8,9 +8,7 @@ local opt = vim.opt
 opt.number = true
 opt.relativenumber = true
 opt.cursorline = true
-if not utils.is_windows() then
-	opt.clipboard = "unnamedplus"
-end
+opt.clipboard = "unnamedplus"
 
 opt.tabstop = 4
 opt.shiftwidth = 4
