@@ -32,7 +32,9 @@ return {
 					runner = "gotestsum",
 				},
 				["neotest-dotnet"] = {
-					dap_go_enabled = true,
+					dap = {
+						adapter_name = "coreclr",
+					},
 				},
 			},
 		},

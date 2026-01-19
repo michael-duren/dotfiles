@@ -29,15 +29,17 @@ return {
 				"eslint",
 				"astro",
 				"marksman",
+				"netcoredbg",
 			},
 			automatic_enable = {
 				exclude = {
-					"roslyn", -- Custom config in roslyn.lua
-					"lua_ls", -- Custom config in lsp/luals.lua
-					"gopls", -- Custom config in lsp/gopls.lua
-					"zls", -- Custom config in lsp/zls.lua
-					"vtsls", -- Custom config in vtsls.lua
-					"tailwindcss", -- Custom config in lsp/web.lua
+					"roslyn",
+					"lua_ls",
+					"gopls",
+					"zls",
+					"vtsls",
+					"tailwindcss",
+					"yamlls",
 				},
 			},
 		},

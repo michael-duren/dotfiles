@@ -10,6 +10,10 @@ import sys
 blocklist = """
 127.0.0.1 reddit.com
 127.0.0.1 www.reddit.com
+127.0.0.1 discord.com
+127.0.0.1 www.discord.com
+127.0.0.1 www.mail.google.com
+127.0.0.1 mail.google.com
 127.0.0.1 old.reddit.com
 127.0.0.1 twitter.com
 127.0.0.1 www.twitter.com

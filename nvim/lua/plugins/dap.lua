@@ -43,7 +43,7 @@ return {
 			local utils = require("helpers.utils")
 			local icons = require("config.icons")
 
-			local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg"
+			local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg"
 			local delve_path = vim.fn.stdpath("data") .. "/mason/packages/delve/dlv"
 
 			local function get_netcoredbg_path()
@@ -80,7 +80,7 @@ return {
 					name = "launch - netcoredbg",
 					request = "launch",
 					program = function()
-						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net8.0/", "file")
+						return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/net10.0/", "file")
 					end,
 					env = {
 						ASPNETCORE_ENVIRONMENT = "Development",
