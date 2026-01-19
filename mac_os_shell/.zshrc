@@ -147,3 +147,6 @@ r() {
 export PATH="$HOME/.local/scripts:$PATH"
 
 alias gs="git status"
+
+# Added by Antigravity
+export PATH="/Users/michaelduren/.antigravity/antigravity/bin:$PATH"
