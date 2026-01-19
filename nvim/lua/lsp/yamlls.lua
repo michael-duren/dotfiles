@@ -1,9 +1,9 @@
--- TODO: some point adapt this for other filetypes like yml, helm, etc.
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "yaml",
 	callback = function(ev)
 		local schemas = require("schemastore").yaml.schemas()
 
+		-- Just add K8s schema - no cluster needed
 		schemas["kubernetes"] = "*.yaml"
 
 		vim.lsp.start({
@@ -18,7 +18,6 @@ vim.api.nvim_create_autocmd("FileType", {
 					},
 					schemas = schemas,
 					validate = true,
-					kubernetes = true,
 				},
 			},
 		})
