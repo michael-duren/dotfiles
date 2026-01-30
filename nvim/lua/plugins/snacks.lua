@@ -1,4 +1,5 @@
 local utils = require("helpers.utils")
+local colorschemeHelpers = require("helpers.colorscheme")
 
 return {
 	"folke/snacks.nvim",
@@ -404,7 +405,18 @@ return {
 		{
 			"<leader>uC",
 			function()
-				Snacks.picker.colorschemes()
+				Snacks.picker.colorschemes({
+					confirm = function(picker, item)
+						picker:close()
+						if item then
+							picker.preview.state.colorscheme = nil
+							vim.schedule(function()
+								vim.cmd("colorscheme " .. item.text)
+								colorschemeHelpers.change_config_colorscheme(item.text)
+							end)
+						end
+					end,
+				})
 			end,
 			desc = "Colorschemes",
 		}, -- LSP

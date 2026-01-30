@@ -104,4 +104,20 @@ M.merge_keyed_tables = function(t1, t2)
 	return merged
 end
 
+---@param ... string Paths to join
+---@return string The joined path
+M.join_path = function(...)
+	local separator = M.is_windows() and "\\" or "/"
+	local pathList = { ... }
+	local cleanPaths = {}
+
+	for _, path in ipairs(pathList) do
+		if path ~= "" then
+			table.insert(cleanPaths, path)
+		end
+	end
+
+	return table.concat(cleanPaths, separator)
+end
+
 return M
