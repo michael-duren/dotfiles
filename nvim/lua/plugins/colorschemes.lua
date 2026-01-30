@@ -1,5 +1,4 @@
 local themes = {
-	-- Existing popular themes
 	{
 		"rebelot/kanagawa.nvim",
 		priority = 1000,
@@ -210,8 +209,6 @@ local themes = {
 			})
 		end,
 	},
-
-	-- NEW THEMES
 	{
 		"EdenEast/nightfox.nvim",
 		priority = 1000,
