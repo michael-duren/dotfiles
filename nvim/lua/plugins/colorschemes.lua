@@ -244,6 +244,22 @@ local themes = {
 		"ribru17/bamboo.nvim",
 		priority = 1000,
 	},
+	{
+		"projekt0n/github-nvim-theme",
+		priority = 1000,
+	},
+	{
+		"loctvl88/monokai-pro.nvim",
+		priority = 1000,
+	},
+	{
+		"Shatur/neovim-ayu",
+		priority = 1000,
+	},
+	{
+		"loctvl842/monokai-pro.nvim",
+		priority = 1000,
+	},
 }
 
 return themes
