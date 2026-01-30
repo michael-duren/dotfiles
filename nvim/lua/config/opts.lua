@@ -20,7 +20,7 @@ opt.ignorecase = true
 opt.confirm = true
 opt.termguicolors = true
 
-vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
+-- vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
 -- windows work machine is super slow
 if utils.is_windows() then
