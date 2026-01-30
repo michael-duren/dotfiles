@@ -5,3 +5,4 @@ if vim.fn.filereadable(vim.fn.stdpath("config") .. "/lua/config/db.lua") == 1 th
 end
 require("config.keymaps")
 require("config.autocmds")
+require("config.usercmds")

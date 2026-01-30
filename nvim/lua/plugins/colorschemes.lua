@@ -241,10 +241,6 @@ local themes = {
 		priority = 1000,
 	},
 	{
-		"ribru17/bamboo.nvim",
-		priority = 1000,
-	},
-	{
 		"projekt0n/github-nvim-theme",
 		priority = 1000,
 	},
@@ -261,5 +257,37 @@ local themes = {
 		priority = 1000,
 	},
 }
+
+-- Dynamic lazy loading based on active colorscheme
+local function get_active_theme()
+	local config_path = vim.fn.stdpath("config") .. "/lua/colorscheme.lua"
+	local file = io.open(config_path, "r")
+	if not file then
+		return nil
+	end
+	local content = file:read("*a")
+	file:close()
+	-- matches vim.cmd.colorscheme("theme_name") or vim.cmd.colorscheme "theme_name"
+	-- handles both " and ' quotes
+	local theme = content:match("colorscheme%s*%(?%s*[\"']([^\"']+)[\"']%s*%)?")
+	return theme
+end
+
+local active_theme = get_active_theme()
+
+for _, plugin in ipairs(themes) do
+	-- Default to lazy loading
+	plugin.lazy = true
+
+	-- Check if this plugin matches the active theme
+	-- We check if the plugin repo name contains the theme name
+	local repo = plugin[1]
+	local name = plugin.name or repo
+
+	if active_theme and (name:find(active_theme, 1, true) or (repo:find(active_theme, 1, true))) then
+		plugin.lazy = false
+		plugin.priority = 1000
+	end
+end
 
 return themes
