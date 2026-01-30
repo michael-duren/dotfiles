@@ -162,8 +162,6 @@ local themes = {
 			transparent_background = true,
 		},
 	},
-	-- Simple theme plugins (no complex config)
-	{ "craftzdog/solarized-osaka.nvim" },
 	{ "navarasu/onedark.nvim" },
 	{ "sainnhe/everforest" },
 	{ "marko-cerovac/material.nvim" },

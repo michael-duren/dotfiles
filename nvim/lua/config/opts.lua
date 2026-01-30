@@ -18,6 +18,7 @@ opt.expandtab = true
 opt.smartcase = true
 opt.ignorecase = true
 opt.confirm = true
+opt.termguicolors = true
 
 vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
