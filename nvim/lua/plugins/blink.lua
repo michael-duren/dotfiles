@@ -3,7 +3,12 @@ return {
 		"saghen/blink.cmp",
 		version = "*",
 		event = "InsertEnter",
-		dependencies = { "L3MON4D3/LuaSnip", "rafamadriz/friendly-snippets" },
+		dependencies = {
+			"L3MON4D3/LuaSnip",
+			"rafamadriz/friendly-snippets",
+			"saghen/blink.compat",
+			-- "Exafunction/windsurf.nvim",
+		},
 		opts = {
 			keymap = {
 				preset = "default",
@@ -29,6 +34,8 @@ return {
 						module = "helpers.blink-nvim-dbee",
 						score_offset = 10,
 					},
+					-- maybe at some point add, but there are issues with oil.nvim
+					-- codeium = { name = "Codeium", module = "codeium.blink", async = true },
 				},
 				per_filetype = {
 					sql = { "lsp", "dbee", "path", "snippets", "buffer" },
