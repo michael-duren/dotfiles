@@ -8,7 +8,7 @@ return {
 			{ "<leader>1", desc = "Terminal 1" },
 			{ "<leader>2", desc = "Terminal 2" },
 			{ "<leader>3", desc = "Terminal 3" },
-			{ "<c-j>", desc = "Toggle Floating Terminal" },
+			{ "<c-/>", desc = "Toggle Floating Terminal" },
 		},
 		config = function()
 			require("toggleterm").setup({
@@ -58,13 +58,13 @@ return {
 			-- floating terminals
 			vim.api.nvim_set_keymap(
 				"n",
-				"<c-j>",
+				"<c-/>",
 				"<cmd>4ToggleTerm direction=float<CR>",
 				{ noremap = true, silent = true }
 			)
 			vim.api.nvim_set_keymap(
 				"t",
-				"<c-j>",
+				"<c-/>",
 				"<cmd>4ToggleTerm direction=float<CR>",
 				{ noremap = true, silent = true }
 			)

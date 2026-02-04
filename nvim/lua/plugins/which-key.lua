@@ -22,6 +22,7 @@ return {
 				{ "<leader>n", group = "noice" },
 				{ "<leader>o", group = "open" },
 				{ "<leader>q", group = "quit/session" },
+				{ "<leader>r", group = "http requests" },
 				{ "<leader>s", group = "search" },
 				{ "<leader>u", group = "ui" },
 				{ "<leader>x", group = "diagnostics/quickfix" },
