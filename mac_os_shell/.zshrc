@@ -108,6 +108,8 @@ alias mnv="XDG_DATA_HOME=$HOME/.config/modern-neovim/share XDG_CACHE_HOME=$HOME/
 alias vimlog="cd /Users/michaelduren/.cache/nvim && vim ."
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
 
+alias m="make"
+
 # go path
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
@@ -136,6 +138,7 @@ r() {
         -appIcon '~/Pictures/pumpkin.jpg'\
         -sound Crystal
 }
+alias hv='tmux new-session -As hive hive'
 
 # add python3 scripts to path
 export PATH="$HOME/.local/scripts:$PATH"
@@ -144,3 +147,4 @@ alias gs="git status"
 
 # Added by Antigravity
 export PATH="/Users/michaelduren/.antigravity/antigravity/bin:$PATH"
+eval "$(/Users/michaelduren/.local/bin/mise activate zsh)"

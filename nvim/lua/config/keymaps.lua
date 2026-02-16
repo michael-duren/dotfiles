@@ -302,12 +302,7 @@ local keybindings = {
 		command = "<C-\\><C-n>",
 		opts = { desc = "Exit terminal mode" },
 	},
-	{
-		mode = "t",
-		key = "<C-c>",
-		command = "<C-\\><C-n>:stop<CR>",
-		opts = { desc = "Stop running process" },
-	},
+
 
 	-- Git
 	{

@@ -27,3 +27,11 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufLeave", "BufReadPost" }, {
 		vim.bo[args.buf].swapfile = false
 	end,
 })
+
+-- C files main method
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "c",
+	callback = function()
+		vim.keymap.set("n", "<leader>cc", ":!gcc % -o /tmp/a.out && /tmp/a.out<CR>", { buffer = 0 })
+	end,
+})

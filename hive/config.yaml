@@ -1,0 +1,5 @@
+# ~/.config/hive/config.yaml
+repo_dirs:
+  - ~/Code/my-apps/
+  - ~/Code/oss/
+  - ~/Code/
