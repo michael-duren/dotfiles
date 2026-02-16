@@ -48,7 +48,7 @@ local function create_float(buf)
 		col = col,
 		style = "minimal",
 		border = M.config.border,
-		title = " notepad ",
+		title = " repository notepad ",
 		title_pos = "center",
 	})
 
