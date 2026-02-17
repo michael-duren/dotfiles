@@ -3,7 +3,7 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function(ev)
     vim.lsp.start({
       name = 'zls',
-      cmd = { '/opt/homebrew/bin/zls' },
+      cmd = { 'zls' },
       root_dir = vim.fs.root(ev.buf, {'build.zig', '.git'}),
       capabilities = vim.lsp.protocol.make_client_capabilities(),
       settings = {

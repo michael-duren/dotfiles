@@ -7,6 +7,8 @@ local M = {}
 ---@field notes_dir? string Directory to store notes
 ---@field keymap? string|false Keymap to toggle notepad
 
+local fmt = string.format
+
 M.config = {
 	width = 0.6,
 	height = 0.7,
@@ -58,6 +60,50 @@ local function create_float(buf)
 	return win, buf
 end
 
+---@param files string[]
+M.select_and_delete_note = function(files)
+	vim.ui.select(files, {
+		prompt = "Select note to delete:",
+		format_item = function(path)
+			return vim.fn.fnamemodify(path, ":t:r")
+		end,
+	}, function(choice)
+		if choice then
+			if not vim.fn.filereadable(choice) then
+				vim.notify(fmt("Chosen file: %s does not exist", choice), vim.log.levels.WARN)
+				return
+			end
+
+			local result = vim.fn.delete(choice, "")
+			if result == 0 then
+				vim.notify(fmt("File: %s successfully deleted", choice), vim.log.levels.INFO)
+			else
+				vim.notify(fmt("Unable to delete file: %s", choice), vim.log.levels.ERROR)
+			end
+		end
+	end)
+end
+
+---@param files string[]
+M.select_and_open_note = function(files)
+	vim.ui.select(files, {
+		prompt = "Select note:",
+		format_item = function(path)
+			return vim.fn.fnamemodify(path, ":t:r")
+		end,
+	}, function(choice)
+		if choice then
+			-- Open selected note in float
+			buf_id = vim.fn.bufnr(choice, true)
+			vim.api.nvim_buf_call(buf_id, function()
+				vim.cmd("edit " .. vim.fn.fnameescape(choice))
+			end)
+			buf_id = vim.fn.bufnr(choice)
+			win_id = create_float(buf_id)
+		end
+	end)
+end
+
 ---Toggle the notepad floating window
 M.toggle = function()
 	-- If window is open, close it
@@ -106,35 +152,33 @@ M.toggle = function()
 end
 
 ---List all note files
-M.list = function()
+---@return string[]
+M.list_files = function()
 	local notes_dir = M.config.notes_dir
 	if vim.fn.isdirectory(notes_dir) == 0 then
 		vim.notify("No notes found", vim.log.levels.INFO)
-		return
+		return {}
 	end
 
-	local files = vim.fn.globpath(notes_dir, "*.md", false, true)
+	return vim.fn.globpath(notes_dir, "*.md", false, true)
+end
+
+M.list = function()
+	local files = M.list_files()
 	if #files == 0 then
 		vim.notify("No notes found", vim.log.levels.INFO)
 		return
 	end
+	M.select_and_open_note(files)
+end
 
-	vim.ui.select(files, {
-		prompt = "Select note:",
-		format_item = function(path)
-			return vim.fn.fnamemodify(path, ":t:r")
-		end,
-	}, function(choice)
-		if choice then
-			-- Open selected note in float
-			buf_id = vim.fn.bufnr(choice, true)
-			vim.api.nvim_buf_call(buf_id, function()
-				vim.cmd("edit " .. vim.fn.fnameescape(choice))
-			end)
-			buf_id = vim.fn.bufnr(choice)
-			win_id = create_float(buf_id)
-		end
-	end)
+M.delete = function()
+	local files = M.list_files()
+	if #files == 0 then
+		vim.notify("No notes to delete", vim.log.levels.WARN)
+		return
+	end
+	M.select_and_delete_note(files)
 end
 
 ---@param opts? NotepadOpts
@@ -148,6 +192,10 @@ M.setup = function(opts)
 	vim.api.nvim_create_user_command("NotepadList", function()
 		M.list()
 	end, { desc = "List all notes" })
+
+	vim.api.nvim_create_user_command("NotepadDelete", function()
+		M.delete()
+	end, { desc = "Delete a note" })
 
 	if M.config.keymap then
 		vim.api.nvim_create_autocmd("VimEnter", {
