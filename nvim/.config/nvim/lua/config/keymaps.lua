@@ -102,6 +102,14 @@ local keybindings = {
 		command = "<cmd>LspRestart<CR>",
 		opts = { desc = "Restart LSP" },
 	},
+	{
+		key = "<leader>ld",
+		command = function()
+			vim.cmd("LspStop")
+			vim.notify("LSP disabled", vim.log.levels.INFO)
+		end,
+		opts = { desc = "Disable LSP" },
+	},
 
 	-- Diagnostics
 	{
