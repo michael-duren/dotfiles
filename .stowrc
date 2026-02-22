@@ -1,0 +1,13 @@
+# GNU Stow configuration
+# This tells stow to target the home directory
+--target=$HOME
+
+# Ignore these files when stowing
+--ignore='.DS_Store'
+--ignore='README.md'
+--ignore='.git'
+--ignore='.gitignore'
+--ignore='repo.txt'
+--ignore='ansible'
+--ignore='corne'
+--ignore='hosts'
