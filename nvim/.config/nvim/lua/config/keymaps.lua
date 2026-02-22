@@ -105,10 +105,16 @@ local keybindings = {
 	{
 		key = "<leader>ld",
 		command = function()
-			vim.cmd("LspStop")
-			vim.notify("LSP disabled", vim.log.levels.INFO)
+			local clients = vim.lsp.get_clients({ bufnr = 0 })
+			if #clients > 0 then
+				vim.cmd("LspStop")
+				vim.notify("LSP disabled", vim.log.levels.INFO)
+			else
+				vim.cmd("LspStart")
+				vim.notify("LSP enabled", vim.log.levels.INFO)
+			end
 		end,
-		opts = { desc = "Disable LSP" },
+		opts = { desc = "Toggle LSP" },
 	},
 
 	-- Diagnostics
