@@ -47,7 +47,7 @@ ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 # zsh-autosuggestions
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
     echo "📦 Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM}"/plugins/zsh-autosuggestions
     echo "✅ zsh-autosuggestions installed"
 else
     echo "✅ zsh-autosuggestions already installed"
@@ -56,7 +56,7 @@ fi
 # zsh-syntax-highlighting
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
     echo "📦 Installing zsh-syntax-highlighting..."
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}"/plugins/zsh-syntax-highlighting
     echo "✅ zsh-syntax-highlighting installed"
 else
     echo "✅ zsh-syntax-highlighting already installed"
@@ -65,7 +65,7 @@ fi
 # zsh-vi-mode
 if [ ! -d "$ZSH_CUSTOM/plugins/zsh-vi-mode" ]; then
     echo "📦 Installing zsh-vi-mode..."
-    git clone https://github.com/jeffreytse/zsh-vi-mode ${ZSH_CUSTOM}/plugins/zsh-vi-mode
+    git clone https://github.com/jeffreytse/zsh-vi-mode "${ZSH_CUSTOM}"/plugins/zsh-vi-mode
     echo "✅ zsh-vi-mode installed"
 else
     echo "✅ zsh-vi-mode already installed"
@@ -78,7 +78,7 @@ if [ "$OS" = "macos" ]; then
     echo "📦 Checking macOS-specific dependencies..."
 
     # Check if Homebrew is installed
-    if ! command -v brew &> /dev/null; then
+    if ! command -v brew &>/dev/null; then
         echo "⚠️  Homebrew not found. Install from: https://brew.sh"
     else
         echo "✅ Homebrew installed"
@@ -86,7 +86,7 @@ if [ "$OS" = "macos" ]; then
         # Optional: Check for common tools
         TOOLS=("rbenv" "terminal-notifier")
         for tool in "${TOOLS[@]}"; do
-            if command -v $tool &> /dev/null; then
+            if command -v "$tool" &>/dev/null; then
                 echo "✅ $tool installed"
             else
                 echo "⚠️  $tool not found (optional, install with: brew install $tool)"
@@ -98,7 +98,7 @@ fi
 echo
 
 # Check for mise (universal version manager)
-if ! command -v mise &> /dev/null; then
+if ! command -v mise &>/dev/null; then
     echo "⚠️  mise not found. Install from: https://mise.jdx.dev"
     echo "   Quick install: curl https://mise.run | sh"
 else

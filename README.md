@@ -4,18 +4,18 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Structure
 
-This repository uses GNU Stow to manage symlinks. Each directory represents a "package" that can be independently installed:
+This repository uses GNU Stow to manage symlinks. All dotfiles are in the `dotfiles/` package directory:
 
-- `nvim/` - Neovim configuration
-- `zsh/` - Zsh configuration (merged macOS/Linux with OS detection)
-- `wezterm/` - WezTerm terminal configuration
-- `ghostty-pkg/` - Ghostty terminal configuration
-- `tmux/` - Tmux configuration
-- `ideavim/` - IntelliJ IDEA Vim plugin configuration
-- `vsvimrc/` - Visual Studio Vim configuration
-- `zls/` - Zig Language Server configuration
-- `hive/` - Hive configuration
-- `scripts/` - Custom scripts (installed to `~/.local/bin`)
+- `dotfiles/.config/nvim/` - Neovim configuration
+- `dotfiles/.config/tmux/` - Tmux configuration
+- `dotfiles/.config/ghostty/` - Ghostty terminal configuration
+- `dotfiles/.config/hive/` - Hive configuration
+- `dotfiles/.config/zls.json` - Zig Language Server configuration
+- `dotfiles/.local/bin/` - Custom scripts
+- `dotfiles/.zshrc` - Zsh configuration (merged macOS/Linux with OS detection)
+- `dotfiles/.wezterm.lua` - WezTerm terminal configuration
+- `dotfiles/.ideavimrc` - IntelliJ IDEA Vim plugin configuration
+- `dotfiles/.vsvimrc` - Visual Studio Vim configuration
 
 ## Prerequisites
 
@@ -58,24 +58,13 @@ sudo pacman -S stow
    # etc.
    ```
 
-4. **Install packages using GNU Stow:**
+4. **Install dotfiles using GNU Stow:**
 
-   **Install all packages:**
    ```bash
-   stow */
+   stow dotfiles
    ```
 
-   **Install specific packages (recommended):**
-   ```bash
-   stow zsh nvim wezterm tmux scripts
-   ```
-
-   **Or install one at a time:**
-   ```bash
-   stow zsh
-   stow nvim
-   stow tmux
-   ```
+   This will symlink all dotfiles from the `dotfiles/` directory to your home directory.
 
 5. **Reload your shell:**
    ```bash
@@ -87,39 +76,39 @@ sudo pacman -S stow
 GNU Stow creates symlinks from the dotfiles repo to your home directory. For example:
 
 ```
-~/dotfiles/nvim/.config/nvim/init.lua  →  ~/.config/nvim/init.lua
-~/dotfiles/zsh/.zshrc                  →  ~/.zshrc
-~/dotfiles/tmux/.config/tmux/tmux.conf →  ~/.config/tmux/tmux.conf
+~/Code/dotfiles/.config/nvim/init.lua  →  ~/.config/nvim/init.lua
+~/Code/dotfiles/.zshrc                 →  ~/.zshrc
+~/Code/dotfiles/.config/tmux/tmux.conf →  ~/.config/tmux/tmux.conf
 ```
 
 ## Usage
 
-### Installing a package
+### Installing dotfiles
 ```bash
-cd ~/dotfiles
-stow <package-name>
+cd ~/Code/dotfiles
+stow dotfiles
 ```
 
-### Removing a package
+### Removing dotfiles
 ```bash
-cd ~/dotfiles
-stow -D <package-name>
+cd ~/Code/dotfiles
+stow -D dotfiles
 ```
 
 ### Restowing (useful after updates)
 ```bash
-cd ~/dotfiles
-stow -R <package-name>
+cd ~/Code/dotfiles
+stow -R dotfiles
 ```
 
 ### Dry run (see what would happen)
 ```bash
-stow -n <package-name>
+stow -n dotfiles
 ```
 
 ### Verbose output
 ```bash
-stow -v <package-name>
+stow -v dotfiles
 ```
 
 ## Platform-Specific Notes
@@ -158,22 +147,22 @@ find ~ -maxdepth 1 -type l ! -exec test -e {} \; -delete
 ## Maintenance
 
 ### Adding new dotfiles
-1. Create a new package directory
-2. Mirror your home directory structure within it
-3. Move your dotfile into the package
-4. Stow it
+1. Mirror your home directory structure in the `dotfiles/` package
+2. Move your dotfile into the package
+3. Restow
 
 Example for adding a new config:
 ```bash
-mkdir -p myapp/.config/myapp
-mv ~/.config/myapp/config myapp/.config/myapp/config
-stow myapp
+cd ~/Code/dotfiles
+mkdir -p dotfiles/.config/myapp
+mv ~/.config/myapp/config dotfiles/.config/myapp/config
+stow -R dotfiles
 ```
 
 ### Updating dotfiles
-1. Edit files in the stow packages (they're symlinked, so edits apply immediately)
+1. Edit files in the `dotfiles/` package (they're symlinked, so edits apply immediately)
 2. Commit and push changes
-3. On other machines: `git pull && stow -R <package-name>`
+3. On other machines: `git pull && stow -R dotfiles`
 
 ## Additional Resources
 
