@@ -1,2 +1,3 @@
 [tools]
-"github:colonyops/hive" = "latest"
+node = "24"
+# "github:colonyops/hive" = "latest"
