@@ -30,6 +30,8 @@ return {
 				"astro",
 				"marksman",
 				"netcoredbg",
+				"bashls",
+				"bash-debug-adapter",
 			},
 			automatic_enable = {
 				exclude = {
@@ -40,6 +42,7 @@ return {
 					"vtsls",
 					"tailwindcss",
 					"yamlls",
+					"bashls",
 				},
 			},
 		},

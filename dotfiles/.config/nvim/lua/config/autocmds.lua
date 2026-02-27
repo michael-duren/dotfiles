@@ -35,3 +35,11 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "<leader>cc", ":!gcc % -o /tmp/a.out && /tmp/a.out<CR>", { buffer = 0 })
 	end,
 })
+
+-- Bash/Shell run from buffer
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "sh",
+	callback = function()
+		vim.keymap.set("n", "<leader>cc", ":!bash %<CR>", { buffer = 0, desc = "Run bash script" })
+	end,
+})
