@@ -6,6 +6,11 @@ M.is_windows = function()
 	return vim.loop.os_uname().sysname:find("Windows") ~= nil or vim.fn.has("win32") == 1
 end
 
+---@returns boolean
+M.is_linux = function()
+	return vim.loop.os_uname().sysname == "Linux"
+end
+
 ----@param opts LspCommand
 function M.execute(opts)
 	local params = {

@@ -1,7 +1,7 @@
 return {
 	{
 		"williamboman/mason.nvim",
-		event = { "BufReadPre", "BufNewFile" },
+		lazy = false,
 		config = function()
 			require("mason").setup({
 				PATH = "prepend",
@@ -16,8 +16,30 @@ return {
 	{
 		"williamboman/mason-lspconfig.nvim",
 		lazy = false,
+		dependencies = { "williamboman/mason.nvim" },
+		opts = {
+			automatic_enable = {
+				exclude = {
+					"roslyn",
+					"lua_ls",
+					"gopls",
+					"zls",
+					"vtsls",
+					"tailwindcss",
+					"yamlls",
+					"bashls",
+					"clangd",
+				},
+			},
+		},
+	},
+	{
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		lazy = false,
+		dependencies = { "williamboman/mason.nvim" },
 		opts = {
 			ensure_installed = {
+				-- lsp
 				"lua_ls",
 				"gopls",
 				"zls",
@@ -29,21 +51,23 @@ return {
 				"eslint",
 				"astro",
 				"marksman",
-				"netcoredbg",
 				"bashls",
+				"vtsls",
+				"vim-language-server",
+				-- dap
+				"netcoredbg",
 				"bash-debug-adapter",
-			},
-			automatic_enable = {
-				exclude = {
-					"roslyn",
-					"lua_ls",
-					"gopls",
-					"zls",
-					"vtsls",
-					"tailwindcss",
-					"yamlls",
-					"bashls",
-				},
+				"codelldb",
+				"delve",
+				-- formatters
+				"prettierd",
+				"prettier",
+				"goimports",
+				-- "csharpier",
+				"stylua",
+				"clang-format",
+				-- test
+				"gotestsum",
 			},
 		},
 	},

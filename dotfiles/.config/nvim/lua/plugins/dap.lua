@@ -47,6 +47,7 @@ return {
       require("dap.cs")(dap)
       require("dap.go")(dap)
       require("dap.bash")(dap)
+      require("dap.c")(dap)
 
       -- Keymaps
       local keys = {

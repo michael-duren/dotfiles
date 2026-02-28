@@ -1,3 +1,10 @@
+-- Ensure mise tools are in PATH before anything loads (needed for Mason)
+-- Use actual go binary (not shim) to avoid mise setting GOBIN which breaks Mason
+local mise_go = vim.fn.expand("~/.local/share/mise/installs/go/latest/bin")
+local mise_shims = vim.fn.expand("~/.local/share/mise/shims")
+vim.env.PATH = mise_go .. ":" .. mise_shims .. ":" .. vim.env.PATH
+vim.env.GOBIN = nil
+
 -- Hover Styling
 local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)

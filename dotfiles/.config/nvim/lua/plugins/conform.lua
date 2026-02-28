@@ -29,6 +29,8 @@ return {
 			svelte = { "prettier" },
 			astro = { "prettier" },
 
+			c = { "clang-format" },
+			cpp = { "clang-format" },
 			go = { "goimports", "gofmt" },
 			cs = { "csharpier" },
 			lua = { "stylua" },
@@ -40,13 +42,11 @@ return {
 			timeout_ms = timeout_ms,
 			lsp_fallback = true,
 		},
-		-- formatters = {
-		-- 	csharpier = {
-		-- 		command = "csharpier",
-		-- 		args = { "--write-stdout" },
-		-- 		stdin = true,
-		-- 	},
-		-- },
+		formatters = {
+			["clang-format"] = {
+				prepend_args = { "--style", "{IndentWidth: 4, TabWidth: 4, UseTab: Always}" },
+			},
+		},
 	},
 	keys = {
 		{
