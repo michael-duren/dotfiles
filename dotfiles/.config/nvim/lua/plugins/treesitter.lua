@@ -1,10 +1,13 @@
 return {
 	"nvim-treesitter/nvim-treesitter",
-	branch = "master", -- Use master for ensure_installed
+	branch = "main",
 	lazy = false,
 	build = ":TSUpdate",
-	opts = {
-		ensure_installed = {
+	config = function()
+		require("nvim-treesitter").setup({})
+
+		-- Install parsers
+		local parsers = {
 			"bash",
 			"c",
 			"diff",
@@ -18,7 +21,7 @@ return {
 			"vimdoc",
 			"go",
 			"gomod",
-			"gosum", -- "gowork" if it works
+			"gosum",
 			"gowork",
 			"css",
 			"c_sharp",
@@ -26,15 +29,14 @@ return {
 			"javascript",
 			"json",
 			"zig",
-		},
-		auto_install = true,
-		highlight = {
-			enable = true,
-			additional_vim_regex_highlighting = false,
-		},
-		indent = { enable = true },
-	},
-	config = function(_, opts)
-		require("nvim-treesitter.configs").setup(opts)
+		}
+		require("nvim-treesitter").install(parsers)
+
+		-- Enable treesitter highlighting and indentation for all filetypes
+		vim.api.nvim_create_autocmd("FileType", {
+			callback = function()
+				pcall(vim.treesitter.start)
+			end,
+		})
 	end,
 }

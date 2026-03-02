@@ -5,8 +5,6 @@ local i = ls.insert_node
 local d = ls.dynamic_node
 local sn = ls.snippet_node
 
-local ts_utils = require("nvim-treesitter.ts_utils")
-
 -- Map of zero values for different types
 local zero_values = {
 	int = "0",
@@ -43,7 +41,7 @@ local function get_zero_value(type_str)
 end
 
 local function get_go_return_values()
-	local node = ts_utils.get_node_at_cursor()
+	local node = vim.treesitter.get_node()
 
 	while node do
 		if

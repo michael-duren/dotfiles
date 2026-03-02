@@ -8,10 +8,10 @@ return {
 			"Issafalcon/neotest-dotnet",
 			{
 				"fredrikaverpil/neotest-golang",
-				version = "*", -- Optional, but recommended; track releases
-				build = function()
-					vim.system({ "go", "install", "gotest.tools/gotestsum@latest" }):wait() -- Optional, but recommended
-				end,
+				version = "*",
+				dependencies = {
+					"leoluz/nvim-dap-go",
+				},
 			},
 			{
 				"nvim-treesitter/nvim-treesitter",
