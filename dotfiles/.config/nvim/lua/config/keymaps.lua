@@ -10,12 +10,17 @@ local keybindings = {
 		opts = { desc = "Save current buffer" },
 	},
 	{
-		key = "<leader>w",
-		command = ":w<CR>",
-		opts = {
-			desc = "Write current buffer",
-		},
+		key = "<C-S>",
+		command = ":noau w<CR>",
+		opts = { desc = "Save without triggering autocommands" },
 	},
+	-- {
+	-- 	key = "<leader>w",
+	-- 	command = ":w<CR>",
+	-- 	opts = {
+	-- 		desc = "Write current buffer",
+	-- 	},
+	-- },
 
 	-- Quit Operations
 	{
@@ -316,7 +321,6 @@ local keybindings = {
 		command = "<C-\\><C-n>",
 		opts = { desc = "Exit terminal mode" },
 	},
-
 
 	-- Git
 	{
