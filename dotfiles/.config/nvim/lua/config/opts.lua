@@ -9,6 +9,7 @@ opt.number = true
 opt.relativenumber = true
 opt.cursorline = true
 opt.clipboard = "unnamedplus"
+opt.wrap = false
 
 opt.tabstop = 4
 opt.shiftwidth = 4

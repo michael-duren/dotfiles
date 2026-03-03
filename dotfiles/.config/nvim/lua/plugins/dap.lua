@@ -44,8 +44,9 @@ return {
       local icons = require("config.icons")
 
       -- Load per-language DAP configurations
+      -- Note: Go adapter is configured by nvim-dap-go (loaded via opts = {}),
+      -- do NOT load dap.go here as it would overwrite the dynamic adapter setup.
       require("dap.cs")(dap)
-      require("dap.go")(dap)
       require("dap.bash")(dap)
       require("dap.c")(dap)
 
