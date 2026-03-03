@@ -5,6 +5,11 @@ return {
 	"folke/snacks.nvim",
 	---@type snacks.Config
 	opts = {
+		explorer = {
+			-- your explorer configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		},
 		bufdelete = {
 			enabled = true,
 		},
@@ -91,13 +96,20 @@ return {
 			end,
 			desc = "Buffers",
 		},
-		-- {
-		-- 	"<C-q>",
-		-- 	desc = "Send to Quickfix",
-		-- 	function()
-		-- 		Snacks.picker.send_to_qflist()
-		-- 	end,
-		-- },
+		{
+			"<leaeer>E",
+			function()
+				Snacks.explorer.open({ cwd = Snacks.git.get_root() })
+			end,
+			desc = "Explorer (Root Dir)",
+		},
+		{
+			"<leader>e",
+			function()
+				Snacks.explorer.open()
+			end,
+			desc = "Explorer (cwd)",
+		},
 		{
 			"<leader>/",
 			function()
