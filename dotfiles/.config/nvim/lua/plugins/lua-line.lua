@@ -5,6 +5,27 @@ return {
 
 	config = function()
 		local icons = require("config.icons")
+
+		-- Git-relative path function for use in lualine winbar.
+		-- If you want to ditch dropbar.nvim and use lualine's winbar instead,
+		-- uncomment the winbar/inactive_winbar sections below.
+		--
+		-- local function git_relative_path()
+		-- 	local bufname = vim.api.nvim_buf_get_name(0)
+		-- 	if bufname == "" then
+		-- 		return "[No Name]"
+		-- 	end
+		-- 	local full_path = vim.fn.fnamemodify(bufname, ":p")
+		-- 	local gs = vim.b.gitsigns_status_dict
+		-- 	if gs and gs.root then
+		-- 		local root = vim.fn.fnamemodify(gs.root, ":p")
+		-- 		if full_path:sub(1, #root) == root then
+		-- 			return full_path:sub(#root + 1)
+		-- 		end
+		-- 	end
+		-- 	return vim.fn.fnamemodify(bufname, ":~:.")
+		-- end
+
 		require("lualine").setup({
 			options = {
 				icons_enabled = true,
@@ -46,7 +67,7 @@ return {
 						},
 					},
 				},
-				lualine_c = { "filename" },
+				lualine_c = {},
 				lualine_x = { "encoding", "fileformat", "filetype" },
 				lualine_y = { "progress" },
 				lualine_z = { "location" },
@@ -54,12 +75,26 @@ return {
 			inactive_sections = {
 				lualine_a = {},
 				lualine_b = {},
-				lualine_c = { "filename" },
+				lualine_c = {},
 				lualine_x = { "location" },
 				lualine_y = {},
 				lualine_z = {},
 			},
 			tabline = {},
+			-- Uncomment below (and the git_relative_path function above) to use
+			-- lualine's winbar instead of dropbar.nvim for showing the file path
+			-- at the top of each window.
+			--
+			-- winbar = {
+			-- 	lualine_c = {
+			-- 		{ git_relative_path },
+			-- 	},
+			-- },
+			-- inactive_winbar = {
+			-- 	lualine_c = {
+			-- 		{ git_relative_path },
+			-- 	},
+			-- },
 			winbar = {},
 			inactive_winbar = {},
 			extensions = {},
