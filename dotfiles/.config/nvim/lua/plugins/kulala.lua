@@ -8,6 +8,8 @@ return {
 		{ "<leader>rn", "<cmd>lua require('kulala').jump_next()<cr>", desc = "Jump to next request" },
 		{ "<leader>ri", "<cmd>lua require('kulala').inspect()<cr>", desc = "Inspect current request" },
 		{ "<leader>rc", "<cmd>lua require('kulala').copy()<cr>", desc = "Copy as cURL" },
+		{ "<leader>rc", "<cmd>lua require('kulala').copy()<cr>", desc = "Copy as cURL" },
+		{ "<leader>re", "<cmd>lua require('kulala').set_selected_env()<cr>", desc = "Select env" },
 	},
 	opts = {
 		default_view = "body",

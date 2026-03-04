@@ -9,6 +9,7 @@ return {
 			{ "<leader>2", desc = "Terminal 2" },
 			{ "<leader>3", desc = "Terminal 3" },
 			{ "<c-/>", desc = "Toggle Floating Terminal" },
+			{ "<leader>ot", desc = "Terminal (buffer dir)" },
 		},
 		config = function()
 			require("toggleterm").setup({
@@ -68,6 +69,14 @@ return {
 				"<cmd>4ToggleTerm direction=float<CR>",
 				{ noremap = true, silent = true }
 			)
+
+			-- open terminal in current buffer's directory
+			vim.keymap.set("n", "<leader>ot", function()
+				local buf_dir = vim.fn.expand("%:p:h")
+				require("toggleterm.terminal").Terminal
+					:new({ dir = buf_dir, direction = "horizontal", id = 5 })
+					:toggle()
+			end, { noremap = true, silent = true, desc = "Terminal (buffer dir)" })
 		end,
 	},
 }
