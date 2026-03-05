@@ -29,8 +29,8 @@ return {
 			svelte = { "prettier" },
 			astro = { "prettier" },
 
-			c = { "clang-format" },
-			cpp = { "clang-format" },
+		c = { "clang-format" },
+		cpp = { "clang-format" },
 			go = { "goimports", "gofmt" },
 			cs = { "csharpier" },
 			lua = { "stylua" },

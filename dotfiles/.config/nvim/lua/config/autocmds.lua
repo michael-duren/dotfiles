@@ -1,6 +1,6 @@
 -- set tab size to 2 for json, css, html files
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "json,css,html,typescriptreact,javascriptreact,scss,sass,lua,yaml,markdown",
+	pattern = "json,css,html,typescriptreact,javascriptreact,scss,sass,lua,yaml,markdown,dockerfile",
 	callback = function()
 		vim.opt.tabstop = 2
 		vim.opt.softtabstop = 2
@@ -36,10 +36,39 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+-- Makefiles require hard tabs
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "make",
+	callback = function()
+		vim.bo.expandtab = false
+		vim.bo.tabstop = 4
+		vim.bo.softtabstop = 4
+		vim.bo.shiftwidth = 4
+	end,
+})
+
 -- Bash/Shell run from buffer
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "sh",
 	callback = function()
 		vim.keymap.set("n", "<leader>cc", ":!bash %<CR>", { buffer = 0, desc = "Run bash script" })
+	end,
+})
+
+-- Resolve symlinks in buffer paths for Go files.
+-- This ensures tools like neotest-golang and delve see the real filesystem
+-- path, preventing "directory outside main module" errors when the project
+-- is accessed through a symlink (e.g. ~/.config/nvim -> dotfiles/...).
+vim.api.nvim_create_autocmd("BufReadPost", {
+	pattern = "*.go",
+	callback = function(args)
+		local bufname = vim.api.nvim_buf_get_name(args.buf)
+		if bufname == "" then
+			return
+		end
+		local resolved = vim.fn.resolve(bufname)
+		if resolved ~= bufname then
+			vim.cmd("silent! file " .. vim.fn.fnameescape(resolved))
+		end
 	end,
 })

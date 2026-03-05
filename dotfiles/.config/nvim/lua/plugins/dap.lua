@@ -50,6 +50,27 @@ return {
       require("dap.bash")(dap)
       require("dap.c")(dap)
 
+      -- Resolve symlinks in DAP launch configs.
+      -- neotest-golang derives paths from expand('%:p') which may return
+      -- symlink paths. Go tooling rejects these with "directory outside
+      -- main module" errors. on_config runs in prepare_config() before
+      -- the adapter is invoked, so the resolved paths are used everywhere.
+      dap.listeners.on_config["resolve_symlinks"] = function(config)
+        if config.program then
+          local resolved = vim.fn.resolve(config.program)
+          if resolved ~= config.program then
+            config.program = resolved
+          end
+        end
+        if config.cwd then
+          local resolved = vim.fn.resolve(config.cwd)
+          if resolved ~= config.cwd then
+            config.cwd = resolved
+          end
+        end
+        return config
+      end
+
       -- Keymaps
       local keys = {
         {
@@ -224,12 +245,10 @@ return {
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+      -- Note: Do NOT auto-close dapui on terminate/exit events.
+      -- Short-lived debug sessions (e.g. Go tests via neotest) fire these
+      -- events immediately, causing the UI to flash and disappear before
+      -- you can inspect results. Use <leader>du to toggle the UI manually.
 
       -- Setup DAP signs
       vim.fn.sign_define("DapBreakpoint", {

@@ -19,17 +19,20 @@ return {
 		dependencies = { "williamboman/mason.nvim" },
 		opts = {
 			automatic_enable = {
-				exclude = {
-					"roslyn",
-					"lua_ls",
-					"gopls",
-					"zls",
-					"vtsls",
-					"tailwindcss",
-					"yamlls",
-					"bashls",
-					"clangd",
-				},
+			exclude = {
+				"roslyn",
+				"lua_ls",
+				"gopls",
+				"zls",
+				"vtsls",
+				"tailwindcss",
+				"yamlls",
+				"bashls",
+				"clangd",
+				"dockerls",
+				"docker_compose_language_service",
+				"helm_ls",
+			},
 			},
 		},
 	},
@@ -54,12 +57,15 @@ return {
 				"bashls",
 				"vtsls",
 				"vim-language-server",
+				"dockerls",
+				"docker_compose_language_service",
+				"helm-ls",
 				-- dap
 				"netcoredbg",
 				"bash-debug-adapter",
 				"codelldb",
 				"delve",
-				-- formatters
+				-- formatters / linters
 				"prettierd",
 				"prettier",
 				"goimports",

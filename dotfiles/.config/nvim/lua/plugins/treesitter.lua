@@ -29,6 +29,9 @@ return {
 			"javascript",
 			"json",
 			"zig",
+			"dockerfile",
+			"yaml",
+			"helm",
 		}
 		require("nvim-treesitter").install(parsers)
 
