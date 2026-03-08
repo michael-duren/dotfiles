@@ -36,6 +36,7 @@ return {
 			lua = { "stylua" },
 			razor = { "html" },
 			cshtml = { "html" },
+			cmake = { "cmake_format" },
 		},
 
 		format_on_save = {
