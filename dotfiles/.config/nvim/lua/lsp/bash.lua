@@ -1,5 +1,5 @@
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "sh",
+	pattern = { "sh", "zsh" },
 	callback = function(ev)
 		vim.lsp.start({
 			name = "bashls",
@@ -7,7 +7,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			root_dir = vim.fs.root(ev.buf, { ".git", ".bashrc", ".bash_profile" }),
 			settings = {
 				bashIde = {
-					globPattern = "*@(.sh|.inc|.bash|.command)",
+					globPattern = "*@(.sh|.inc|.bash|.command|.zshrc|.zsh|.zshenv|.zprofile|.zlogin|.zlogout)",
 				},
 			},
 		})
