@@ -6,9 +6,6 @@ return {
 	---@type snacks.Config
 	opts = {
 		explorer = {
-			-- your explorer configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
 		},
 		bufdelete = {
 			enabled = true,
@@ -18,6 +15,12 @@ return {
 			mappings = {
 				["<C-n>"] = "next",
 				["<C-p>"] = "previous",
+			},
+			sources = {
+				explorer = {
+					hidden = true,
+					ignored = true,
+				},
 			},
 		},
 		lazygit = {
