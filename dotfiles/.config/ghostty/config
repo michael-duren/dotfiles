@@ -1,4 +1,4 @@
-theme = Black Metal (Dark Funeral)
+# theme = Black Metal (Dark Funeral)
 background-opacity = 1.0
 
 scrollback-limit = 10000
@@ -20,7 +20,8 @@ keybind = ctrl+a>p=previous_tab
 keybind = super+r=reload_config
 
 window-save-state = always
-font-family = OperatorMonoLig Nerd Font
+# font-family = OperatorMonoLig Nerd Font
+# font-family = GohuFont 11 Nerd Font
 
 # macOS specific - match WezTerm alt key behavior
 macos-option-as-alt = true

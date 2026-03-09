@@ -37,6 +37,7 @@ plugins=(
     zsh-syntax-highlighting
     zsh-vi-mode
     z
+    kubectl
   )
 
 # macOS specific plugins
@@ -69,6 +70,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias D="docker"
 alias gacm="git add -A && git commit -m"
 alias nr="npm run dev"
 alias vim="nvim"
