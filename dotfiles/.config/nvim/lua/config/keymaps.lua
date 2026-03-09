@@ -88,19 +88,30 @@ local keybindings = {
 		opts = { desc = "Quickfix" },
 	},
 	{
+		key = "<leader>lR",
+		command = "<cmd>LspRestart<cr>",
+		opts = { desc = "Restart LSP" },
+	},
+	{
 		key = "<leader>ls",
-		command = "<cmd>Telescope lsp_document_symbols<cr>",
+		command = function()
+			Snacks.picker.lsp_symbols()
+		end,
 		opts = { desc = "Document Symbols" },
 	},
 	{
 		key = "<leader>lS",
-		command = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
+		command = function()
+			Snacks.picker.lsp_workspace_symbols()
+		end,
 		opts = { desc = "Workspace Symbols" },
 	},
 	{
 		key = "<leader>le",
-		command = "<cmd>Telescope quickfix<cr>",
-		opts = { desc = "Telescope Quickfix" },
+		command = function()
+			Snacks.picker.qflist()
+		end,
+		opts = { desc = "Quickfix" },
 	},
 	{
 		key = "<leader>R",
