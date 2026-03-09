@@ -5,32 +5,34 @@ return {
 	build = ":TSUpdate",
 	config = function()
 		-- Install parsers
-		require("nvim-treesitter").install({
-			"bash",
-			"c",
-			"diff",
-			"html",
-			"lua",
-			"luadoc",
-			"markdown",
-			"markdown_inline",
-			"query",
-			"vim",
-			"vimdoc",
-			"go",
-			"gomod",
-			"gosum",
-			"gowork",
-			"css",
-			"c_sharp",
-			"typescript",
-			"javascript",
-			"json",
-			"zig",
-			"dockerfile",
-			"yaml",
-			"helm",
-		})
+		require("nvim-treesitter")
+			.install({
+				"bash",
+				"c",
+				"diff",
+				"html",
+				"lua",
+				"luadoc",
+				"markdown",
+				"markdown_inline",
+				"query",
+				"vim",
+				"vimdoc",
+				"go",
+				"gomod",
+				"gosum",
+				"gowork",
+				"css",
+				"c_sharp",
+				"typescript",
+				"javascript",
+				"json",
+				"zig",
+				"dockerfile",
+				"yaml",
+				"helm",
+			})
+			:wait(300000) -- wait 5 min max
 
 		-- Enable treesitter features for all installed parsers
 		vim.api.nvim_create_autocmd("FileType", {
@@ -43,6 +45,11 @@ return {
 
 					-- Enable indentation
 					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
+					-- Enable folding
+					vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+					vim.wo[0][0].foldmethod = "expr"
+					vim.wo[0][0].foldlevel = 99 -- Start with all folds open
 				end
 			end,
 		})
