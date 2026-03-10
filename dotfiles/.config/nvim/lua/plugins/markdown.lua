@@ -5,8 +5,8 @@ return {
 		---@module 'render-markdown'
 		---@type render.md.UserConfig
 		opts = {
-			-- Enable for octo.nvim buffers
-			file_types = { "markdown", "octo" },
+			-- Enable for octo.nvim and snacks.nvim GitHub buffers
+			file_types = { "markdown", "octo", "markdown.gh" },
 			
 			-- Conceal HTML tags in markdown/octo buffers
 			html = {
