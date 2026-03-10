@@ -16,6 +16,69 @@
 return {
 	"pwntester/octo.nvim",
 	cmd = "Octo",
+	build = function()
+		-- Patch deprecated GitHub GraphQL milestone fields
+		-- GitHub removed openIssueCount and closedIssueCount from Milestone type
+		-- See: https://github.com/pwntester/octo.nvim/issues (this is a known issue)
+		local plugin_dir = vim.fn.stdpath("data") .. "/lazy/octo.nvim"
+		local fragments_file = plugin_dir .. "/lua/octo/gh/fragments.lua"
+		local queries_file = plugin_dir .. "/lua/octo/gh/queries.lua"
+		local utils_file = plugin_dir .. "/lua/octo/utils.lua"
+
+		-- Read and patch files in Lua (cross-platform)
+		local function patch_file_remove_patterns(filepath, patterns)
+			if vim.fn.filereadable(filepath) == 0 then
+				return
+			end
+			local lines = vim.fn.readfile(filepath)
+			local new_lines = {}
+			for _, line in ipairs(lines) do
+				local should_keep = true
+				for _, pattern in ipairs(patterns) do
+					if line:match(pattern) then
+						should_keep = false
+						break
+					end
+				end
+				if should_keep then
+					table.insert(new_lines, line)
+				end
+			end
+			vim.fn.writefile(new_lines, filepath)
+		end
+
+		-- Remove deprecated fields from GraphQL queries
+		local deprecated_patterns = { "openIssueCount", "closedIssueCount" }
+		patch_file_remove_patterns(fragments_file, deprecated_patterns)
+		patch_file_remove_patterns(queries_file, deprecated_patterns)
+
+		-- Patch utils.lua to handle missing milestone counts
+		if vim.fn.filereadable(utils_file) == 1 then
+			local utils_content = vim.fn.readfile(utils_file)
+			for i, line in ipairs(utils_content) do
+				if line:match("if not milestone or not milestone%.openIssueCount") then
+					utils_content[i] = line:gsub("milestone%.openIssueCount", "milestone.title")
+				elseif line:match("local open = milestone%.openIssueCount") then
+					utils_content[i] = "  local open = 0 -- Patched: GitHub removed openIssueCount field"
+				elseif line:match("local closed = milestone%.closedIssueCount") then
+					utils_content[i] = "  local closed = 0 -- Patched: GitHub removed closedIssueCount field"
+				end
+			end
+			vim.fn.writefile(utils_content, utils_file)
+		end
+
+		vim.notify("Octo.nvim: Patched deprecated milestone fields", vim.log.levels.INFO)
+	end,
+	init = function()
+		-- Ensure proper conceallevel for octo buffers to hide HTML tags
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "octo",
+			callback = function()
+				vim.opt_local.conceallevel = 2
+				vim.opt_local.concealcursor = "nc"
+			end,
+		})
+	end,
 	opts = {
 		-- Use snacks picker to match your existing workflow!
 		picker = "snacks",
@@ -51,6 +114,11 @@ return {
 		file_panel = {
 			size = 10, -- Height of changed files panel
 			use_icons = true, -- Use devicons
+		},
+
+		-- UI settings for proper markdown rendering
+		ui = {
+			use_signcolumn = true, -- Show "modified" marks on sign column
 		},
 
 		-- Custom key mappings for review workflow
