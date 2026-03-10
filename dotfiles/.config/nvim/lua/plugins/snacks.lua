@@ -237,9 +237,16 @@ return {
 		{
 			"<leader>gd",
 			function()
-				Snacks.picker.git_diff()
+				require("gitsigns").diffthis()
 			end,
-			desc = "Git Diff (Hunks)",
+			desc = "Git Diff (current file)",
+		},
+		{
+			"<leader>gD",
+			function()
+				require("gitsigns").diffthis("main")
+			end,
+			desc = "Git Diff vs main",
 		},
 		{
 			"<leader>gf",
