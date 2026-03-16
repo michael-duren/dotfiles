@@ -12,3 +12,4 @@ db.lua
 sources.json
 hosts.ini
 *_bak*
+plugins/
