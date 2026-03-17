@@ -14,6 +14,11 @@ local keybindings = {
 		command = ":noau w<CR>",
 		opts = { desc = "Save without triggering autocommands" },
 	},
+	{
+		key = "<leader>S",
+		command = ":noau w<CR>",
+		opts = { desc = "Save without triggering autocommands" },
+	},
 	-- {
 	-- 	key = "<leader>w",
 	-- 	command = ":w<CR>",
@@ -378,7 +383,7 @@ local keybindings = {
 	},
 	-- Misc.
 	{
-		key = "<leader>ob",
+		key = "<leader>oB",
 		command = function()
 			if utils.is_windows() then
 				vim.fn.system('start msedge "' .. vim.fn.expand("%:p") .. '"')
