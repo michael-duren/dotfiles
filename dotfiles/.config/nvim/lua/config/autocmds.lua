@@ -1,6 +1,6 @@
 -- set tab size to 2 for json, css, html files
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "json,css,html,typescriptreact,javascriptreact,scss,sass,lua,yaml,markdown,dockerfile",
+	pattern = "json,css,html,typescriptreact,javascriptreact,scss,sass,lua,yaml,markdown,dockerfile,vcl",
 	callback = function()
 		vim.opt.tabstop = 2
 		vim.opt.softtabstop = 2

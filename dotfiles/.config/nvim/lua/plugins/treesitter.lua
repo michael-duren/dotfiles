@@ -4,6 +4,20 @@ return {
 	lazy = false,
 	build = ":TSUpdate",
 	config = function()
+		-- Register the third-party VCL parser (not in the official nvim-treesitter list).
+		-- ntsk/tree-sitter-vcl is the only grammar with Neovim-specific documentation.
+		-- The new nvim-treesitter main branch uses a plain Lua table; there is no get_parser_configs().
+		local parsers = require("nvim-treesitter.parsers")
+		parsers.vcl = {
+			install_info = {
+				url = "https://github.com/ntsk/tree-sitter-vcl",
+				branch = "main",
+				queries = "queries",
+			},
+		}
+		-- Associate the "vcl" treesitter parser with the "vcl" filetype
+		vim.treesitter.language.register("vcl", "vcl")
+
 		-- Install parsers
 		require("nvim-treesitter")
 			.install({
@@ -31,6 +45,7 @@ return {
 				"dockerfile",
 				"yaml",
 				"helm",
+				"vcl",
 			})
 			:wait(300000) -- wait 5 min max
 
