@@ -16,7 +16,7 @@ return {
 	},
 	keys = {
 		{
-			"<leader>gw",
+			"<leader>gwl",
 			function()
 				require("git-worktree.snacks").worktrees()
 			end,
