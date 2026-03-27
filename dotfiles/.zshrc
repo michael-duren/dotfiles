@@ -267,6 +267,8 @@ gclone() {
 #        gwt new <branch> [base] - Create new branch worktree (default base: default branch)
 #        gwt rm <branch>         - Remove worktree
 #        gwt list                - List all worktrees
+# Override oh-my-zsh git plugin aliases (gwt, gwta, gwtls, gwtrm, gwtmv)
+unalias gwt gwta gwtls gwtrm gwtmv 2>/dev/null
 gwt() {
     local subcmd="$1"
     shift 2>/dev/null
