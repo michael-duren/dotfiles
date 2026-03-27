@@ -256,10 +256,58 @@ return {
 			desc = "Edit PR by number",
 		},
 		-- Quick actions for current PR
+		-- Checkout PR into a worktree (instead of git checkout)
 		{
 			"<leader>op",
-			"<cmd>Octo pr checkout<cr>",
-			desc = "Checkout PR",
+			function()
+				local pr_input = vim.fn.input("PR number (or press Enter for current branch PR): ")
+
+				-- Build gh command to get branch name
+				local gh_cmd
+				if pr_input == "" then
+					-- Get PR for current branch
+					gh_cmd = "gh pr view --json headRefName --jq .headRefName"
+				else
+					gh_cmd = string.format("gh pr view %s --json headRefName --jq .headRefName", pr_input)
+				end
+
+				local branch = vim.fn.system(gh_cmd):gsub("%s+$", "")
+
+				if vim.v.shell_error ~= 0 or branch == "" then
+					vim.notify("Failed to get PR branch name", vim.log.levels.ERROR)
+					return
+				end
+
+				-- Check if worktree already exists for this branch
+				local worktrees, err = require("git-worktree").list()
+				if err then
+					vim.notify("Failed to list worktrees: " .. err, vim.log.levels.ERROR)
+					return
+				end
+
+				for _, wt in ipairs(worktrees) do
+					if wt.branch == branch then
+						-- Worktree exists, just switch to it
+						vim.notify("Switching to existing worktree for " .. branch)
+						require("git-worktree").switch(wt.path)
+						return
+					end
+				end
+
+				-- Create new worktree for the PR branch
+				vim.notify("Creating worktree for PR branch: " .. branch)
+				require("git-worktree").create({
+					branch = branch,
+					switch = true,
+				}, function(wt, create_err)
+					if create_err then
+						vim.notify("Failed to create worktree: " .. create_err, vim.log.levels.ERROR)
+					else
+						vim.notify("Switched to PR worktree: " .. wt.path)
+					end
+				end)
+			end,
+			desc = "Checkout PR (worktree)",
 		},
 		{
 			"<leader>om",

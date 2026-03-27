@@ -163,6 +163,249 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="/Users/michaelduren/.antigravity/antigravity/bin:$PATH"
 fi
 
+# ── Git Worktree Functions ──────────────────────────────────────────────
+
+# gclone: Clone a repo as a bare repository with worktrees
+# Usage: gclone git@github.com:you/my-app.git
+#        gclone https://github.com/you/my-app.git
+gclone() {
+    local repo_url="$1"
+
+    if [[ -z "$repo_url" ]]; then
+        echo "Usage: gclone <repo-url>"
+        echo "Example: gclone git@github.com:you/my-app.git"
+        return 1
+    fi
+
+    # Extract repo name from URL
+    local repo_name
+    repo_name=$(basename "$repo_url" .git)
+    repo_name=$(basename "$repo_name") # handle trailing slashes
+
+    if [[ -z "$repo_name" ]]; then
+        echo "Error: Could not extract repo name from URL"
+        return 1
+    fi
+
+    local project_dir="$(pwd)/$repo_name"
+
+    if [[ -d "$project_dir" ]]; then
+        echo "Error: Directory '$project_dir' already exists"
+        return 1
+    fi
+
+    echo "Setting up worktree project: $project_dir"
+    mkdir -p "$project_dir"
+
+    # Clone as bare repo
+    echo "Cloning bare repo..."
+    git clone --bare "$repo_url" "$project_dir/bare"
+    if [[ $? -ne 0 ]]; then
+        echo "Error: Failed to clone repository"
+        rm -rf "$project_dir"
+        return 1
+    fi
+
+    # Configure bare repo to fetch all remote branches
+    git -C "$project_dir/bare" config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+    git -C "$project_dir/bare" fetch origin
+
+    # Detect default branch (main or master)
+    local default_branch
+    default_branch=$(git -C "$project_dir/bare" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+    if [[ -z "$default_branch" ]]; then
+        # Fallback: check if main or master exists
+        if git -C "$project_dir/bare" show-ref --verify --quiet refs/remotes/origin/main 2>/dev/null; then
+            default_branch="main"
+        elif git -C "$project_dir/bare" show-ref --verify --quiet refs/remotes/origin/master 2>/dev/null; then
+            default_branch="master"
+        else
+            echo "Error: Could not detect default branch"
+            rm -rf "$project_dir"
+            return 1
+        fi
+    fi
+
+    # Create main worktree
+    echo "Creating worktree for '$default_branch'..."
+    git -C "$project_dir/bare" worktree add "$project_dir/$default_branch" "$default_branch"
+    if [[ $? -ne 0 ]]; then
+        echo "Error: Failed to create worktree for '$default_branch'"
+        rm -rf "$project_dir"
+        return 1
+    fi
+
+    echo ""
+    echo "Project ready:"
+    echo "  $project_dir/bare/           (bare repo)"
+    echo "  $project_dir/$default_branch/  (default branch worktree)"
+
+    # Ask about feature branch
+    echo ""
+    read -q "create_feature?Create a feature branch? [y/N] "
+    echo ""
+
+    if [[ "$create_feature" == "y" ]]; then
+        read -r "feature_name?Branch name: "
+        if [[ -n "$feature_name" ]]; then
+            git -C "$project_dir/bare" worktree add -b "$feature_name" "$project_dir/$feature_name" "$default_branch"
+            if [[ $? -eq 0 ]]; then
+                echo "  $project_dir/$feature_name/  (feature branch worktree)"
+            else
+                echo "Warning: Failed to create feature branch worktree"
+            fi
+        fi
+    fi
+
+    echo ""
+    echo "Done! cd into a worktree to start working:"
+    echo "  cd $project_dir/$default_branch"
+}
+
+# gwt: Manage git worktrees for a bare repo project
+# Usage: gwt add <branch>        - Add worktree for existing remote branch
+#        gwt new <branch> [base] - Create new branch worktree (default base: default branch)
+#        gwt rm <branch>         - Remove worktree
+#        gwt list                - List all worktrees
+gwt() {
+    local subcmd="$1"
+    shift 2>/dev/null
+
+    # Find the bare repo directory
+    local bare_dir
+    bare_dir=$(_gwt_find_bare)
+    if [[ -z "$bare_dir" ]]; then
+        echo "Error: Not inside a git worktree project (no bare repo found)"
+        echo "Hint: Run 'gclone <url>' first to set up a project"
+        return 1
+    fi
+
+    local project_dir
+    project_dir=$(dirname "$bare_dir")
+
+    case "$subcmd" in
+        add)
+            local branch="$1"
+            if [[ -z "$branch" ]]; then
+                echo "Usage: gwt add <branch>"
+                return 1
+            fi
+            echo "Fetching latest from remote..."
+            git -C "$bare_dir" fetch origin
+            git -C "$bare_dir" worktree add "$project_dir/$branch" "$branch"
+            ;;
+        new)
+            local branch="$1"
+            local base="${2:-}"
+            if [[ -z "$branch" ]]; then
+                echo "Usage: gwt new <branch> [base-branch]"
+                return 1
+            fi
+            # Auto-detect default branch if base not specified
+            if [[ -z "$base" ]]; then
+                base=$(_gwt_default_branch "$bare_dir")
+                if [[ -z "$base" ]]; then
+                    echo "Error: Could not detect default branch. Specify base explicitly."
+                    return 1
+                fi
+            fi
+            git -C "$bare_dir" worktree add -b "$branch" "$project_dir/$branch" "$base"
+            ;;
+        rm|remove)
+            local branch="$1"
+            if [[ -z "$branch" ]]; then
+                echo "Usage: gwt rm <branch>"
+                return 1
+            fi
+            local wt_path="$project_dir/$branch"
+            if [[ ! -d "$wt_path" ]]; then
+                echo "Error: Worktree directory '$wt_path' does not exist"
+                return 1
+            fi
+            # Warn if currently inside the worktree being removed
+            if [[ "$(pwd)" == "$wt_path"* ]]; then
+                echo "Warning: You are inside this worktree. Changing to project root."
+                cd "$project_dir"
+            fi
+            git -C "$bare_dir" worktree remove "$wt_path"
+            ;;
+        list|ls)
+            git -C "$bare_dir" worktree list
+            ;;
+        ""|help|-h|--help)
+            echo "gwt - Git Worktree Manager"
+            echo ""
+            echo "Usage: gwt <command> [args]"
+            echo ""
+            echo "Commands:"
+            echo "  add <branch>          Add worktree for existing remote branch"
+            echo "  new <branch> [base]   Create new branch worktree (default base: main)"
+            echo "  rm <branch>           Remove worktree"
+            echo "  list                  List all worktrees"
+            echo ""
+            echo "Run from anywhere inside a worktree project."
+            ;;
+        *)
+            echo "Unknown command: $subcmd"
+            echo "Run 'gwt help' for usage"
+            return 1
+            ;;
+    esac
+}
+
+# Helper: Find bare repo directory by walking up from cwd
+_gwt_find_bare() {
+    local dir="$(pwd)"
+
+    # Check if we're directly in a bare repo
+    if [[ -f "$dir/HEAD" && -d "$dir/objects" ]]; then
+        echo "$dir"
+        return
+    fi
+
+    # Check if current dir has a bare/ subdirectory
+    if [[ -f "$dir/bare/HEAD" && -d "$dir/bare/objects" ]]; then
+        echo "$dir/bare"
+        return
+    fi
+
+    # Use git to find the common dir (works inside any worktree)
+    local git_common
+    git_common=$(git rev-parse --git-common-dir 2>/dev/null)
+    if [[ -n "$git_common" && -d "$git_common" ]]; then
+        # Resolve to absolute path
+        git_common=$(cd "$git_common" && pwd)
+        echo "$git_common"
+        return
+    fi
+
+    # Walk up directory tree looking for bare/
+    while [[ "$dir" != "/" ]]; do
+        if [[ -f "$dir/bare/HEAD" && -d "$dir/bare/objects" ]]; then
+            echo "$dir/bare"
+            return
+        fi
+        dir=$(dirname "$dir")
+    done
+}
+
+# Helper: Detect default branch for a bare repo
+_gwt_default_branch() {
+    local bare_dir="$1"
+    local default_branch
+    default_branch=$(git -C "$bare_dir" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+    if [[ -z "$default_branch" ]]; then
+        if git -C "$bare_dir" show-ref --verify --quiet refs/remotes/origin/main 2>/dev/null; then
+            default_branch="main"
+        elif git -C "$bare_dir" show-ref --verify --quiet refs/remotes/origin/master 2>/dev/null; then
+            default_branch="master"
+        fi
+    fi
+    echo "$default_branch"
+}
+
+# ── End Git Worktree Functions ──────────────────────────────────────────
+
 alias hv='tmux new-session -As hive hive'
 
 # mise activation (works on both macOS and Linux)
