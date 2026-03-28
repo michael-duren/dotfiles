@@ -33,18 +33,34 @@ local themes = {
 	{
 		"ellisonleao/gruvbox.nvim",
 		priority = 1000,
+		config = function()
+			require("gruvbox").setup({
+				contrast = "soft", -- soft contrast for warm vintage feel
+				transparent_mode = false,
+				overrides = {
+					-- slightly muted, aged-monitor tones
+					SignColumn = { bg = "NONE" },
+				},
+			})
+		end,
 	},
 	{
 		"folke/tokyonight.nvim",
 		priority = 1000,
 		config = function()
 			require("tokyonight").setup({
-				style = "moon",
+				style = "storm", -- storm works best for modern-retro hybrid
 				transparent = true,
 				styles = {
 					sidebars = "transparent",
 					floats = "transparent",
 				},
+				-- Tint toward green for vintage terminal feel
+				on_highlights = function(hl, c)
+					-- subtle green tint on line numbers for CRT vibe
+					hl.LineNr = { fg = "#5a7a5a" }
+					hl.CursorLineNr = { fg = "#7aaa7a", bold = true }
+				end,
 			})
 		end,
 	},
@@ -254,6 +270,41 @@ local themes = {
 	},
 	{
 		"loctvl842/monokai-pro.nvim",
+		priority = 1000,
+	},
+	-- =============================================
+	-- Vintage Terminal / Retro Aesthetic Themes
+	-- =============================================
+	{
+		-- Zenburn: classic low-contrast greenish theme, famous for old-school dev environments
+		-- Pair with: Terminus Nerd Font for 90s UNIX vibes
+		-- Usage: :colorscheme zenburn
+		"phha/zenburn.nvim",
+		priority = 1000,
+		config = function()
+			require("zenburn").setup()
+		end,
+	},
+	{
+		-- Base16: huge collection of retro-friendly schemes including:
+		--   :colorscheme base16-greenscreen     (green phosphor CRT)
+		--   :colorscheme base16-atelier-forest   (muted forest greens)
+		--   :colorscheme base16-zenburn          (zenburn variant)
+		--   :colorscheme base16-linux-vt         (Linux virtual terminal)
+		--   :colorscheme base16-gruvbox-dark-soft (warm vintage gruvbox)
+		--   :colorscheme base16-irblack          (classic dark terminal)
+		--   :colorscheme base16-windows-95       (retro OS)
+		--   :colorscheme base16-windows-nt       (retro OS)
+		--   :colorscheme base16-digital-rain     (matrix-style)
+		"RRethy/base16-nvim",
+		priority = 1000,
+	},
+	{
+		-- Farout: dark retro base16 theme with muted purples, greens, oranges
+		-- Synthwave terminal / vintage aesthetic
+		-- Pair with: Iosevka or Hack Nerd Font
+		-- Usage: :colorscheme farout
+		"fcpg/vim-farout",
 		priority = 1000,
 	},
 }

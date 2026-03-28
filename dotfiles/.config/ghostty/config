@@ -1,11 +1,45 @@
 # theme = Black Metal (Dark Funeral)
 background-opacity = 1.0
+font-size = 18
 
 scrollback-limit = 10000
 
 keybind = super+r=reload_config
 
 window-save-state = always
+# =============================================
+# Vintage Terminal Fonts (uncomment one to try)
+# =============================================
+# Best overall retro balance, slightly mechanical feel
+# Try Iosevka Term or Iosevka Fixed for narrower variants
+# Use slab variant for extra vintage typewriter feel
+# font-family = Iosevka Nerd Font
+# font-family = Iosevka Fixed Nerd Font
+# font-family = Iosevka Slab Nerd Font
+
+# Bitmap-style, closest to authentic CRT terminal / 90s UNIX
+# font-family = CozetteVector
+# font-family = Hack Nerd Font
+
+# 1st
+font-family = IosevkaTerm Nerd Font
+# 3rd fav
+# font-family = IosevkaSlab Nerd Font
+#
+# font-family = Terminess Nerd Font
+
+# Clean but slightly dated feel, retro yet readable
+# font-family = Hack Nerd Font
+
+# Rounded + quirky, feels like early dev tools
+# font-family = Mononoki Nerd Font
+
+# Pixel-perfect bitmap, super retro (almost DOS-like)
+# font-family = Cozette Nerd Font
+
+# =============================================
+# Other Fonts
+# =============================================
 # font-family = OperatorMonoLig Nerd Font
 # font-family = GohuFont 11 Nerd Font
 

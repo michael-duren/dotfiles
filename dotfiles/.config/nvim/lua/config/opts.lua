@@ -20,6 +20,7 @@ opt.smartcase = true
 opt.ignorecase = true
 opt.confirm = true
 opt.termguicolors = true
+opt.background = "dark"
 
 -- vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
