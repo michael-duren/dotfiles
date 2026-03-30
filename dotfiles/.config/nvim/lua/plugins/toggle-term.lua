@@ -8,7 +8,8 @@ return {
 			{ "<leader>1", desc = "Terminal 1" },
 			{ "<leader>2", desc = "Terminal 2" },
 			{ "<leader>3", desc = "Terminal 3" },
-			{ "<c-/>", desc = "Toggle Floating Terminal" },
+			{ "<leader>4", desc = "Terminal 4 (float)" },
+			{ "<leader>5", desc = "Terminal 5 (tab)" },
 			{ "<leader>ot", desc = "Terminal (buffer dir)" },
 		},
 		config = function()
@@ -49,32 +50,26 @@ return {
 				"<cmd>ToggleTerm direction=horizontal<CR>",
 				{ noremap = true, silent = true }
 			)
-			vim.api.nvim_set_keymap(
-				"t",
-				"<c-\\>",
-				"<cmd>ToggleTerm direction=horizontal<CR>",
-				{ noremap = true, silent = true }
-			)
+		vim.api.nvim_set_keymap(
+			"t",
+			"<c-\\>",
+			"<cmd>ToggleTerm direction=horizontal<CR>",
+			{ noremap = true, silent = true }
+		)
 
-			-- floating terminals
-			vim.api.nvim_set_keymap(
-				"n",
-				"<c-/>",
-				"<cmd>4ToggleTerm direction=float<CR>",
-				{ noremap = true, silent = true }
-			)
-			vim.api.nvim_set_keymap(
-				"t",
-				"<c-/>",
-				"<cmd>4ToggleTerm direction=float<CR>",
-				{ noremap = true, silent = true }
-			)
+		-- <c-/> sends \x1b[45~ via Ghostty keybind
+		vim.api.nvim_set_keymap("n", "<leader>4", "<cmd>4ToggleTerm direction=float<CR>", { noremap = true, silent = true })
+		vim.api.nvim_set_keymap("t", "<leader>4", "<cmd>4ToggleTerm direction=float<CR>", { noremap = true, silent = true })
+
+		-- <c-s-/> sends \x1b[46~ via Ghostty keybind
+		vim.api.nvim_set_keymap("n", "<leader>5", "<cmd>5ToggleTerm direction=tab<CR>", { noremap = true, silent = true })
+		vim.api.nvim_set_keymap("t", "<leader>5", "<cmd>5ToggleTerm direction=tab<CR>", { noremap = true, silent = true })
 
 			-- open terminal in current buffer's directory
 			vim.keymap.set("n", "<leader>ot", function()
 				local buf_dir = vim.fn.expand("%:p:h")
 				require("toggleterm.terminal").Terminal
-					:new({ dir = buf_dir, direction = "horizontal", id = 5 })
+					:new({ dir = buf_dir, direction = "horizontal", id = 6 })
 					:toggle()
 			end, { noremap = true, silent = true, desc = "Terminal (buffer dir)" })
 		end,

@@ -1,1 +1,1 @@
-vim.cmd.colorscheme("farout")
+vim.cmd.colorscheme("gruvbox")
