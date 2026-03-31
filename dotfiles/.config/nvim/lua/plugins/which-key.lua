@@ -4,6 +4,9 @@ return {
 	opts = {
 		preset = "helix",
 		defaults = {},
+		defer = function(ctx)
+			return false
+		end,
 		spec = {
 			{
 				mode = { "n", "v" },
