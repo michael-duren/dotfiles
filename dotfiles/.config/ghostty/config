@@ -1,6 +1,9 @@
 theme = Gruvbox Dark
-background-opacity = 1.0
+background-opacity = 0.9
 font-size = 18
+background-blur-radius = 20
+mouse-hide-while-typing = true
+window-decoration = false
 
 scrollback-limit = 10000
 

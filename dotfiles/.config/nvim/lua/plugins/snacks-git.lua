@@ -240,14 +240,14 @@ return {
 		{
 			"<leader>gp",
 			function()
-				Snacks.picker.gh_pr()
+				vim.cmd([[! git pull --rebase ]])
 			end,
-			desc = "GitHub PRs (open)",
+			desc = "Git pull",
 		},
 		{
 			"<leader>gP",
 			function()
-				Snacks.picker.gh_pr({ state = "all" })
+				vim.cmd([[! git push ]])
 			end,
 			desc = "GitHub PRs (all)",
 		},
@@ -330,7 +330,11 @@ return {
 
 							-- Submit review
 							vim.fn.system(
-								string.format('gh pr review %s --request-changes -b "%s"', pr_number, body:gsub('"', '\\"'))
+								string.format(
+									'gh pr review %s --request-changes -b "%s"',
+									pr_number,
+									body:gsub('"', '\\"')
+								)
 							)
 
 							if vim.v.shell_error == 0 then
