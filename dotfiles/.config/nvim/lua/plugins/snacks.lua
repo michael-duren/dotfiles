@@ -5,8 +5,7 @@ return {
 	"folke/snacks.nvim",
 	---@type snacks.Config
 	opts = {
-		explorer = {
-		},
+		explorer = {},
 		bufdelete = {
 			enabled = true,
 		},
@@ -100,11 +99,28 @@ return {
 			desc = "Buffers",
 		},
 		{
-			"<leaeer>E",
+			"<leader>E",
 			function()
 				Snacks.explorer.open({ cwd = Snacks.git.get_root() })
 			end,
 			desc = "Explorer (Root Dir)",
+		},
+		{
+			"<leader>ge",
+			function()
+				Snacks.explorer.open({
+					git_status = true,
+					filter = {
+						filter = function(item)
+							if item.dir then
+								return item.dir_status ~= nil
+							end
+							return item.status ~= nil
+						end,
+					},
+				})
+			end,
+			desc = "Git Explorer (changed only)",
 		},
 		{
 			"<leader>e",

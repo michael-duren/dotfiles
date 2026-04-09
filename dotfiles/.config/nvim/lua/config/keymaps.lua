@@ -246,27 +246,7 @@ local keybindings = {
 		opts = { desc = "Switch to Other Buffer" },
 	},
 
-	-- Window Navigation
-	{
-		key = "<C-h>",
-		command = "<C-w>h",
-		opts = { desc = "Go to left window" },
-	},
-	{
-		key = "<C-l>",
-		command = "<C-w>l",
-		opts = { desc = "Go to right window" },
-	},
-	{
-		key = "<C-j>",
-		command = "<C-w>j",
-		opts = { desc = "Go to bottom window" },
-	},
-	{
-		key = "<C-k>",
-		command = "<C-w>k",
-		opts = { desc = "Go to top window" },
-	},
+	-- Window Navigation (handled by nvim-tmux-navigation plugin)
 
 	-- Window Management
 	{
