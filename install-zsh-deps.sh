@@ -58,6 +58,31 @@ install_package() {
     echo "✅ $display_name installed"
 }
 
+install_aur_package() {
+    local package=$1
+    local display_name=${2:-$package}
+
+    if command -v "$package" &>/dev/null; then
+        echo "✅ $display_name already installed"
+        return 0
+    fi
+
+    if ! command -v yay &>/dev/null; then
+        echo "📦 Installing yay (AUR helper)..."
+        sudo pacman -S --needed --noconfirm base-devel git debugedit fakeroot
+        local tmpdir
+        tmpdir=$(mktemp -d)
+        git clone https://aur.archlinux.org/yay-bin.git "$tmpdir/yay-bin"
+        (cd "$tmpdir/yay-bin" && makepkg -si --noconfirm)
+        rm -rf "$tmpdir"
+        echo "✅ yay installed"
+    fi
+
+    echo "📦 Installing $display_name from AUR..."
+    yay -S --noconfirm "$package"
+    echo "✅ $display_name installed"
+}
+
 install_packages() {
     local pkg_manager=$1
     shift
@@ -86,14 +111,15 @@ setup_homebrew() {
 }
 
 setup_linux_package_manager() {
-    if command -v apt-get &>/dev/null; then
+    if command -v pacman &>/dev/null; then
+        sudo pacman -Sy
+        echo "pacman"
+    elif command -v apt-get &>/dev/null; then
         echo "📦 Updating apt package list..."
         sudo apt-get update
         echo "apt"
     elif command -v dnf &>/dev/null; then
         echo "dnf"
-    elif command -v pacman &>/dev/null; then
-        echo "pacman"
     else
         echo "❌ No supported package manager found"
         exit 1
@@ -141,7 +167,6 @@ install_neovim() {
         brew install neovim
         ;;
     apt)
-        # Install latest neovim from unstable PPA for Ubuntu/Debian
         sudo add-apt-repository -y ppa:neovim-ppa/unstable
         sudo apt-get update
         sudo apt-get install -y neovim
@@ -211,6 +236,9 @@ install_lazygit() {
         tar xf lazygit.tar.gz lazygit
         sudo install lazygit /usr/local/bin
         rm lazygit lazygit.tar.gz
+        ;;
+    pacman)
+        install_aur_package "lazygit" "lazygit"
         ;;
     *)
         install_package "$pkg_manager" "lazygit" "lazygit"
