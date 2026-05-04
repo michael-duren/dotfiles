@@ -30,12 +30,12 @@ vim.api.nvim_create_autocmd("FileType", {
       table.insert(schemas["kubernetes"], "*.yaml")
     end
 
-    -- Concourse Pipeline support (community schema)
-    schemas["https://raw.githubusercontent.com/cappyzawa/concourse-pipeline-jsonschema/master/concourse_jsonschema.json"] = {
-      "pipeline.yml", "pipeline.yaml", "*/pipeline.yml", "*/pipeline.yaml",
-      "*pipeline*.yml", "*pipeline*.yaml", "concourse.yml", "concourse.yaml",
-      "*.concourse.yml", "*.concourse.yaml",
-    }
+    -- -- Concourse Pipeline support (community schema)
+    -- schemas["https://raw.githubusercontent.com/cappyzawa/concourse-pipeline-jsonschema/master/concourse_jsonschema.json"] = {
+    --   "pipeline.yml", "pipeline.yaml", "*/pipeline.yml", "*/pipeline.yaml",
+    --   "*pipeline*.yml", "*pipeline*.yaml", "concourse.yml", "concourse.yaml",
+    --   "*.concourse.yml", "*.concourse.yaml",
+    -- }
 
     -- Start YAML LSP (your existing approach)
     vim.lsp.start({
@@ -150,7 +150,7 @@ vim.api.nvim_create_autocmd("FileType", {
       { label = "Kubernetes (kubernetes-json-schema)", id = "kubernetes" },
       { label = "GitHub Actions (workflow)",           id = "https://json.schemastore.org/github-workflow.json" },
       { label = "GitHub Action (single action)",       id = "https://json.schemastore.org/github-action.json" },
-      { label = "Concourse",                           id = "https://raw.githubusercontent.com/cappyzawa/concourse-pipeline-jsonschema/master/concourse_jsonschema.json" },
+      -- { label = "Concourse",                           id = "https://raw.githubusercontent.com/cappyzawa/concourse-pipeline-jsonschema/master/concourse_jsonschema.json" },
       { label = "Ansible (roles/tasks)",               id = "https://json.schemastore.org/ansible-stable-2.9.json" },
       { label = "Docker Compose",                      id = "https://json.schemastore.org/docker-compose.json" },
       { label = "Kustomization",                       id = "https://json.schemastore.org/kustomization.json" },

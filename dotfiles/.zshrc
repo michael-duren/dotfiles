@@ -411,7 +411,13 @@ _gwt_default_branch() {
 
 alias hv='tmux new-session -As hive hive'
 
+gh-switch() {
+  gh-switcher
+  source ~/.zshrc
+}
+
 # mise activation (works on both macOS and Linux)
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
 fi
+
