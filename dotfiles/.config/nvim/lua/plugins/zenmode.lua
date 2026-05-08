@@ -1,3 +1,9 @@
+local utils = require("helpers.utils")
+
+if utils.is_linux() then
+	return {}
+end
+
 return {
 	"shortcuts/no-neck-pain.nvim",
 	opts = {

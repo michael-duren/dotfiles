@@ -435,14 +435,15 @@ main() {
         exit 1
     fi
 
-    if [ "$OS" = "macos" ]; then
-        echo "📱 Detected: macOS"
-        setup_homebrew
-        PKG_MANAGER="brew"
-    else
-        echo "🐧 Detected: Linux"
-        PKG_MANAGER=$(setup_linux_package_manager)
-    fi
+    PKG_MANAGER="pacman"
+    # if [ "$OS" = "macos" ]; then
+    #     echo "📱 Detected: macOS"
+    #     setup_homebrew
+    #     PKG_MANAGER="brew"
+    # else
+    #     echo "🐧 Detected: Linux"
+    #     PKG_MANAGER=$(setup_linux_package_manager)
+    # fi
 
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

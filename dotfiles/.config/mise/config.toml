@@ -1,3 +1,4 @@
 [tools]
 node = "24"
+# go = "latest"
 "github:colonyops/hive" = { url = "https://github.com/colonyops/hive", version = "latest" }
