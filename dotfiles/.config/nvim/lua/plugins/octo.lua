@@ -325,11 +325,6 @@ return {
 			desc = "Show PR diff",
 		},
 		{
-			"<leader>ob",
-			"<cmd>Octo pr browser<cr>",
-			desc = "Open PR in browser",
-		},
-		{
 			"<leader>oy",
 			"<cmd>Octo pr url<cr>",
 			desc = "Copy PR URL",
