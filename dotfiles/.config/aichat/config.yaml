@@ -1,0 +1,47 @@
+# aichat config — talks to a local `ramalama serve` on :8080
+# Start the server first in another terminal: `qserve` (or `ramalama serve <model>`).
+# Note: ramalama serves ONE model at a time. To switch models, restart `ramalama serve`
+# with the model you want. The `model:` setting below picks the default name aichat
+# sends in the request body, but llama-server ignores it and just uses what's loaded.
+
+model: ramalama:qwen3-coder:30b
+
+# --- Sessions ---
+# Sessions persist as files under ~/.config/aichat/sessions/<name>.yaml
+# `save_session: true`  → always append to the active session file
+# `save_session: null`  → prompt at exit ("save? [y/n]")
+# `save_session: false` → never save
+save_session: true
+
+# Auto-compact the in-memory history when it exceeds this many tokens.
+# Set lower than the model's context to leave room for new turns + tool calls.
+compress_threshold: 16000
+
+# Streaming output (incremental) — keep on for interactive chat.
+stream: true
+
+# Don't auto-pipe code output through bat/glow etc — keep it raw for piping.
+highlight: true
+keybindings: emacs
+editor: nvim   # falls back to $EDITOR if not present
+wrap: auto
+
+# --- Providers ---
+clients:
+  - type: openai-compatible
+    name: ramalama
+    # NOTE: 127.0.0.1, not localhost — rootless podman with passt networking
+    # binds IPv4 only, and `localhost` here resolves to something passt rejects.
+    api_base: http://127.0.0.1:8080/v1
+    # ramalama serve doesn't require auth; aichat needs *some* value here.
+    api_key: not-needed
+    models:
+      - name: qwen3-coder:30b
+        max_input_tokens: 32768
+        supports_function_calling: true
+      - name: qwen2.5-coder:32b
+        max_input_tokens: 32768
+        supports_function_calling: true
+      - name: qwen3.5:27b
+        max_input_tokens: 32768
+        supports_function_calling: true

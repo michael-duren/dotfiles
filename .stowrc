@@ -2,15 +2,16 @@
 # This tells stow to target the home directory
 --target=$HOME
 
-# Ignore these files when stowing
---ignore='.DS_Store'
---ignore='README.md'
---ignore='.git'
---ignore='.gitignore'
---ignore='.gitattributes'
---ignore='.claude'
---ignore='repo.txt'
---ignore='ansible'
---ignore='corne'
---ignore='hosts'
---ignore='install-zsh-deps.sh'
+# Ignore these files when stowing.
+# Stow's built-in defaults already ignore literal `.git`, `.gitignore`,
+# `.gitmodules`, README*, LICENSE*, COPYING — don't duplicate those here.
+# Patterns are regex matched against path segments; anchor with ^...$
+# and escape dots so e.g. `.git` doesn't accidentally match `git/`.
+--ignore='^\.DS_Store$'
+--ignore='^\.gitattributes$'
+--ignore='^\.claude$'
+--ignore='^repo\.txt$'
+--ignore='^ansible$'
+--ignore='^corne$'
+--ignore='^hosts$'
+--ignore='^install-zsh-deps\.sh$'
