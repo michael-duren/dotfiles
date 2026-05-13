@@ -47,3 +47,6 @@ map <C-d> nohlsearch
 map p print
 map K zoom in
 map J zoom out
+set synctex true
+set synctex-editor-command "nvim --headless -es --cmd \"VimtexInverseSearch %{line} '%{input}'\""
+

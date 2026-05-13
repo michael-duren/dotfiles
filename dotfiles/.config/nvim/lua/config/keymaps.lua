@@ -396,6 +396,21 @@ local keybindings = {
 		command = "<cmd>Lazy profile<cr>",
 		opts = { desc = "Lazy Profile" },
 	},
+	-- LaTeX cheat sheet
+	{
+		key = "<leader>?l",
+		command = function()
+			Snacks.win({
+				file = vim.fn.stdpath("config") .. "/latex-cheatsheet.md",
+				width = 0.7,
+				height = 0.85,
+				border = "rounded",
+				wo = { wrap = true, conceallevel = 2 },
+				keys = { q = "close" },
+			})
+		end,
+		opts = { desc = "LaTeX cheat sheet" },
+	},
 }
 
 utils.map_keys(keybindings)
