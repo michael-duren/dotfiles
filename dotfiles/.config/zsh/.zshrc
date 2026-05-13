@@ -6,6 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 alias vim="nvim"
+alias pdf="zathura"
 
 # Add user configurations here
 # For HyDE to not touch your beloved configurations,
