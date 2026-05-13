@@ -1,6 +1,6 @@
 local utils = require("helpers.utils")
 
-if utils.is_linux() then
+if utils.is_linux() or true then
 	return {}
 end
 
