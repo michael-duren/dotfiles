@@ -1,6 +1,6 @@
 return {
 	"stevearc/conform.nvim",
-	event = { "BufWritePre" },
+	event = { "BufReadPre", "BufWritePre" },
 	cmd = { "ConformInfo" },
 	opts = {
 		formatters_by_ft = {
@@ -22,14 +22,15 @@ return {
 			svelte = { "prettier" },
 			astro = { "prettier" },
 
-		c = { "clang-format" },
-		cpp = { "clang-format" },
+			c = { "clang-format" },
+			cpp = { "clang-format" },
 			go = { "goimports", "gofmt" },
-			cs = { "csharpier" },
 			lua = { "stylua" },
-			razor = { "html" },
-			cshtml = { "html" },
 			cmake = { "cmake_format" },
+
+			-- LaTeX
+			tex = { "latexindent" },
+			plaintex = { "latexindent" },
 		},
 
 		format_on_save = {

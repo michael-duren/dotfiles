@@ -29,4 +29,13 @@ return {
 	s("exists", t("\\exists ")),
 	s("implies", t("\\implies ")),
 	s("iff", t("\\iff ")),
+	-- logical operators
+	s("or", t("\\vee ")),
+	s("and", t("\\wedge ")),
+	s("not", t("\\neg ")),
+	-- set membership and number sets
+	s("in", t("\\in ")),
+	s("NN", t("\\mathbb{N}")),
+	-- text mode inside math
+	s("txt", fmt("\\text{{{}}}", { i(1) })),
 }

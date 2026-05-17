@@ -63,6 +63,9 @@ source $ZSH/oh-my-zsh.sh
 
 export LESS="-R"
 
+# Use Neovim as the man pager (built-in :Man plugin)
+export MANPAGER='nvim +Man!'
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -82,6 +85,8 @@ alias gs="git status"
 alias l="ls -la"
 alias m="make"
 alias t="trash"
+# Read-only nvim as a pager — supports stdin: `cmd | vless`
+alias vless="nvim -R"
 
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 

@@ -44,3 +44,8 @@ alias qls='ramalama list'                          # list cached models
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
+
+# Read-only nvim as a pager — supports stdin: `cmd | vless`
+alias vless="nvim -R"
+# Use Neovim as the man pager (built-in :Man plugin)
+export MANPAGER='nvim +Man!'

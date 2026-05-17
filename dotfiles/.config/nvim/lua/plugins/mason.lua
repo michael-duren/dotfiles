@@ -32,6 +32,7 @@ return {
 				"dockerls",
 				"docker_compose_language_service",
 				"helm_ls",
+				"texlab",
 			},
 			},
 		},
@@ -60,6 +61,7 @@ return {
 				"dockerls",
 				"docker_compose_language_service",
 				"helm-ls",
+				"texlab",
 				-- dap
 				"netcoredbg",
 				"bash-debug-adapter",
