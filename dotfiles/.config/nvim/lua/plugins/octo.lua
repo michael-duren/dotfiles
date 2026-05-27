@@ -1,8 +1,5 @@
 local u = require("helpers.utils")
 
-if u.is_linux() then
-	return {}
-end
 -- Octo.nvim - GitHub PR Review with Inline Comments
 -- This plugin complements snacks.nvim GitHub integration by adding:
 -- - Inline commenting on PR diffs (the missing feature from snacks!)
@@ -118,7 +115,7 @@ return {
 		-- File panel for reviewing changed files
 		file_panel = {
 			size = 10, -- Height of changed files panel
-			use_icons = true, -- Use devicons
+			icons = true, -- Use devicons (set to false to disable)
 		},
 
 		-- UI settings for proper markdown rendering

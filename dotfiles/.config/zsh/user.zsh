@@ -37,6 +37,7 @@ alias qcoder='ramalama run qwen2.5-coder:32b'      # heavy / C / asm — Qwen2.5
 alias qask='ramalama run qwen3.5:27b'              # general / Linux / Hyprland — Qwen3.5 27B
 alias qserve='ramalama serve qwen3-coder:30b'      # OpenAI-compatible API on :8080
 alias qls='ramalama list'                          # list cached models
+alias gacm='git add -A && git commit -m'                          # list cached models
 
 # mise — version manager for go/node/etc.
 # Use shims (not `mise activate`) so PATH is set unconditionally at shell start;
@@ -49,3 +50,8 @@ export PATH="$PATH:$GOPATH/bin"
 alias vless="nvim -R"
 # Use Neovim as the man pager (built-in :Man plugin)
 export MANPAGER='nvim +Man!'
+alias gs="git status"
+alias awake="systemd-inhibit sleep infinity"
+
+export EDITOR=nvim
+export VISUAL=nvim
