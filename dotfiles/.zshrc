@@ -85,8 +85,8 @@ alias gs="git status"
 alias l="ls -la"
 alias m="make"
 alias t="trash"
-# Read-only nvim as a pager — supports stdin: `cmd | vless`
 alias vless="nvim -R"
+alias kctx="kubectx"
 
 source ~/powerlevel10k/powerlevel10k.zsh-theme
 
@@ -415,13 +415,39 @@ _gwt_default_branch() {
 
 alias hv='tmux new-session -As hive hive'
 
-gh-switch() {
-  gh-switcher
-  source ~/.zshrc
-}
+# gh-switch() {
+#   gh-switcher
+#   source ~/.zshrc
+# }
 
 # mise activation (works on both macOS and Linux)
 if command -v mise &> /dev/null; then
     eval "$(mise activate zsh)"
 fi
 
+secret() {
+  if [ $# -ne 2 ]; then
+    echo "Usage: secret <e|d> <text>"
+    return 1
+  fi
+
+  local mode="$1"
+  local text="$2"
+  local result
+
+  case "$mode" in
+    e)
+      result=$(printf "%s" "$text" | base64)
+      ;;
+    d)
+      result=$(printf "%s" "$text" | base64 --decode 2>/dev/null)
+      ;;
+    *)
+      echo "First argument must be 'e' (encode) or 'd' (decode)"
+      return 1
+      ;;
+  esac
+
+  printf "%s" "$result" | pbcopy
+  echo "$result"
+}
