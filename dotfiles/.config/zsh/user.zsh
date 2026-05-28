@@ -38,6 +38,7 @@ alias qask='ramalama run qwen3.5:27b'              # general / Linux / Hyprland 
 alias qserve='ramalama serve qwen3-coder:30b'      # OpenAI-compatible API on :8080
 alias qls='ramalama list'                          # list cached models
 alias gacm='git add -A && git commit -m'                          # list cached models
+alias help='run-help'
 
 # mise — version manager for go/node/etc.
 # Use shims (not `mise activate`) so PATH is set unconditionally at shell start;

@@ -22,6 +22,11 @@ return {
 			svelte = { "prettier" },
 			astro = { "prettier" },
 
+			-- Shell
+			sh = { "shfmt" },
+			bash = { "shfmt" },
+			zsh = { "shfmt" },
+
 			c = { "clang-format" },
 			cpp = { "clang-format" },
 			go = { "goimports", "gofmt" },
