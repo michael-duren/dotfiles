@@ -2,9 +2,9 @@
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "json,css,html,typescriptreact,javascriptreact,scss,sass,lua,yaml,markdown,dockerfile,vcl",
 	callback = function()
-		vim.opt.tabstop = 2
-		vim.opt.softtabstop = 2
-		vim.opt.shiftwidth = 2
+		vim.opt_local.tabstop = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.shiftwidth = 2
 	end,
 })
 
@@ -39,6 +39,17 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Makefiles require hard tabs
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "make",
+	callback = function()
+		vim.bo.expandtab = false
+		vim.bo.tabstop = 4
+		vim.bo.softtabstop = 4
+		vim.bo.shiftwidth = 4
+	end,
+})
+
+-- Go uses hard tabs (gofmt)
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "go",
 	callback = function()
 		vim.bo.expandtab = false
 		vim.bo.tabstop = 4
