@@ -4,7 +4,7 @@ return {
 	opts = {
 		preset = "helix",
 		defaults = {},
-		defer = function(ctx)
+		defer = function()
 			return false
 		end,
 		spec = {
