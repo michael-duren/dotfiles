@@ -53,6 +53,8 @@ alias vless="nvim -R"
 export MANPAGER='nvim +Man!'
 alias gs="git status"
 alias awake="systemd-inhibit sleep infinity"
+alias k="kubectl"
+alias kctx="kubectx"
 
 export EDITOR=nvim
 export VISUAL=nvim
