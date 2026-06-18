@@ -5,6 +5,9 @@ export PATH="$HOME/.local/bin:$PATH"
 
 export ZSH="$HOME/.oh-my-zsh"
 
+# before zsh-vi-mode is loaded
+export ZVM_INIT_MODE=sourcing
+
 plugins=(
   git
   extract
@@ -59,3 +62,5 @@ export PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
+
+source <(fzf --zsh)

@@ -22,6 +22,12 @@ opt.confirm = true
 opt.termguicolors = true
 opt.background = "dark"
 
+-- see new lines
+vim.opt.list = true
+vim.opt.listchars = {
+	eol = "↴",
+}
+
 -- vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
 -- windows work machine is super slow
