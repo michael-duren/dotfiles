@@ -46,6 +46,7 @@ alias help='run-help'
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
+export PATH="/home/mduren/.lmstudio/bin:$PATH"
 
 # Read-only nvim as a pager — supports stdin: `cmd | vless`
 alias vless="nvim -R"
