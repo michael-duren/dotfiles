@@ -23,6 +23,7 @@ fi
 if [[ ${HYDE_ZSH_NO_PLUGINS} != "1" ]]; then
     #  OMZ Plugins 
     # manually add your oh-my-zsh plugins here
+    export ZVM_INIT_MODE=sourcing
     plugins=(
         "sudo"
         "z"
@@ -69,7 +70,10 @@ fi
 # an alias can't run the post-exit `cd`.
 f() {
     # Don't nest nnn inside an nnn-spawned shell
-    [ "${NNNLVL:-0}" -eq 0 ] || { echo "nnn is already running"; return; }
+    [ "${NNNLVL:-0}" -eq 0 ] || {
+        echo "nnn is already running"
+        return
+    }
 
     export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
     nnn "$@"
@@ -90,3 +94,4 @@ export NNN_PLUG='f:finder;o:fzopen;p:mocq;d:diffs;t:nmount;v:imgview'
 export NNN_TRASH=1
 # Use fzf/$EDITOR for the in-app open prompts
 export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
+source <(fzf --zsh)
