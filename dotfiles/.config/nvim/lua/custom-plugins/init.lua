@@ -7,3 +7,4 @@ require("custom-plugins.notepad").setup({
 	keymap = "<leader>np",
 	notes_dir = vim.fn.stdpath("data") .. "/notes",
 })
+require("custom-plugins.open").setup()

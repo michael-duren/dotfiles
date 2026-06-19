@@ -361,35 +361,6 @@ local keybindings = {
 		command = ":e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>",
 		opts = { desc = "Open settings" },
 	},
-	-- Misc.
-	{
-		key = "<leader>oB",
-		command = function()
-			if utils.is_windows() then
-				vim.fn.system('start msedge "' .. vim.fn.expand("%:p") .. '"')
-				return
-			end
-			vim.fn.system('open -a "Google Chrome" "' .. vim.fn.expand("%:p") .. '"')
-		end,
-		opts = { desc = "Open current buffer in Browser" },
-	},
-	{
-		key = "<leader>ob",
-		command = function()
-			local remote = vim.fn.system([[git remote get-url origin]])
-			local url = ""
-			if string.match(remote, "@") then
-				local matches = vim.fn.matchlist(remote, [[git@\(.*\):\(.*\)\/\(.*\)\.git]])
-				print(matches)
-				url = string.format("https://%s/%s/%s", matches[2], matches[3], matches[4])
-			else
-				url = string.gsub(remote, "%.git$", "")
-			end
-			print("opening : " .. url)
-			vim.fn.system('open -a "Google Chrome" "' .. url .. '"')
-		end,
-		opts = { desc = "Open remote repository" },
-	},
 	-- Check perf
 	{
 		key = "<leader>lp",

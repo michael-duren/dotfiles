@@ -1,3 +1,4 @@
+require("lsp.diagnostics")
 require("lsp.gopls")
 require("lsp.zls")
 require("lsp.luals")
