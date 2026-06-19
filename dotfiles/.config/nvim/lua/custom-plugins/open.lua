@@ -19,7 +19,6 @@ local open_remote = function()
 	local url = ""
 	if string.match(remote, "@") then
 		local matches = vim.fn.matchlist(remote, [[git@\(.*\):\(.*\)\/\(.*\)\.git]])
-		print(matches)
 		url = string.format("https://%s/%s/%s", matches[2], matches[3], matches[4])
 	else
 		url = string.gsub(remote, "%.git$", "")
