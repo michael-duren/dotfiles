@@ -22,11 +22,10 @@ opt.confirm = true
 opt.termguicolors = true
 opt.background = "dark"
 
--- see new lines
-vim.opt.list = true
-vim.opt.listchars = {
-	eol = "↴",
-}
+opt.laststatus = 3
+opt.list = true
+opt.listchars = { "eol:↴", "tab:▸ " }
+opt.splitkeep = "screen"
 
 -- vim.cmd("highlight CursorLineNr ctermfg=white guifg=white")
 
