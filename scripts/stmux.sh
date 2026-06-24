@@ -20,8 +20,7 @@ if [[ "$WORK" == "true" ]]; then
             continue
         fi
 
-        tmux new-session -d -s "$session" -c "$path"
-        tmux new-window -t "$session" -n "cli" -c "$path"
+        tmux new-session -d -s "$session" -n "cli" -c "$path"
         tmux new-window -t "$session" -n "nvim" -c "$path" nvim
         tmux select-window -t "$session:1"
     done
