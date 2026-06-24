@@ -95,3 +95,4 @@ export NNN_TRASH=1
 # Use fzf/$EDITOR for the in-app open prompts
 export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
 source <(fzf --zsh)
+alias nr="npm run dev"
