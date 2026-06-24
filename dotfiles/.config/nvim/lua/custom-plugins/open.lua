@@ -10,7 +10,7 @@ local open_browser = function(path)
 	elseif utils.is_linux() then
 		vim.fn.system("zen-browser " .. path)
 	else
-		vim.fn.system('open -a "Google Chrome" "' .. vim.fn.expand("%:p") .. '"')
+		vim.fn.system('open -a "Google Chrome" "' .. path .. '"')
 	end
 end
 
