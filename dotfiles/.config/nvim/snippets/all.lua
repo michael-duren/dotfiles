@@ -1,15 +1,8 @@
--- Math & logic symbols available in ALL filetypes
--- Place this file at: ~/.config/nvim/luasnippets/all.lua
--- Requires LuaSnip: https://github.com/L3MON4D3/LuaSnip
---
--- Usage: type the trigger (e.g. \exists) then press your LuaSnip expand key
-
 local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
 
 return {
-
 	-- ── Logic ────────────────────────────────────────────────────────────
 	s("\\exists", t("∃")), -- there exists
 	s("\\nexists", t("∄")), -- there does not exist

@@ -286,8 +286,8 @@ local keybindings = {
 	{
 		mode = "i",
 		key = "<C-j>",
-		command = "<cmd>lua require('luasnip').jump(1)<CR>",
-		opts = { desc = "Jump forward" },
+		command = "<cmd>lua require('luasnip').expand_or_jump()<CR>",
+		opts = { desc = "Expand snippet or jump forward" },
 	},
 	{
 		mode = "i",
