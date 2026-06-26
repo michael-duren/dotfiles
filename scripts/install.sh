@@ -7,7 +7,10 @@ for f in $(ls "$script_dir"); do
         continue
     fi
     tool="$script_dir/$f"
-    chmod +x tool
+    if [[ $(head -n 2 $tool | tail -n 1) =~ "DO NOT INSTALL" ]]; then
+        continue
+    fi
+    chmod +x "$tool"
     f=$(echo $f | sed 's/\.sh$//')
     destination="$HOME/.local/bin/$f"
     echo "copying $tool to $destination"
