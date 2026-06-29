@@ -52,7 +52,7 @@ export PATH="/home/mduren/.lmstudio/bin:$PATH"
 # Read-only nvim as a pager — supports stdin: `cmd | vless`
 alias vless="nvim -R"
 # Use Neovim as the man pager (built-in :Man plugin)
-export MANPAGER='nvim +Man!'
+export MANPAGER='nvim +Man! -c "set nu rnu"'
 alias gs="git status"
 alias awake="systemd-inhibit sleep infinity"
 alias k="kubectl"
