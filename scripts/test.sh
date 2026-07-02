@@ -9,4 +9,6 @@
 #
 # 
 
-echo $(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+# echo $(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+read -p "what's your name? " name 
+echo "$name"

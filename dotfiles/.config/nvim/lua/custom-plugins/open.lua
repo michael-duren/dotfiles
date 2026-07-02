@@ -8,7 +8,7 @@ local open_browser = function(path)
 	if utils.is_windows() then
 		vim.fn.system('start msedge "' .. path .. '"')
 	elseif utils.is_linux() then
-		vim.fn.system("zen-browser " .. path)
+		vim.fn.system("brave-origin " .. path)
 	else
 		vim.fn.system('open -a "Google Chrome" "' .. path .. '"')
 	end
