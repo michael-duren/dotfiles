@@ -64,7 +64,7 @@ create_makefile "$1"
 
 read -p "initialize and commit git repository? (Y/n) " create_git
 
-if [[ "${create_git,,}" = "y" ]]; then
+if [[ "$create_git" == [Yy] ]]; then
     git init
     git add -A
     git commit -m "git init"

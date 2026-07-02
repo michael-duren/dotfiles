@@ -1,5 +1,5 @@
 [tools]
-node = "24"
-# go = "latest"
+node = "24.13.1"
 "github:colonyops/hive" = { url = "https://github.com/colonyops/hive", version = "latest" }
 go = "latest"
+"npm:yarn" = "latest"

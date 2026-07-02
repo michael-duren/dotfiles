@@ -64,3 +64,33 @@ if command -v mise >/dev/null 2>&1; then
 fi
 
 source <(fzf --zsh)
+
+# nnn
+# -H: show hidden/dot files at startup (needed to see .config, .zshrc, etc. in dotfiles)
+# -e: open text files in $VISUAL/$EDITOR (nvim)
+# -d: start in detail view (long listing)
+export NNN_OPTS="Hed"
+export NNN_PLUG='f:finder;o:fzopen;p:mocq;d:diffs;t:nmount;v:imgview'
+
+# Trash instead of permanent delete (uses trash-cli if installed)
+export NNN_TRASH=1
+# Use fzf/$EDITOR for the in-app open prompts
+export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
+
+# nnn cd-on-quit: launch with `f`, quit with `q`, and your shell follows nnn
+# into the last dir you were browsing. Must be a function, not an alias —
+# an alias can't run the post-exit `cd`.
+f() {
+    # Don't nest nnn inside an nnn-spawned shell
+    [ "${NNNLVL:-0}" -eq 0 ] || {
+        echo "nnn is already running"
+        return
+    }
+
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+    nnn "$@"
+    [ ! -f "$NNN_TMPFILE" ] || {
+        . "$NNN_TMPFILE"
+        rm -f -- "$NNN_TMPFILE"
+    }
+}
