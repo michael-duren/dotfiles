@@ -60,6 +60,12 @@ if [[ "$OSTYPE" == darwin* ]]; then
 
   export PICO_SDK_PATH="$HOME/pico/pico-sdk"
   alias vimlog="cd ~/.cache/nvim && vim ."
+
+  # work work work
+  alias ghec-login="ghec-migrate auth login"
+  alias ghec-add="ghec-migrate tap roles add"
+  alias ghec-rm="ghec-migrate tap roles remove"
+  alias ghec-howto="ghec-migrate tap roles remove|add <ZID> <team-name>"
 fi
 
 export GOPATH="$HOME/go"
