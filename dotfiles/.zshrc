@@ -43,6 +43,13 @@ alias vless='nvim -R'
 alias kctx='kubectx'
 alias vim='nvim'
 
+ts() {
+    if [[ $# != 2 ]]; then
+        echo "Usage: ts <name> <path>"
+    fi
+    tmux new-session -d -s "$1" -n "cli" -c "$1"
+}
+
 # ollama
 #  Local LLMs (ramalama, Vulkan on Radeon 890M)
 alias qcode='ollama run qwen3-coder:30b'         # default coding — Qwen3-Coder 30B-A3B (MoE)
