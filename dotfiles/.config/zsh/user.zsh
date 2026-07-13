@@ -40,6 +40,14 @@ alias qserve='ramalama serve qwen3-coder:30b' # OpenAI-compatible API on :8080
 alias qls='ramalama list'                     # list cached models
 alias gacm='git add -A && git commit -m'      # list cached models
 alias help='run-help'
+alias gwl='git worktree list'
+alias gwa='git worktree add'
+alias gwr='git worktree remove'
+alias gwrf='git worktree remove --force'
+alias gwp='git worktree prune'
+alias gwm='git worktree move'
+alias gwlock='git worktree lock'
+alias gwunlock='git worktree unlock'
 
 # mise — version manager for go/node/etc.
 # Use shims (not `mise activate`) so PATH is set unconditionally at shell start;
@@ -96,3 +104,4 @@ export NNN_TRASH=1
 export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
 source <(fzf --zsh)
 alias nr="npm run dev"
+alias vm="incus exec cgtest -- bash"
