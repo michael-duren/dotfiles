@@ -1,5 +1,0 @@
-[tools]
-node = "24.15.0"
-"github:colonyops/hive" = "latest"
-go = "1.26.0"
-"npm:yarn" = "latest"

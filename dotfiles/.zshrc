@@ -78,10 +78,6 @@ fi
 export GOPATH="$HOME/go"
 export PATH="$GOPATH/bin:/usr/local/go/bin:$PATH"
 
-if command -v mise >/dev/null 2>&1; then
-  eval "$(mise activate zsh)"
-fi
-
 source <(fzf --zsh)
 
 # nnn

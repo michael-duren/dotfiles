@@ -9,7 +9,7 @@ return {
 		"nvim-lua/plenary.nvim",
 		-- if you want to enable coloring of ANSI escape codes in
 		-- compilation output, add:
-		-- { "m00qek/baleia.nvim", tag = "v1.3.0" },
+		{ "m00qek/baleia.nvim", tag = "v1.3.0" },
 	},
 	config = function()
 		---@type CompileModeOpts
