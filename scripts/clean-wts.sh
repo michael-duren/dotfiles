@@ -12,8 +12,8 @@ set -euo pipefail
 DRY_RUN=0
 [[ "${1:-}" == "--dry-run" || "${1:-}" == "-n" ]] && DRY_RUN=1
 
-# The script lives in the worktree container dir, next to .bare
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Operate on the current directory (the worktree container dir, next to .bare)
+ROOT="$PWD"
 if [[ ! -d "$ROOT/.bare" ]]; then
   echo "error: no .bare repository found in $ROOT" >&2
   exit 1
