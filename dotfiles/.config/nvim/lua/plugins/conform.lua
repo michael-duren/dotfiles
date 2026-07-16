@@ -35,6 +35,10 @@ return {
 			lua = { "stylua" },
 			cmake = { "cmake_format" },
 
+			-- Terraform / OpenTofu (tofu fmt, since terraform isn't installed)
+			terraform = { "tofu_fmt" },
+			["terraform-vars"] = { "tofu_fmt" },
+
 			-- LaTeX
 			tex = { "latexindent" },
 			plaintex = { "latexindent" },

@@ -33,6 +33,7 @@ return {
 				"docker_compose_language_service",
 				"helm_ls",
 				"texlab",
+				"terraformls",
 			},
 			},
 		},
@@ -62,6 +63,7 @@ return {
 				"docker_compose_language_service",
 				"helm-ls",
 				"texlab",
+				"terraform-ls",
 				-- dap
 				"netcoredbg",
 				"bash-debug-adapter",

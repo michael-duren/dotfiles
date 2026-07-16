@@ -46,6 +46,8 @@ return {
 				"dockerfile",
 				"yaml",
 				"helm",
+				"hcl",
+				"terraform",
 				-- "vcl",
 			})
 			:wait(300000) -- wait 5 min max
