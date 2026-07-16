@@ -1,5 +1,6 @@
 local utils = require("helpers.utils")
 local diagnostics = require("helpers.diagnostics")
+local lsp = require("helpers.lsp")
 
 ---@type KeyMap[]
 local keybindings = {
@@ -79,7 +80,7 @@ local keybindings = {
 	},
 	{
 		key = "<leader>li",
-		command = "<cmd>LspInfo<cr>",
+		command = "<cmd>checkhealth vim.lsp<cr>",
 		opts = { desc = "Info" },
 	},
 	{
@@ -94,7 +95,7 @@ local keybindings = {
 	},
 	{
 		key = "<leader>lR",
-		command = "<cmd>LspRestart<cr>",
+		command = lsp.restart,
 		opts = { desc = "Restart LSP" },
 	},
 	{
@@ -120,21 +121,12 @@ local keybindings = {
 	},
 	{
 		key = "<leader>R",
-		command = "<cmd>LspRestart<CR>",
+		command = lsp.restart,
 		opts = { desc = "Restart LSP" },
 	},
 	{
 		key = "<leader>ld",
-		command = function()
-			local clients = vim.lsp.get_clients({ bufnr = 0 })
-			if #clients > 0 then
-				vim.cmd("LspStop")
-				vim.notify("LSP disabled", vim.log.levels.INFO)
-			else
-				vim.cmd("LspStart")
-				vim.notify("LSP enabled", vim.log.levels.INFO)
-			end
-		end,
+		command = lsp.toggle,
 		opts = { desc = "Toggle LSP" },
 	},
 
