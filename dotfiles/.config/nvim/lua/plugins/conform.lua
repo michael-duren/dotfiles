@@ -31,6 +31,7 @@ return {
 			c = { "clang-format" },
 			cpp = { "clang-format" },
 			go = { "goimports", "gofmt" },
+			templ = { "templ" },
 			lua = { "stylua" },
 			cmake = { "cmake_format" },
 

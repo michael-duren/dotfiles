@@ -36,6 +36,7 @@ return {
 				"gomod",
 				"gosum",
 				"gowork",
+				"templ",
 				"css",
 				"c_sharp",
 				"typescript",
