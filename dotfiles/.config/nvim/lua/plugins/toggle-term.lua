@@ -50,20 +50,40 @@ return {
 				"<cmd>ToggleTerm direction=horizontal<CR>",
 				{ noremap = true, silent = true }
 			)
-		vim.api.nvim_set_keymap(
-			"t",
-			"<c-\\>",
-			"<cmd>ToggleTerm direction=horizontal<CR>",
-			{ noremap = true, silent = true }
-		)
+			vim.api.nvim_set_keymap(
+				"t",
+				"<c-\\>",
+				"<cmd>ToggleTerm direction=horizontal<CR>",
+				{ noremap = true, silent = true }
+			)
 
-		-- <c-/> sends \x1b[45~ via Ghostty keybind
-		vim.api.nvim_set_keymap("n", "<leader>4", "<cmd>4ToggleTerm direction=float<CR>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap("t", "<leader>4", "<cmd>4ToggleTerm direction=float<CR>", { noremap = true, silent = true })
+			-- <c-/> sends \x1b[45~ via Ghostty keybind
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>4",
+				"<cmd>4ToggleTerm direction=float<CR>",
+				{ noremap = true, silent = true }
+			)
+			vim.api.nvim_set_keymap(
+				"t",
+				"<leader>4",
+				"<cmd>4ToggleTerm direction=float<CR>",
+				{ noremap = true, silent = true }
+			)
 
-		-- <c-s-/> sends \x1b[46~ via Ghostty keybind
-		vim.api.nvim_set_keymap("n", "<leader>5", "<cmd>5ToggleTerm direction=tab<CR>", { noremap = true, silent = true })
-		vim.api.nvim_set_keymap("t", "<leader>5", "<cmd>5ToggleTerm direction=tab<CR>", { noremap = true, silent = true })
+			-- <c-s-/> sends \x1b[46~ via Ghostty keybind
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>5",
+				"<cmd>5ToggleTerm direction=tab<CR>",
+				{ noremap = true, silent = true }
+			)
+			vim.api.nvim_set_keymap(
+				"t",
+				"<leader>5",
+				"<cmd>5ToggleTerm direction=tab<CR>",
+				{ noremap = true, silent = true }
+			)
 
 			-- open terminal in current buffer's directory
 			vim.keymap.set("n", "<leader>ot", function()

@@ -1,323 +1,323 @@
 return {
-  {
-    "mfussenegger/nvim-dap",
-    dependencies = {
-      "rcarriga/nvim-dap-ui",
-      "nvim-neotest/nvim-nio",
-      {
-        "leoluz/nvim-dap-go",
-        opts = {},
-      },
-    },
-    lazy = true,
-    keys = {
-      { "<leader>dB", desc = "Breakpoint Condition" },
-      { "<leader>db", desc = "Toggle Breakpoint" },
-      { "<leader>dc", desc = "Run/Continue" },
-      { "<leader>da", desc = "Run with Args" },
-      { "<leader>dC", desc = "Run to Cursor" },
-      { "<leader>dg", desc = "Go to Line (No Execute)" },
-      { "<leader>di", desc = "Step Into" },
-      { "<leader>dj", desc = "Down" },
-      { "<leader>du", desc = "Dap UI" },
-      { "<leader>de", desc = "Eval",                   mode = { "n", "v" } },
-      { "<leader>dk", desc = "Up" },
-      { "<leader>dl", desc = "Run Last" },
-      { "<leader>dO", desc = "Step Out" },
-      { "<leader>do", desc = "Step Over" },
-      { "<leader>dP", desc = "Pause" },
-      { "<leader>dr", desc = "Toggle REPL" },
-      { "<leader>ds", desc = "Session" },
-      { "<leader>dt", desc = "Terminate" },
-      { "<leader>dw", desc = "Widgets" },
-      { "<F5>",       desc = "DAP Continue" },
-      { "<F6>",       desc = "Debug Test" },
-      { "<F8>",       desc = "Step Out" },
-      { "<F9>",       desc = "Toggle Breakpoint" },
-      { "<F10>",      desc = "Step Over" },
-      { "<F11>",      desc = "Step Into" },
-    },
-    config = function()
-      local dap = require("dap")
-      local dapui = require("dapui")
-      local utils = require("helpers.utils")
-      local icons = require("config.icons")
+	{
+		"mfussenegger/nvim-dap",
+		dependencies = {
+			"rcarriga/nvim-dap-ui",
+			"nvim-neotest/nvim-nio",
+			{
+				"leoluz/nvim-dap-go",
+				opts = {},
+			},
+		},
+		lazy = true,
+		keys = {
+			{ "<leader>dB", desc = "Breakpoint Condition" },
+			{ "<leader>db", desc = "Toggle Breakpoint" },
+			{ "<leader>dc", desc = "Run/Continue" },
+			{ "<leader>da", desc = "Run with Args" },
+			{ "<leader>dC", desc = "Run to Cursor" },
+			{ "<leader>dg", desc = "Go to Line (No Execute)" },
+			{ "<leader>di", desc = "Step Into" },
+			{ "<leader>dj", desc = "Down" },
+			{ "<leader>du", desc = "Dap UI" },
+			{ "<leader>de", desc = "Eval", mode = { "n", "v" } },
+			{ "<leader>dk", desc = "Up" },
+			{ "<leader>dl", desc = "Run Last" },
+			{ "<leader>dO", desc = "Step Out" },
+			{ "<leader>do", desc = "Step Over" },
+			{ "<leader>dP", desc = "Pause" },
+			{ "<leader>dr", desc = "Toggle REPL" },
+			{ "<leader>ds", desc = "Session" },
+			{ "<leader>dt", desc = "Terminate" },
+			{ "<leader>dw", desc = "Widgets" },
+			{ "<F5>", desc = "DAP Continue" },
+			{ "<F6>", desc = "Debug Test" },
+			{ "<F8>", desc = "Step Out" },
+			{ "<F9>", desc = "Toggle Breakpoint" },
+			{ "<F10>", desc = "Step Over" },
+			{ "<F11>", desc = "Step Into" },
+		},
+		config = function()
+			local dap = require("dap")
+			local dapui = require("dapui")
+			local utils = require("helpers.utils")
+			local icons = require("config.icons")
 
-      -- Load per-language DAP configurations
-      -- Note: Go adapter is configured by nvim-dap-go (loaded via opts = {}),
-      -- do NOT load dap.go here as it would overwrite the dynamic adapter setup.
-      require("dap.cs")(dap)
-      require("dap.bash")(dap)
-      require("dap.c")(dap)
+			-- Load per-language DAP configurations
+			-- Note: the Go adapter is configured by nvim-dap-go (loaded via opts = {}),
+			-- so there is no dap.go module here.
+			require("dap.cs")(dap)
+			require("dap.bash")(dap)
+			require("dap.c")(dap)
 
-      -- Resolve symlinks in DAP launch configs.
-      -- neotest-golang derives paths from expand('%:p') which may return
-      -- symlink paths. Go tooling rejects these with "directory outside
-      -- main module" errors. on_config runs in prepare_config() before
-      -- the adapter is invoked, so the resolved paths are used everywhere.
-      dap.listeners.on_config["resolve_symlinks"] = function(config)
-        if config.program then
-          local resolved = vim.fn.resolve(config.program)
-          if resolved ~= config.program then
-            config.program = resolved
-          end
-        end
-        if config.cwd then
-          local resolved = vim.fn.resolve(config.cwd)
-          if resolved ~= config.cwd then
-            config.cwd = resolved
-          end
-        end
-        return config
-      end
+			-- Resolve symlinks in DAP launch configs.
+			-- neotest-golang derives paths from expand('%:p') which may return
+			-- symlink paths. Go tooling rejects these with "directory outside
+			-- main module" errors. on_config runs in prepare_config() before
+			-- the adapter is invoked, so the resolved paths are used everywhere.
+			dap.listeners.on_config["resolve_symlinks"] = function(config)
+				if config.program then
+					local resolved = vim.fn.resolve(config.program)
+					if resolved ~= config.program then
+						config.program = resolved
+					end
+				end
+				if config.cwd then
+					local resolved = vim.fn.resolve(config.cwd)
+					if resolved ~= config.cwd then
+						config.cwd = resolved
+					end
+				end
+				return config
+			end
 
-      -- Keymaps
-      local keys = {
-        {
-          key = "<leader>dB",
-          command = function()
-            require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
-          end,
-          opts = { desc = "Breakpoint Condition" },
-        },
-        {
-          key = "<leader>db",
-          command = function()
-            require("dap").toggle_breakpoint()
-          end,
-          opts = { desc = "Toggle Breakpoint" },
-        },
-        {
-          key = "<leader>dc",
-          command = function()
-            require("dap").continue()
-          end,
-          opts = { desc = "Run/Continue" },
-        },
-        {
-          key = "<leader>da",
-          command = function()
-            require("dap").continue({ before = utils.get_args })
-          end,
-          opts = { desc = "Run with Args" },
-        },
-        {
-          key = "<leader>dC",
-          command = function()
-            require("dap").run_to_cursor()
-          end,
-          opts = { desc = "Run to Cursor" },
-        },
-        {
-          key = "<leader>dg",
-          command = function()
-            require("dap").goto_()
-          end,
-          opts = { desc = "Go to Line (No Execute)" },
-        },
-        {
-          key = "<leader>di",
-          command = function()
-            require("dap").step_into()
-          end,
-          opts = { desc = "Step Into" },
-        },
-        {
-          key = "<leader>dj",
-          command = function()
-            require("dap").down()
-          end,
-          opts = { desc = "Down" },
-        },
-        {
-          key = "<leader>du",
-          command = function()
-            require("dapui").toggle({})
-          end,
-          opts = { desc = "Dap UI" },
-        },
-        {
-          mode = { "n", "v" },
-          key = "<leader>de",
-          command = function()
-            require("dapui").eval()
-          end,
-          opts = { desc = "Eval" },
-        },
-        {
-          key = "<leader>dk",
-          command = function()
-            require("dap").up()
-          end,
-          opts = { desc = "Up" },
-        },
-        {
-          key = "<leader>dl",
-          command = function()
-            require("dap").run_last()
-          end,
-          opts = { desc = "Run Last" },
-        },
-        {
-          key = "<leader>dO",
-          command = function()
-            require("dap").step_out()
-          end,
-          opts = { desc = "Step Out" },
-        },
-        {
-          key = "<leader>do",
-          command = function()
-            require("dap").step_over()
-          end,
-          opts = { desc = "Step Over" },
-        },
-        {
-          key = "<leader>dP",
-          command = function()
-            require("dap").pause()
-          end,
-          opts = { desc = "Pause" },
-        },
-        {
-          key = "<leader>dr",
-          command = function()
-            require("dap").repl.toggle()
-          end,
-          opts = { desc = "Toggle REPL" },
-        },
-        {
-          key = "<leader>ds",
-          command = function()
-            require("dap").session()
-          end,
-          opts = { desc = "Session" },
-        },
-        {
-          key = "<leader>dt",
-          command = function()
-            require("dap").terminate()
-          end,
-          opts = { desc = "Terminate" },
-        },
-        {
-          key = "<leader>dw",
-          command = function()
-            require("dap.ui.widgets").hover()
-          end,
-          opts = { desc = "Widgets" },
-        },
-        {
-          key = "<F5>",
-          command = "<Cmd>lua require'dap'.continue()<CR>",
-          opts = { desc = "DAP Continue" },
-        },
-        {
-          key = "<F6>",
-          command = "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
-          opts = { desc = "Debug Test" },
-        },
-        {
-          key = "<F9>",
-          command = "<Cmd>lua require'dap'.toggle_breakpoint()<CR>",
-          opts = { desc = "Toggle Breakpoint" },
-        },
-        {
-          key = "<F10>",
-          command = "<Cmd>lua require'dap'.step_over()<CR>",
-          opts = { desc = "Step Over" },
-        },
-        {
-          key = "<F11>",
-          command = "<Cmd>lua require'dap'.step_into()<CR>",
-          opts = { desc = "Step Into" },
-        },
-        {
-          key = "<F8>",
-          command = "<Cmd>lua require'dap'.step_out()<CR>",
-          opts = { desc = "Step Out" },
-        },
-      }
+			-- Keymaps
+			local keys = {
+				{
+					key = "<leader>dB",
+					command = function()
+						require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+					end,
+					opts = { desc = "Breakpoint Condition" },
+				},
+				{
+					key = "<leader>db",
+					command = function()
+						require("dap").toggle_breakpoint()
+					end,
+					opts = { desc = "Toggle Breakpoint" },
+				},
+				{
+					key = "<leader>dc",
+					command = function()
+						require("dap").continue()
+					end,
+					opts = { desc = "Run/Continue" },
+				},
+				{
+					key = "<leader>da",
+					command = function()
+						require("dap").continue({ before = utils.get_args })
+					end,
+					opts = { desc = "Run with Args" },
+				},
+				{
+					key = "<leader>dC",
+					command = function()
+						require("dap").run_to_cursor()
+					end,
+					opts = { desc = "Run to Cursor" },
+				},
+				{
+					key = "<leader>dg",
+					command = function()
+						require("dap").goto_()
+					end,
+					opts = { desc = "Go to Line (No Execute)" },
+				},
+				{
+					key = "<leader>di",
+					command = function()
+						require("dap").step_into()
+					end,
+					opts = { desc = "Step Into" },
+				},
+				{
+					key = "<leader>dj",
+					command = function()
+						require("dap").down()
+					end,
+					opts = { desc = "Down" },
+				},
+				{
+					key = "<leader>du",
+					command = function()
+						require("dapui").toggle({})
+					end,
+					opts = { desc = "Dap UI" },
+				},
+				{
+					mode = { "n", "v" },
+					key = "<leader>de",
+					command = function()
+						require("dapui").eval()
+					end,
+					opts = { desc = "Eval" },
+				},
+				{
+					key = "<leader>dk",
+					command = function()
+						require("dap").up()
+					end,
+					opts = { desc = "Up" },
+				},
+				{
+					key = "<leader>dl",
+					command = function()
+						require("dap").run_last()
+					end,
+					opts = { desc = "Run Last" },
+				},
+				{
+					key = "<leader>dO",
+					command = function()
+						require("dap").step_out()
+					end,
+					opts = { desc = "Step Out" },
+				},
+				{
+					key = "<leader>do",
+					command = function()
+						require("dap").step_over()
+					end,
+					opts = { desc = "Step Over" },
+				},
+				{
+					key = "<leader>dP",
+					command = function()
+						require("dap").pause()
+					end,
+					opts = { desc = "Pause" },
+				},
+				{
+					key = "<leader>dr",
+					command = function()
+						require("dap").repl.toggle()
+					end,
+					opts = { desc = "Toggle REPL" },
+				},
+				{
+					key = "<leader>ds",
+					command = function()
+						require("dap").session()
+					end,
+					opts = { desc = "Session" },
+				},
+				{
+					key = "<leader>dt",
+					command = function()
+						require("dap").terminate()
+					end,
+					opts = { desc = "Terminate" },
+				},
+				{
+					key = "<leader>dw",
+					command = function()
+						require("dap.ui.widgets").hover()
+					end,
+					opts = { desc = "Widgets" },
+				},
+				{
+					key = "<F5>",
+					command = "<Cmd>lua require'dap'.continue()<CR>",
+					opts = { desc = "DAP Continue" },
+				},
+				{
+					key = "<F6>",
+					command = "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
+					opts = { desc = "Debug Test" },
+				},
+				{
+					key = "<F9>",
+					command = "<Cmd>lua require'dap'.toggle_breakpoint()<CR>",
+					opts = { desc = "Toggle Breakpoint" },
+				},
+				{
+					key = "<F10>",
+					command = "<Cmd>lua require'dap'.step_over()<CR>",
+					opts = { desc = "Step Over" },
+				},
+				{
+					key = "<F11>",
+					command = "<Cmd>lua require'dap'.step_into()<CR>",
+					opts = { desc = "Step Into" },
+				},
+				{
+					key = "<F8>",
+					command = "<Cmd>lua require'dap'.step_out()<CR>",
+					opts = { desc = "Step Out" },
+				},
+			}
 
-      utils.map_keys(keys)
+			utils.map_keys(keys)
 
-      -- DAP UI listeners
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      -- Note: Do NOT auto-close dapui on terminate/exit events.
-      -- Short-lived debug sessions (e.g. Go tests via neotest) fire these
-      -- events immediately, causing the UI to flash and disappear before
-      -- you can inspect results. Use <leader>du to toggle the UI manually.
+			-- DAP UI listeners
+			dap.listeners.after.event_initialized["dapui_config"] = function()
+				dapui.open()
+			end
+			-- Note: Do NOT auto-close dapui on terminate/exit events.
+			-- Short-lived debug sessions (e.g. Go tests via neotest) fire these
+			-- events immediately, causing the UI to flash and disappear before
+			-- you can inspect results. Use <leader>du to toggle the UI manually.
 
-      -- Setup DAP signs
-      vim.fn.sign_define("DapBreakpoint", {
-        text = icons.dap.Breakpoint,
-        texthl = "DapBreakpoint",
-        linehl = "",
-        numhl = "",
-      })
+			-- Setup DAP signs
+			vim.fn.sign_define("DapBreakpoint", {
+				text = icons.dap.Breakpoint,
+				texthl = "DapBreakpoint",
+				linehl = "",
+				numhl = "",
+			})
 
-      vim.fn.sign_define("DapBreakpointCondition", {
-        text = icons.dap.BreakpointCondition,
-        texthl = "DapBreakpointCondition",
-        linehl = "",
-        numhl = "",
-      })
+			vim.fn.sign_define("DapBreakpointCondition", {
+				text = icons.dap.BreakpointCondition,
+				texthl = "DapBreakpointCondition",
+				linehl = "",
+				numhl = "",
+			})
 
-      vim.fn.sign_define("DapBreakpointRejected", {
-        text = icons.dap.BreakpointRejected[1],
-        texthl = icons.dap.BreakpointRejected[2],
-        linehl = "",
-        numhl = "",
-      })
+			vim.fn.sign_define("DapBreakpointRejected", {
+				text = icons.dap.BreakpointRejected[1],
+				texthl = icons.dap.BreakpointRejected[2],
+				linehl = "",
+				numhl = "",
+			})
 
-      vim.fn.sign_define("DapStopped", {
-        text = icons.dap.Stopped[1],
-        texthl = icons.dap.Stopped[2],
-        linehl = icons.dap.Stopped[3],
-        numhl = "",
-      })
+			vim.fn.sign_define("DapStopped", {
+				text = icons.dap.Stopped[1],
+				texthl = icons.dap.Stopped[2],
+				linehl = icons.dap.Stopped[3],
+				numhl = "",
+			})
 
-      vim.fn.sign_define("DapLogPoint", {
-        text = icons.dap.LogPoint,
-        texthl = "DapLogPoint",
-        linehl = "",
-        numhl = "",
-      })
+			vim.fn.sign_define("DapLogPoint", {
+				text = icons.dap.LogPoint,
+				texthl = "DapLogPoint",
+				linehl = "",
+				numhl = "",
+			})
 
-      -- Setup dapui with proper layout for variables
-      ---@diagnostic disable-next-line: missing-fields
-      dapui.setup({
-        layouts = {
-          {
-            elements = {
-              { id = "watches",     size = 0.25 },
-              { id = "breakpoints", size = 0.25 },
-              { id = "stacks",      size = 0.25 },
-              { id = "scopes",      size = 0.25 },
-            },
-            size = 40,
-            position = "left",
-          },
-          {
-            elements = {
-              { id = "repl",    size = 0.5 },
-              { id = "console", size = 0.5 },
-            },
-            size = 10,
-            position = "bottom",
-          },
-        },
-      })
-    end,
-  },
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "nvim-neotest/nvim-nio",
-    },
-    lazy = true,
-  },
+			-- Setup dapui with proper layout for variables
+			---@diagnostic disable-next-line: missing-fields
+			dapui.setup({
+				layouts = {
+					{
+						elements = {
+							{ id = "watches", size = 0.25 },
+							{ id = "breakpoints", size = 0.25 },
+							{ id = "stacks", size = 0.25 },
+							{ id = "scopes", size = 0.25 },
+						},
+						size = 40,
+						position = "left",
+					},
+					{
+						elements = {
+							{ id = "repl", size = 0.5 },
+							{ id = "console", size = 0.5 },
+						},
+						size = 10,
+						position = "bottom",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"rcarriga/nvim-dap-ui",
+		dependencies = {
+			"mfussenegger/nvim-dap",
+			"nvim-neotest/nvim-nio",
+		},
+		lazy = true,
+	},
 }

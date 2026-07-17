@@ -4,8 +4,10 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.lsp.start({
 			name = "docker_compose_language_service",
 			cmd = { "docker-compose-langserver", "--stdio" },
-			root_dir = vim.fs.root(ev.buf, { "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml", ".git" })
-				or vim.fn.getcwd(),
+			root_dir = vim.fs.root(
+				ev.buf,
+				{ "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml", ".git" }
+			) or vim.fn.getcwd(),
 		})
 	end,
 })

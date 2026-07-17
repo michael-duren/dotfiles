@@ -1,15 +1,14 @@
+-- vtsls is installed by mason-tool-installer and excluded from mason-lspconfig's
+-- automatic_enable (see plugins/mason.lua), so we define and enable it here
+-- with the native vim.lsp.config API. Do NOT call mason-lspconfig setup() again
+-- in this file — a second setup() would clobber the opts from plugins/mason.lua.
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
-		"mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason.nvim",
 	},
 	config = function()
-		require("mason-lspconfig").setup({
-			ensure_installed = { "vtsls" },
-		})
-
-		vim.lsp.config.vtsls = {
+		vim.lsp.config("vtsls", {
 			cmd = { "vtsls", "--stdio" },
 			filetypes = {
 				"javascript",
@@ -19,7 +18,7 @@ return {
 				"typescriptreact",
 				"typescript.tsx",
 			},
-			root_markers = { "package.json", "tsconfig.json", "jsconfig.json" },
+			root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
 			settings = {
 				typescript = {
 					inlayHints = {
@@ -42,17 +41,7 @@ return {
 					updateImportsOnFileMove = "always",
 				},
 			},
-		}
-
-		vim.api.nvim_create_autocmd("FileType", {
-			pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-			callback = function(ev)
-				vim.lsp.start({
-					name = "vtsls",
-					cmd = { "vtsls", "--stdio" },
-					root_dir = vim.fs.root(ev.buf, { "package.json", "tsconfig.json", "jsconfig.json", ".git" }),
-				})
-			end,
 		})
+		vim.lsp.enable("vtsls")
 	end,
 }

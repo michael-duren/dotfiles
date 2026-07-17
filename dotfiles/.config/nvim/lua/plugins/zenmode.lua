@@ -1,6 +1,5 @@
-local utils = require("helpers.utils")
-
-if utils.is_linux() or true then
+-- currently disabled everywhere; flip this to re-enable on non-Linux
+if true then
 	return {}
 end
 

@@ -24,8 +24,8 @@ return {
 				"╚══════════════════════════════════════════════════════════════════════════╝",
 				"",
 				"┌─ BROWSE (Snacks) ─────────────────────────────────────────────────────┐",
-				"│ <leader>gp  │ Browse open PRs                                          │",
-				"│ <leader>gP  │ Browse all PRs                                           │",
+				"│ <leader>gp  │ Git pull (rebase)                                        │",
+				"│ <leader>gP  │ Git push                                                 │",
 				"│ <leader>gi  │ Browse open issues                                       │",
 				"│ <leader>go  │ Open PR in Octo (for inline comments)                   │",
 				"└───────────────────────────────────────────────────────────────────────┘",
@@ -99,10 +99,10 @@ return {
 
 			local buf = vim.api.nvim_create_buf(false, true)
 			vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-			vim.api.nvim_buf_set_option(buf, "modifiable", false)
-			vim.api.nvim_buf_set_option(buf, "buftype", "nofile")
-			vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-			vim.api.nvim_buf_set_option(buf, "filetype", "github-help")
+			vim.bo[buf].modifiable = false
+			vim.bo[buf].buftype = "nofile"
+			vim.bo[buf].bufhidden = "wipe"
+			vim.bo[buf].filetype = "github-help"
 
 			local width = 78
 			local height = #lines
@@ -249,7 +249,7 @@ return {
 			function()
 				vim.cmd([[! git push ]])
 			end,
-			desc = "GitHub PRs (all)",
+			desc = "Git push",
 		},
 		-- GitHub Issues
 		{

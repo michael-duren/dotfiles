@@ -71,7 +71,7 @@ return {
 		{
 			"<leader>ff",
 			function()
-				require("snacks").picker.files({
+				Snacks.picker.files({
 					exclude = { "^bin$", "^obj$" },
 				})
 			end,
@@ -186,13 +186,6 @@ return {
 				})
 			end,
 			desc = "Find Config File",
-		},
-		{
-			"<leader>ff",
-			function()
-				Snacks.picker.files()
-			end,
-			desc = "Find Files",
 		},
 		{
 			"<leader>fg",
@@ -320,13 +313,6 @@ return {
 				Snacks.picker.autocmds()
 			end,
 			desc = "Autocmds",
-		},
-		{
-			"<leader>sb",
-			function()
-				Snacks.picker.lines()
-			end,
-			desc = "Buffer Lines",
 		},
 		{
 			"<leader>sc",

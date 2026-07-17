@@ -1,6 +1,6 @@
 return {
 	{
-		"williamboman/mason.nvim",
+		"mason-org/mason.nvim",
 		lazy = false,
 		config = function()
 			require("mason").setup({
@@ -14,34 +14,37 @@ return {
 		end,
 	},
 	{
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		lazy = false,
-		dependencies = { "williamboman/mason.nvim" },
+		dependencies = { "mason-org/mason.nvim" },
 		opts = {
+			-- These servers are configured/started by hand (lua/lsp/ and
+			-- plugins/vtsls.lua, plugins/roslyn.lua), so keep mason-lspconfig
+			-- from enabling them a second time.
 			automatic_enable = {
-			exclude = {
-				"roslyn",
-				"lua_ls",
-				"gopls",
-				"zls",
-				"vtsls",
-				"tailwindcss",
-				"yamlls",
-				"bashls",
-				"clangd",
-				"dockerls",
-				"docker_compose_language_service",
-				"helm_ls",
-				"texlab",
-				"terraformls",
-			},
+				exclude = {
+					"roslyn",
+					"lua_ls",
+					"gopls",
+					"zls",
+					"vtsls",
+					"tailwindcss",
+					"yamlls",
+					"bashls",
+					"clangd",
+					"dockerls",
+					"docker_compose_language_service",
+					"helm_ls",
+					"texlab",
+					"terraformls",
+				},
 			},
 		},
 	},
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		lazy = false,
-		dependencies = { "williamboman/mason.nvim" },
+		dependencies = { "mason-org/mason.nvim" },
 		opts = {
 			ensure_installed = {
 				-- lsp

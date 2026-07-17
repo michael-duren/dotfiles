@@ -10,11 +10,9 @@ local keybindings = {
 		command = ":w<CR>",
 		opts = { desc = "Save current buffer" },
 	},
-	{
-		key = "<C-S>",
-		command = ":noau w<CR>",
-		opts = { desc = "Save without triggering autocommands" },
-	},
+	-- NOTE: <C-S> is the same key as <C-s> in Vim (ctrl+letter is case-insensitive),
+	-- so a second <C-S> mapping would silently overwrite the normal save above.
+	-- Use <leader>S for the no-autocmd save instead.
 	{
 		key = "<leader>S",
 		command = ":noau w<CR>",
@@ -251,11 +249,8 @@ local keybindings = {
 		command = ":vsplit<CR>",
 		opts = { desc = "Vertical split" },
 	},
-	{
-		key = "-",
-		command = ":split<CR>",
-		opts = { desc = "Horizontal split" },
-	},
+	-- NOTE: "-" is taken by oil.nvim (open parent directory); a ":split" mapping
+	-- here would be shadowed as soon as oil's lazy keys register. Use <C-w>s.
 	{
 		key = "<M-w>",
 		command = ":close<CR>",
@@ -348,11 +343,8 @@ local keybindings = {
 			desc = "Reload init.lua",
 		},
 	},
-	{
-		key = "<leader>?",
-		command = ":e $MYVIMRC | :cd %:p:h | split . | wincmd k | pwd<CR>",
-		opts = { desc = "Open settings" },
-	},
+	-- NOTE: <leader>? belongs to which-key (buffer-local keymap help); a mapping
+	-- here would be shadowed when which-key loads. Use <leader>fc to find config files.
 	-- Check perf
 	{
 		key = "<leader>lp",

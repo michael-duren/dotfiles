@@ -2,30 +2,14 @@ local M = {}
 
 ---@returns boolean
 M.is_windows = function()
-	---@diagnostic disable-next-line
-	return vim.loop.os_uname().sysname:find("Windows") ~= nil or vim.fn.has("win32") == 1
+	return vim.uv.os_uname().sysname:find("Windows") ~= nil or vim.fn.has("win32") == 1
 end
 
 ---@returns boolean
 M.is_linux = function()
-	return vim.loop.os_uname().sysname == "Linux"
+	return vim.uv.os_uname().sysname == "Linux"
 end
 
-----@param opts LspCommand
-function M.execute(opts)
-	local params = {
-		command = opts.command,
-		arguments = opts.arguments,
-	}
-	if opts.open then
-		require("trouble").open({
-			mode = "lsp_command",
-			params = params,
-		})
-	else
-		return vim.lsp.buf_request(0, "workspace/executeCommand", params, opts.handler)
-	end
-end
 -- Create code action helper
 M.action = setmetatable({}, {
 	__index = function(_, action)

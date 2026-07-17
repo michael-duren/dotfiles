@@ -56,11 +56,10 @@ return {
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = "*",
 			callback = function()
+				-- pcall: not every filetype has a parser installed. A successful
+				-- call already starts highlighting for the buffer.
 				local ok, _ = pcall(vim.treesitter.start)
 				if ok then
-					-- Enable syntax highlighting
-					vim.treesitter.start()
-
 					-- Enable indentation
 					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 

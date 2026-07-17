@@ -64,10 +64,8 @@ return {
 			opts.appearance.kind_icons = icons.kinds
 
 			require("blink.cmp").setup(opts)
-			-- Load friendly-snippets
-			require("luasnip.loaders.from_vscode").lazy_load()
-			local snippetPath = vim.fn.stdpath("config") .. "/snippets"
-			require("luasnip.loaders.from_vscode").lazy_load({ paths = { snippetPath } })
+			-- snippet loading (friendly-snippets + custom) happens in the
+			-- LuaSnip spec (plugins/lua-snip.lua) — don't load it twice here
 		end,
 	},
 }

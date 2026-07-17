@@ -19,5 +19,5 @@ opt.background = "dark"
 
 opt.laststatus = 3
 opt.list = true
-opt.listchars = { "eol:↴", "tab:▸ " }
+opt.listchars = { eol = "↴", tab = "▸ " }
 opt.splitkeep = "screen"

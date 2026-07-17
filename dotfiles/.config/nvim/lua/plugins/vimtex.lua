@@ -1,7 +1,6 @@
 return {
 	"lervag/vimtex",
-	lazy = false, -- vimtex docs say don't lazy-load
-	ft = { "tex", "plaintex", "latex" },
+	lazy = false, -- vimtex docs say don't lazy-load (ft would be ignored anyway)
 	init = function()
 		vim.g.vimtex_view_method = "zathura"
 		vim.g.vimtex_compiler_method = "latexmk"
