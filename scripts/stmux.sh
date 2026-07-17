@@ -11,7 +11,7 @@ if [[ "$WORK" == "true" ]]; then
     for session in "${sessions[@]}"; do
         case "$session" in
         scratch) path="$HOME/Code" ;;
-        pc) path="$HOME/Code/cia/digital-web-platform-commander" ;;
+        pc) path="$HOME/Code/cia/pc" ;;
         dotfiles) path="$HOME/Code/dotfiles/dotfiles" ;;
         notes) path="$HOME/Code/learning" ;;
         esac
