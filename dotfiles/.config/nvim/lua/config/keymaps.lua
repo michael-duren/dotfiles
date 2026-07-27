@@ -308,7 +308,7 @@ local keybindings = {
 	-- Git
 	{
 		key = "<leader>gB",
-		command = "<cmd>Gitsigns blame_line<CR>",
+		command = "<cmd>Gitsigns blame<CR>",
 		opts = { desc = "Blame line" },
 	},
 
