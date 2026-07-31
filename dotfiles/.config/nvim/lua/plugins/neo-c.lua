@@ -6,4 +6,5 @@ return {
 		"mfussenegger/nvim-dap",
 	},
 	opts = {},
+	lazy = false,
 }

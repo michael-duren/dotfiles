@@ -27,7 +27,7 @@ if [[ "$WORK" == "true" ]]; then
 
     exec tmux attach -t scratch
 else
-    sessions=(career dotfiles boxes lc duck)
+    sessions=(career dotfiles boxes lc duck scratch)
 
     for session in "${sessions[@]}"; do
         case "$session" in
@@ -36,6 +36,7 @@ else
         boxes) path="$HOME/Code/boxes" ;;
         lc) path="$HOME/Code/leet-code-practice/c" ;;
         duck) path="$HOME/Code/rd-wt/main" ;;
+        scratch) path="$HOME/Code" ;;
         esac
 
         if tmux has-session -t "$session" 2>/dev/null; then
