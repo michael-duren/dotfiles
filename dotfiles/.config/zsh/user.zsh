@@ -41,11 +41,11 @@ alias qls='ramalama list'                     # list cached models
 
 qhelp() {
     cat <<EOF
-    qcode   # default coding — Qwen3-Coder 30B-A3B (MoE)
-    qcoder  # heavy / C / asm — Qwen2.5-Coder 32B (dense)
-    qask    # general / Linux / Hyprland — Qwen3.5 27B
-    qserve  # OpenAI-compatible API on :8080
-    qls     # list cached models
+    qcode -   default coding — Qwen3-Coder 30B-A3B (MoE)
+    qcoder -  heavy / C / asm — Qwen2.5-Coder 32B (dense)
+    qask -    general / Linux / Hyprland — Qwen3.5 27B
+    qserve -  OpenAI-compatible API on :8080
+    qls -     list cached models
 EOF
 }
 
