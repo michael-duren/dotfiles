@@ -33,12 +33,41 @@ if [[ ${HYDE_ZSH_NO_PLUGINS} != "1" ]]; then
 fi
 
 #  Local LLMs (ramalama, Vulkan on Radeon 890M)
-alias qcode='ramalama run qwen3-coder:30b'    # default coding — Qwen3-Coder 30B-A3B (MoE)
-alias qcoder='ramalama run qwen2.5-coder:32b' # heavy / C / asm — Qwen2.5-Coder 32B (dense)
-alias qask='ramalama run qwen3.5:27b'         # general / Linux / Hyprland — Qwen3.5 27B
+alias qcode='runModel qwen3-coder:30b'        # default coding — Qwen3-Coder 30B-A3B (MoE)
+alias qcoder='runModel qwen2.5-coder:32b'     # heavy / C / asm — Qwen2.5-Coder 32B (dense)
+alias qask='runModel qwen3.5:27b'             # general / Linux / Hyprland — Qwen3.5 27B
 alias qserve='ramalama serve qwen3-coder:30b' # OpenAI-compatible API on :8080
 alias qls='ramalama list'                     # list cached models
-alias gacm='git add -A && git commit -m'      # list cached models
+
+qhelp() {
+    cat <<EOF
+    qcode   # default coding — Qwen3-Coder 30B-A3B (MoE)
+    qcoder  # heavy / C / asm — Qwen2.5-Coder 32B (dense)
+    qask    # general / Linux / Hyprland — Qwen3.5 27B
+    qserve  # OpenAI-compatible API on :8080
+    qls     # list cached models
+EOF
+}
+
+runModel() {
+    local model_to_run=$1
+    local net_name='no-egress'
+
+    if [[ -z $model_to_run ]]; then
+        echo "usage: runModel <model>" >&2
+        return 1
+    fi
+
+    # Create the isolated (no external route) network if it doesn't exist yet
+    if ! podman network exists "$net_name"; then
+        echo "Creating internal podman network '$net_name'..." >&2
+        podman network create --internal "$net_name" || return 1
+    fi
+
+    ramalama run --network "$net_name" "$model_to_run" "${@:2}"
+}
+
+alias gacm='git add -A && git commit -m'
 alias help='run-help'
 alias gwl='git worktree list'
 alias gwa='git worktree add'
