@@ -37,6 +37,8 @@ return {
 					"helm_ls",
 					"texlab",
 					"terraformls",
+					"basedpyright",
+					"ruff",
 				},
 			},
 		},
@@ -67,6 +69,8 @@ return {
 				"helm-ls",
 				"texlab",
 				"terraform-ls",
+				"basedpyright",
+				"ruff",
 				-- dap
 				"netcoredbg",
 				"bash-debug-adapter",

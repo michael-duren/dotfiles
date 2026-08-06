@@ -39,6 +39,9 @@ return {
 			terraform = { "tofu_fmt" },
 			["terraform-vars"] = { "tofu_fmt" },
 
+			-- Python (ruff replaces black + isort)
+			python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
+
 			-- LaTeX
 			tex = { "latexindent" },
 			plaintex = { "latexindent" },

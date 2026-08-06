@@ -48,6 +48,8 @@ return {
 				"helm",
 				"hcl",
 				"terraform",
+				"python",
+				"toml",
 				-- "vcl",
 			})
 			:wait(300000) -- wait 5 min max
