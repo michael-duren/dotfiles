@@ -5,13 +5,6 @@ local mise_shims = vim.fn.expand("~/.local/share/mise/shims")
 vim.env.PATH = mise_go .. ":" .. mise_shims .. ":" .. vim.env.PATH
 vim.env.GOBIN = nil
 
-local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-	opts = opts or {}
-	opts.border = opts.border or "rounded"
-	return orig_util_open_floating_preview(contents, syntax, opts, ...)
-end
-
 -- Lazy Config
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
