@@ -38,14 +38,16 @@ alias qcoder='runModel qwen2.5-coder:32b'     # heavy / C / asm — Qwen2.5-Code
 alias qask='runModel qwen3.5:27b'             # general / Linux / Hyprland — Qwen3.5 27B
 alias qserve='ramalama serve qwen3-coder:30b' # OpenAI-compatible API on :8080
 alias qls='ramalama list'                     # list cached models
+alias ocode='ramalama sandbox opencode qwen3-coder:30b'
 
 qhelp() {
     cat <<EOF
-    qcode -   default coding — Qwen3-Coder 30B-A3B (MoE)
+    qcode  -  Default coding — Qwen3-Coder 30B-A3B (MoE)
     qcoder -  heavy / C / asm — Qwen2.5-Coder 32B (dense)
-    qask -    general / Linux / Hyprland — Qwen3.5 27B
+    qask   -  General / Linux / Hyprland — Qwen3.5 27B
     qserve -  OpenAI-compatible API on :8080
-    qls -     list cached models
+    qls    -  List cached models
+    ocode  -  Run opencode with qwen3-coder:30b
 EOF
 }
 
