@@ -49,6 +49,7 @@ return {
 			require("dap.cs")(dap)
 			require("dap.bash")(dap)
 			require("dap.c")(dap)
+			require("dap.go")(dap)
 
 			-- Resolve symlinks in DAP launch configs.
 			-- neotest-golang derives paths from expand('%:p') which may return
