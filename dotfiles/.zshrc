@@ -20,6 +20,24 @@ plugins=(
 
 [[ "$OSTYPE" == darwin* ]] && plugins+=(brew macos)
 
+pcall() {
+    if (( $# < 1 )); then
+        echo "pcall error: need at least one arg"
+        echo "usage: cmd args..."
+        return 1
+    fi
+
+    local cmd=$1
+
+    if ! command -v $cmd &>/dev/null; then
+        echo "command: $cmd not installed"
+        return 1
+    fi
+
+
+    "$@"
+}
+
 source "$ZSH/oh-my-zsh.sh"
 
 export EDITOR="${SSH_CONNECTION:+vim}"
@@ -36,12 +54,15 @@ alias gwl='git worktree list'
 alias gwr='git worktree remove'
 alias gwrf='git worktree remove --force'
 alias gwp='git worktree prune'
+unalias gd
+alias gd="git diff | pcall diffnav"
 alias l='ls -la'
 alias m='make'
 alias t='trash'
 alias vless='nvim -R'
 alias kctx='kubectx'
 alias vim='nvim'
+
 
 ts() {
     if [[ $# != 2 ]]; then
