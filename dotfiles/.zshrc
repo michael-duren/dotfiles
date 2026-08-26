@@ -130,3 +130,21 @@ f() {
         rm -f -- "$NNN_TMPFILE"
     }
 }
+
+export NVM_DIR="$HOME/.nvm"
+
+# Lazy-load nvm: define shims that source the real nvm on first use.
+# This avoids the ~hundreds-of-ms cost of sourcing nvm.sh in every shell.
+__lazy_nvm_cmds=(nvm node npm npx)
+
+__lazy_load_nvm() {
+    # Remove all shims so the real binaries/functions take over
+    unset -f "${__lazy_nvm_cmds[@]}" __lazy_load_nvm 2>/dev/null
+    [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+}
+
+for __cmd in "${__lazy_nvm_cmds[@]}"; do
+    eval "${__cmd}() { __lazy_load_nvm; ${__cmd} \"\$@\"; }"
+done
+unset __cmd
