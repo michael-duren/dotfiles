@@ -10,7 +10,7 @@ local open_browser = function(path)
 	elseif utils.is_linux() then
 		vim.fn.system("brave-origin " .. path)
 	else
-		vim.fn.system('open -a "Google Chrome" "' .. path .. '"')
+		vim.fn.system('open -a "Firefox" "' .. path .. '"')
 	end
 end
 
