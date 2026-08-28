@@ -1,6 +1,6 @@
 require("lsp.diagnostics")
 require("lsp.gopls")
-require("lsp.templ")
+-- require("lsp.templ") -- disabled: not needed, and templ shares gopls's root_dir
 require("lsp.zls")
 require("lsp.luals")
 require("lsp.tailwind")

@@ -15,7 +15,15 @@ vim.api.nvim_create_autocmd("FileType", {
 			cmd = { "templ", "lsp" },
 			root_dir = root,
 			reuse_client = function(client, config)
-				return client.config.root_dir == config.root_dir
+				-- Must re-check name and is_stopped: vim.lsp.start() runs this
+				-- predicate against EVERY running client, and a client stays in
+				-- lsp.client._all for two scheduled ticks after it exits.
+				-- Matching on root_dir alone attaches Go buffers to whichever
+				-- server claimed this root first (templ shares it), and reattaches
+				-- to a dying gopls instead of respawning one.
+				return client.name == config.name
+					and not client:is_stopped()
+					and client.config.root_dir == config.root_dir
 			end,
 		})
 	end,

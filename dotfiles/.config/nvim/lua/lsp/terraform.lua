@@ -19,7 +19,15 @@ vim.api.nvim_create_autocmd("FileType", {
 			cmd = { "terraform-ls", "serve" },
 			root_dir = root,
 			reuse_client = function(client, config)
-				return client.config.root_dir == config.root_dir
+				-- Must re-check name and is_stopped: vim.lsp.start() runs this
+				-- predicate against EVERY running client, and a client stays in
+				-- lsp.client._all for two scheduled ticks after it exits.
+				-- Matching on root_dir alone attaches the buffer to whichever
+				-- server claimed this root first, and reattaches to a dying
+				-- client instead of respawning one.
+				return client.name == config.name
+					and not client:is_stopped()
+					and client.config.root_dir == config.root_dir
 			end,
 			init_options = {
 				-- terraform-ls shells out to the terraform binary for version/schema
