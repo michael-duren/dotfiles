@@ -8,30 +8,34 @@
 -- DP-port renumbering across reboots and dock reconnects.
 -- Find descriptions with: hyprctl monitors | grep description
 
+local samsungWide = "desc:Samsung Electric Company LS34A650U HCNY505479"
+local f16 = "desc:BOE NE160QDM-NZ6"
+
 -- Samsung 34" ultrawide -- primary when docked.
 -- NOTE: Pinned at 60 Hz. The panel supports 99.98 Hz natively, but our
 -- current cable/dock can't sustain that bandwidth (caused display flicker).
 -- Try @99.98 again only with a known-good DP 1.2+ cable directly attached.
 hl.monitor({
-	output = "desc:Samsung Electric Company LS34A650U HCNY505479",
-	mode = "3440x1440@59.97",
+	output = samsungWide,
+	mode = "preferred",
 	position = "0x0",
-	scale = 1
+	scale = 1,
 })
 
 -- Framework 16 internal panel -- auto-positions to the left of any external.
 -- Scale 1.6 -> effective 1600x1000 logical pixels.
 hl.monitor({
-	output = "desc:BOE NE160QDM-NZ6",
+	output = f16,
 	mode = "2560x1600@165",
 	position = "auto-left",
-	scale = 1.6
+	scale = 1.6,
 })
 
 -- Catch-all for any other hot-plugged display (TV, projector, etc.)
 hl.monitor({
 	output = "",
 	mode = "preferred",
-	position = "auto",
-	scale = 1
+	position = "0x0",
+	scale = 1,
+	mirror = f16,
 })

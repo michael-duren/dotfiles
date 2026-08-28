@@ -11,12 +11,12 @@
 local ultrawide = "desc:Samsung Electric Company LS34A650U HCNY505479"
 local laptop = "desc:BOE NE160QDM-NZ6"
 
-hl.workspace_rule({workspace = "1", monitor = ultrawide, default = true, persistent = true})
-hl.workspace_rule({workspace = "2", monitor = ultrawide, persistent = true})
+hl.workspace_rule({ workspace = "1", monitor = ultrawide, default = true, persistent = true })
+hl.workspace_rule({ workspace = "2", monitor = ultrawide, persistent = true })
 
 for i = 3, 9 do
-	hl.workspace_rule({workspace = tostring(i), monitor = ultrawide})
+	hl.workspace_rule({ workspace = tostring(i), monitor = ultrawide })
 end
 
 -- Laptop's dedicated workspace -- focus jumps here on first window spawn.
-hl.workspace_rule({workspace = "10", monitor = laptop, default = true, persistent = true})
+hl.workspace_rule({ workspace = "10", monitor = laptop, default = true, persistent = true })
