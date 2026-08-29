@@ -3,7 +3,7 @@
   "workspace": {
     "library": [
       "/usr/share/hypr/stubs",
-      "/home/mduren/.local/share/hypr/lua"
+      "$HOME/.local/share/hypr/lua"
     ]
   },
   "diagnostics": {
