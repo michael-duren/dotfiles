@@ -1,5 +1,12 @@
 {
+  "$schema": "https://raw.githubusercontent.com/LuaLS/vscode-lua/master/setting/schema.json",
   "workspace": {
-    "library": ["/usr/share/hypr/stubs"]
+    "library": [
+      "/usr/share/hypr/stubs",
+      "/home/mduren/.local/share/hypr/lua"
+    ]
+  },
+  "diagnostics": {
+    "globals": ["hl", "hyde", "check_require"]
   }
 }
