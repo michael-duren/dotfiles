@@ -21,6 +21,7 @@ return {
 		-- Install parsers
 		require("nvim-treesitter")
 			.install({
+				"asm",
 				"bash",
 				"c",
 				"diff",

@@ -7,10 +7,18 @@
 -- Math: 3440 * 0.60 = 2064 usable -> (3440 - 2064) / 2 = 688 px per side.
 -- Top/bottom keep a small 5 px gap.
 --
--- Monitor matched by description so it survives DP port renumbering.
--- To find your monitor description: hyprctl monitors | grep description
+-- The rules are enabled only while the ultrawide is actually connected. They
+-- are scoped to it by `m[desc:...]` anyway, but leaving them off undocked keeps
+-- the laptop from inheriting 688 px gaps if the selector ever goes stale.
 
-local ultramon = "m[desc:Samsung Electric Company LS34A650U HCNY505479]"
+-- pcall'd so a broken utils.lua surfaces as one readable message instead of a
+-- bare traceback out of the middle of the config parse.
+local ok, utils = pcall(require, "utils")
+if not ok then
+	error("utils.lua failed to load: " .. tostring(utils), 0)
+end
+
+local ultramon = "m[" .. utils.ultrawide .. "]"
 
 local mx_lg = 688
 local mx_md = 400
@@ -23,6 +31,14 @@ local function gaps(y, x)
 	return {top = y, right = x, bottom = y, left = x}
 end
 
-hl.workspace_rule({workspace = ultramon .. " w[tv1]", gaps_out = gaps(my_xs, mx_lg)})
-hl.workspace_rule({workspace = ultramon .. " w[tv2]", gaps_out = gaps(my_xs, mx_md)})
-hl.workspace_rule({workspace = ultramon .. " w[tv3-99]", gaps_out = gaps(my_xs, mx_sm)})
+local rules = {
+	hl.workspace_rule({workspace = ultramon .. " w[tv1]", gaps_out = gaps(my_xs, mx_lg)}),
+	hl.workspace_rule({workspace = ultramon .. " w[tv2]", gaps_out = gaps(my_xs, mx_md)}),
+	hl.workspace_rule({workspace = ultramon .. " w[tv3-99]", gaps_out = gaps(my_xs, mx_sm)}),
+}
+
+utils.on_ultrawide_change(function(docked)
+	for _, rule in ipairs(rules) do
+		rule:set_enabled(docked)
+	end
+end)

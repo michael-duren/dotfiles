@@ -19,8 +19,27 @@ end
 -- update; everything below loads after them, so these win.
 --
 -- Files resolve against ~/.config/hypr/ (hyde.lua puts it on package.path).
-require("displays")
-require("workspaces")
-require("ultrawide")
-require("userprefs")
-require("keybindings")
+--
+-- Loaded under pcall and in order: a typo in one module then costs that
+-- module's config instead of aborting the whole parse and leaving a session
+-- with HyDE's defaults (or nothing) and no hint as to why. `hl` is unusable
+-- for reporting this early -- the backend has not started -- so failures are
+-- collected and shown once hyprland.start fires.
+local failures = {}
+
+for _, mod in ipairs({ "displays", "workspaces", "ultrawide", "userprefs", "keybindings" }) do
+	local ok, err = pcall(require, mod)
+	if not ok then
+		failures[#failures + 1] = mod .. ".lua: " .. tostring(err)
+	end
+end
+
+if #failures > 0 then
+	hl.on("hyprland.start", function()
+		hl.notification.create({
+			text = "Hyprland config errors\n" .. table.concat(failures, "\n"),
+			timeout = 15000,
+			color = "rgb(ff6666)",
+		})
+	end)
+end
