@@ -24,7 +24,7 @@ hl.monitor({
 	output = utils.laptop,
 	mode = "preferred",
 	position = "0x0",
-	scale = 1.0,
+	scale = 1.2,
 })
 
 -- Samsung 34" ultrawide -- sits to the right of the laptop when docked.
