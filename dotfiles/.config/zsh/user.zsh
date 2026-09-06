@@ -51,6 +51,15 @@ qhelp() {
 EOF
 }
 
+ssh-c() {
+    cat <<EOF
+    pc - proxmox control plane
+    pw - proxmox workers
+    monitor - observability
+    media - jellyfin
+EOF
+}
+
 runModel() {
     local model_to_run=$1
     local net_name='no-egress'

@@ -27,7 +27,13 @@ if [[ "$WORK" == "true" ]]; then
 
     exec tmux attach -t scratch
 else
-    sessions=(career dotfiles boxes lc duck scratch)
+    sessions=(
+        career
+        dotfiles
+        lc
+        scratch
+        ostep
+    )
 
     for session in "${sessions[@]}"; do
         case "$session" in
@@ -36,6 +42,7 @@ else
         boxes) path="$HOME/Code/boxes" ;;
         lc) path="$HOME/Code/leet-code-practice/c" ;;
         duck) path="$HOME/Code/rd-wt/main" ;;
+        ostep) path="$HOME/Code/ostep/" ;;
         scratch) path="$HOME/Code" ;;
         esac
 
@@ -44,7 +51,7 @@ else
         fi
 
         tmux new-session -d -s "$session" -n "cli" -c "$path"
-        tmux new-window -t "$session" -n "nvim" -c "$path" nvim
+        # tmux new-window -t "$session" -n "nvim" -c "$path" nvim
         tmux select-window -t "$session:1"
     done
 
