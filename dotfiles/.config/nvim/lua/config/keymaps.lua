@@ -334,15 +334,6 @@ local keybindings = {
 		opts = { desc = "Noice dismiss" },
 	},
 
-	-- Config & Settings
-	{
-		key = "<leader><CR>",
-		command = ":so ~/.config/nvim/init.lua<CR>",
-		opts = {
-			silent = false,
-			desc = "Reload init.lua",
-		},
-	},
 	-- NOTE: <leader>? belongs to which-key (buffer-local keymap help); a mapping
 	-- here would be shadowed when which-key loads. Use <leader>fc to find config files.
 	-- Check perf
