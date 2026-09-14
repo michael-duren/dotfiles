@@ -15,16 +15,25 @@ local open_browser = function(path)
 end
 
 local open_remote = function()
-	local remote = vim.fn.system([[git remote get-url origin]])
-	local url = ""
-	if string.match(remote, "@") then
-		local matches = vim.fn.matchlist(remote, [[git@\(.*\):\(.*\)\/\(.*\)\.git]])
-		url = string.format("https://%s/%s/%s", matches[2], matches[3], matches[4])
+	local remote = vim.trim(vim.fn.system("git remote get-url origin"))
+	local url
+
+	if remote:match("@") then
+		local host, path = remote:match("^[^@]+@([^:]+):(.+)$")
+
+		if host and path then
+			path = path:gsub("%.git$", "")
+			url = string.format("https://%s/%s", host, path)
+		end
 	else
-		url = string.gsub(remote, "%.git$", "")
+		url = remote:gsub("%.git$", "")
 	end
 
-	open_browser(url)
+	if url then
+		open_browser(url)
+	else
+		vim.notify("Could not parse git remote: " .. remote, vim.log.levels.ERROR)
+	end
 end
 
 M.setup = function()

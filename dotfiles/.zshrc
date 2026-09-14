@@ -148,3 +148,4 @@ for __cmd in "${__lazy_nvm_cmds[@]}"; do
     eval "${__cmd}() { __lazy_load_nvm; ${__cmd} \"\$@\"; }"
 done
 unset __cmd
+export GOBIN=/Users/Z00HCXG/go/bin
