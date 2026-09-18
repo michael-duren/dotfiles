@@ -30,9 +30,10 @@ else
     sessions=(
         career
         dotfiles
-        lc
+        # lc
         scratch
         ostep
+        music
     )
 
     for session in "${sessions[@]}"; do
@@ -44,6 +45,7 @@ else
         duck) path="$HOME/Code/rd-wt/main" ;;
         ostep) path="$HOME/Code/ostep/" ;;
         scratch) path="$HOME/Code" ;;
+        music) path="$HOME/Code/music/" ;;
         esac
 
         if tmux has-session -t "$session" 2>/dev/null; then

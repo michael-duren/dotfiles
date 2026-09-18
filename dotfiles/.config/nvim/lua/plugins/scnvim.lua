@@ -13,11 +13,17 @@ local function setup()
 			["<leader><CR>"] = map("postwin.toggle"),
 			["<leader>C<CR>"] = map("postwin.toggle", "i"),
 			["<M-L>"] = map("postwin.clear", { "n", "i" }),
-			["<C-k>"] = map("signature.show", { "n", "i" }),
+			["K"] = map("signature.show", { "n", "i" }),
 			["<F12>"] = map("sclang.hard_stop", { "n", "x", "i" }),
-			["<leader>Ct"] = map("sclang.start"),
-			["<leader>Ck"] = map("sclang.recompile"),
-			["<F1>"] = map_expr("s.boot"),
+			["<leader>Cs"] = map("sclang.start"),
+			["<leader>Cr"] = map("sclang.recompile"),
+			["<leader>Cb"] = map_expr("s.boot"),
+			["<leader>CS"] = map(function()
+				vim.cmd("SCNvimStart")
+				vim.defer_fn(function()
+					require("scnvim").send("s.boot")
+				end, 2000)
+			end),
 			["<F2>"] = map_expr("s.meter"),
 		},
 		editor = {
