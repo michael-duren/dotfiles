@@ -3,3 +3,18 @@ repo_dirs:
   - ~/Code/my-apps/
   - ~/Code/oss/
   - ~/Code/
+agents:
+  agent_selector: true
+  default: claude
+  pi:
+    command: pi
+    flags: []
+  claude:
+    command: claude
+    flags: ["--dangerously-skip-permissions"]
+  fable:
+    command: claude
+    flags: ["--dangerously-skip-permissions", "--model", "claude-fable-5"]
+  codex:
+    command: codex
+    flags: ["--dangerously-bypass-approvals-and-sandbox"]

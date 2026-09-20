@@ -145,3 +145,5 @@ export NNN_FCOLORS='c1e2272e006033f7c6d6abc4'
 source <(fzf --zsh)
 alias nr="npm run dev"
 alias vm="incus exec cgtest -- bash"
+export KUBECONFIG="$HOME/Code/home-infra/ansible/kubeconfig-homelab"
+alias hv='tmux new-session -As hive hive'

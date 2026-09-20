@@ -24,6 +24,7 @@ return {
 				{ "<leader>l", group = "lsp" },
 				{ "<leader>m", group = "markdown" },
 				{ "<leader>n", group = "noice" },
+				{ "<leader>N", group = "notebook" },
 				{ "<leader>o", group = "open" },
 				{ "<leader>q", group = "quit/session" },
 				{ "<leader>r", group = "http requests" },

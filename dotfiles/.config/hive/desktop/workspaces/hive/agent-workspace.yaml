@@ -1,0 +1,5 @@
+version: 5
+name: Hive
+command: claude --strict-mcp-config --mcp-config {{ .MCPConfig | shq }} {{ if .Resume }}--resume{{ else }}--session-id{{ end }} {{ .SessionID }} {{ if .Prompt }}-- {{ .Prompt | shq }}{{ end }}
+skills:
+  - hive
