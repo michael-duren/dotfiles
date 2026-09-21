@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "hive-canvas": {
+      "type": "http",
+      "url": "http://127.0.0.1:34857/mcp/canvas"
+    },
+    "hive-desktop": {
+      "type": "http",
+      "url": "http://127.0.0.1:34857/mcp"
+    }
+  }
+}

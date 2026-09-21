@@ -2,7 +2,7 @@
 # Edited by hand or by the app; on a change the engine reloads the flow set
 # and reinstalls its runners.
 version: 1
-name: NonYa
+name: OSS
 nodes:
   - id: my-open-prs-src
     type: sources.github
