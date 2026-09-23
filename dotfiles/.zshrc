@@ -1,7 +1,7 @@
 # Local secrets
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 eval "$(starship init zsh)"
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:/Users/$USER/Library/Python/3.9/bin:$PATH"
 
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -135,7 +135,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Lazy-load nvm: define shims that source the real nvm on first use.
 # This avoids the ~hundreds-of-ms cost of sourcing nvm.sh in every shell.
-__lazy_nvm_cmds=(nvm node npm npx)
+__lazy_nvm_cmds=(nvm)
 
 __lazy_load_nvm() {
     # Remove all shims so the real binaries/functions take over
