@@ -6,9 +6,8 @@ repo_dirs:
 agents:
   agent_selector: true
   default: claude
-  pi:
-    command: pi
-    flags: []
+  neovim:
+    command: nvim
   claude:
     command: claude
     flags: ["--dangerously-skip-permissions"]
