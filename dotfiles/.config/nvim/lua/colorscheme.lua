@@ -1,1 +1,1 @@
-vim.cmd.colorscheme("base16-gruvbox-material-dark-hard")
+vim.cmd.colorscheme("gruvbox")

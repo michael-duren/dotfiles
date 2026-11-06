@@ -3,17 +3,13 @@ repo_dirs:
   - ~/Code/my-apps/
   - ~/Code/oss/
   - ~/Code/
+  - ~/Code/cia
 agents:
   agent_selector: true
-  default: claude
-  neovim:
+  default: dayton
+  dayton:
+    command: dayton
+  opencode:
+    command: opencode
+  nvim:
     command: nvim
-  claude:
-    command: claude
-    flags: ["--dangerously-skip-permissions"]
-  fable:
-    command: claude
-    flags: ["--dangerously-skip-permissions", "--model", "claude-fable-5"]
-  codex:
-    command: codex
-    flags: ["--dangerously-bypass-approvals-and-sandbox"]

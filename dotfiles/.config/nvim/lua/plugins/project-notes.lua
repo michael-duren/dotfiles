@@ -1,7 +1,7 @@
 return {
 	"michael-duren/project-notes.nvim",
 	-- Local checkout while the notebook merge is unreleased; drop `dir` once pushed
-	dir = "~/Code/project-notes.nvim",
+	-- dir = "~/Code/project-notes.nvim",
 	cmd = { "Notebook", "ProjectNotes", "ProjectNotesNew", "ProjectNotesFind", "ProjectNotesMigrate" },
 	opts = {
 		dir = "~/notes",

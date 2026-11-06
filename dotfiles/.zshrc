@@ -149,3 +149,5 @@ for __cmd in "${__lazy_nvm_cmds[@]}"; do
 done
 unset __cmd
 export GOBIN=/Users/Z00HCXG/go/bin
+
+alias hv='tmux new-session -As hive hive'
