@@ -51,7 +51,8 @@ return {
 			ensure_installed = {
 				-- lsp
 				"lua_ls",
-				"gopls",
+				-- gopls is managed by mise (~/.config/mise/config.toml) so it is
+				-- built with the same Go toolchain as the code it type-checks.
 				"zls",
 				"html",
 				"cssls",

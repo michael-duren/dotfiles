@@ -1,0 +1,36 @@
+# Hive Desktop flow — grafana/alloy work.
+# Two branches into one feed: a search for anything in the repo that involves
+# me, and my notification inbox narrowed to the same repo (catches comment and
+# mention traffic the search misses).
+version: 1
+name: Alloy
+nodes:
+  - id: alloy-src
+    type: sources.github
+    credential: github/michael-duren
+    kind: search
+    query: repo:grafana/alloy involves:@me is:open archived:false
+
+  - id: alloy-notifs-src
+    type: sources.github
+    credential: github/michael-duren
+    kind: notifications
+
+  - id: alloy-notifs-filter
+    type: github-filter
+    repos:
+      - grafana/alloy
+
+  - id: alloy
+    type: feed
+    name: Alloy
+    icon: git-branch
+    description: grafana/alloy work — open PRs and issues involving me, plus notifications from that repo.
+
+wires:
+  - from: alloy-src
+    to: alloy
+  - from: alloy-notifs-src
+    to: alloy-notifs-filter
+  - from: alloy-notifs-filter
+    to: alloy

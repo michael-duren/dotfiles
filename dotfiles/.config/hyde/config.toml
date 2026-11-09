@@ -6,3 +6,7 @@
 [hyprland]
 #cursor_theme="macOS"
 cursor_size= 24
+
+[wallpaper]
+# extra folders shown in the wallpaper picker alongside the theme's own
+custom_paths = ["$HOME/Pictures/cozy-wallpapers"]

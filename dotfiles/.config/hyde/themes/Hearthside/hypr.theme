@@ -1,0 +1,55 @@
+$HOME/.config/hypr/themes/theme.conf|> $HOME/.config/hypr/themes/colors.conf
+# Hearthside — warm ember/charcoal theme for long MN winters
+# Palette:
+#   charcoal #1a1210  soot   #2a1c16  ash    #3b2a20
+#   cream    #f2e2c4  embers #e8743b  flame  #f5a742
+#   coal-red #c4462a  glow   #ffd27a
+
+$GTK_THEME = Gruvbox-Retro
+$ICON_THEME = Gruvbox-Plus-Dark
+$CURSOR_THEME = Gruvbox-Retro
+$CURSOR_SIZE = 24
+$COLOR_SCHEME = prefer-dark
+
+general {
+    gaps_in = 4
+    gaps_out = 10
+    border_size = 2
+    col.active_border = rgba(f5a742ff) rgba(c4462aff) 45deg
+    col.inactive_border = rgba(3b2a20cc) rgba(2a1c16cc) 45deg
+    layout = dwindle
+    resize_on_border = true
+}
+
+group {
+    col.border_active = rgba(f5a742ff) rgba(c4462aff) 45deg
+    col.border_inactive = rgba(3b2a20cc) rgba(2a1c16cc) 45deg
+    col.border_locked_active = rgba(ffd27aff) rgba(e8743bff) 45deg
+    col.border_locked_inactive = rgba(3b2a20cc) rgba(2a1c16cc) 45deg
+}
+
+decoration {
+    rounding = 8
+    active_opacity = 0.96
+    inactive_opacity = 0.90
+
+    shadow {
+        enabled = true
+        range = 18
+        render_power = 3
+        color = rgba(e8743b55)
+        color_inactive = rgba(00000066)
+        offset = 0 2
+    }
+
+    blur {
+        enabled = yes
+        size = 6
+        passes = 3
+        new_optimizations = on
+        ignore_opacity = on
+        xray = false
+    }
+}
+
+layerrule = blur,waybar

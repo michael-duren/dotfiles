@@ -9,6 +9,7 @@ notifications:
     sound: true
 appearance:
     theme: dark
+    terminal_font_size: large
     terminal_show_windows: true
     terminal_show_status_bar: true
     terminal_pool_size: 3

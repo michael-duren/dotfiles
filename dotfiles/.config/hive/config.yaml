@@ -6,10 +6,16 @@ repo_dirs:
   - ~/Code/cia
 agents:
   agent_selector: true
-  default: dayton
-  dayton:
-    command: dayton
-  opencode:
-    command: opencode
-  nvim:
+  default: claude
+  neovim:
     command: nvim
+  claude:
+    command: claude
+    flags: ["--dangerously-skip-permissions"]
+  codex:
+    command: codex
+    flags: ["--dangerously-bypass-approvals-and-sandbox"]
+rules:
+  - pattern: ""
+    clone_strategy: worktree
+    branch_template: "{{ .Slug }}"

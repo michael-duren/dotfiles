@@ -1,0 +1,55 @@
+$HOME/.config/kitty/theme.conf|killall -SIGUSR1 kitty
+
+# Hearthside — ember/charcoal colorscheme for kitty
+
+cursor                  #f5a742
+cursor_text_color       background
+
+visual_bell_color       #e8743b
+bell_border_color       #e8743b
+
+active_border_color     #f5a742
+inactive_border_color   #3b2a20
+
+active_tab_foreground   #1a1210
+active_tab_background   #f5a742
+inactive_tab_foreground #a89077
+inactive_tab_background #2a1c16
+
+foreground              #f2e2c4
+background              #1a1210
+selection_foreground    #1a1210
+selection_background    #e8743b
+url_color               #ffd27a
+
+# black
+color0   #2a1c16
+color8   #6b5545
+
+# red
+color1   #c4462a
+color9   #e8643f
+
+# green
+color2   #9a9a4a
+color10  #b8b862
+
+# yellow
+color3   #f5a742
+color11  #ffd27a
+
+# blue
+color4   #6f8a8a
+color12  #8fa8a3
+
+# magenta
+color5   #b0655a
+color13  #d48a7a
+
+# cyan
+color6   #7f9a6e
+color14  #a3bc8c
+
+# white
+color7   #c9b597
+color15  #f2e2c4
