@@ -1,7 +1,7 @@
 return {
-	"michael-duren/project-notes.nvim",
-	-- Local checkout while the notebook merge is unreleased; drop `dir` once pushed
-	-- dir = "~/Code/project-notes.nvim",
+	-- Vendored into this config (local-plugins/) instead of fetched from GitHub
+	dir = vim.fn.stdpath("config") .. "/local-plugins/project-notes.nvim",
+	name = "project-notes.nvim",
 	cmd = { "Notebook", "ProjectNotes", "ProjectNotesNew", "ProjectNotesFind", "ProjectNotesMigrate" },
 	opts = {
 		dir = "~/notes",
