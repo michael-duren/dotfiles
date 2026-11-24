@@ -1,6 +1,6 @@
 ---
 name: hive-flows
-description: "Author or edit a pipeline flow: the graph of sources, filters, and destinations that decides what reaches your feeds and what fires an action. Use when configuring this in Hive Desktop (/home/mduren/.config/hive/desktop/flows/<id>.yaml)."
+description: "Author or edit a pipeline flow: the graph of sources, filters, and destinations that decides what reaches your feeds and what fires an action. Use when configuring this in Hive Desktop (/Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml)."
 ---
 Author or edit a Hive Desktop pipeline flow.
 
@@ -8,11 +8,11 @@ Hive Desktop is a desktop app that turns GitHub activity and webhook deliveries
 into triaged feeds and automated coding-agent sessions. Its configuration is
 plain text on this machine, meant to be edited directly:
 
-- /home/mduren/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
-- /home/mduren/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
-- /home/mduren/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
+- /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
+- /Users/Z00HCXG/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
+- /Users/Z00HCXG/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
 
-Write the flow to /home/mduren/.config/hive/desktop/flows/<id>.yaml. The flow's id is the filename
+Write the flow to /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml. The flow's id is the filename
 stem — flows/triage.yaml is the flow "triage" — and is never written inside the
 file. A sibling flows/<id>.ui.yaml holds canvas positions; leave it alone, the
 app maintains it.
@@ -139,6 +139,8 @@ A **GitHub source** node emits messages from an embedded GitHub search or notifi
 ##### Behavior
 
 The source itself runs in the backend: Go polls every enabled flow's source nodes and appends each item to the event log under topic `source:<flowId>/<nodeId>`. This node has one output — every item becomes a `msg` whose payload mirrors the normalized PR/Issue/notification shape.
+
+Search-backed pull requests include `ci` (`passing`, `pending`, `failing`, or `none`), `review` (`open`, `draft`, `approved`, `changes_requested`, or `review_required`), `additions`, and `deletions`. Function nodes can use the line totals directly from `msg.Payload`. Notification-backed items omit these fields.
 
 `credential` is a reference, never a token. Flow files are meant to live in a dotfiles repo, so the secret stays in the OS keychain and only the account name is written here. Sources on different accounts fetch independently — separate caches, separate rate limits — so one account being throttled does not stall another.
 
@@ -409,7 +411,7 @@ KV identity is the node **id**, which the editor preserves across renames — re
 
 `console.log` / `.info` / `.warn` / `.error` / `.debug` / `.trace` are available. Strings print verbatim, everything else as JSON. In a live run the output goes nowhere — it is a debugging affordance, not a log — so leaving a `console.log` in a deployed script costs nothing.
 
-Where it *is* readable is a dry run: the `execute_flow` tool on this install's MCP server runs a flow against input you supply and returns what every node received, emitted per output port, and dropped, plus its console output and structured script errors with line and column. Nothing is committed — no feed membership, inbox rows, notifications, queued actions or durable `kv` — so it is safe to call repeatedly. The flow can be one that is installed or a document you have not saved yet; the input is delivered to any node you name, so a single function node can be exercised against a captured payload without its source running; and `kv` is an in-memory sandbox you seed, which is how notify-once logic is tested against a known starting state. The tool's own input schema is the request shape.
+Where it *is* readable is a dry run: the `flow_preview` tool on this install's MCP server runs a flow against input you supply and returns what every node received, emitted per output port, and dropped, plus its console output and structured script errors with line and column. Nothing is committed — no feed membership, inbox rows, notifications, queued actions or durable `kv` — so it is safe to call repeatedly. The flow can be one that is installed or a document you have not saved yet; the input is delivered to any node you name, so a single function node can be exercised against a captured payload without its source running; and `kv` is an in-memory sandbox you seed, which is how notify-once logic is tested against a known starting state. The tool's own input schema is the request shape.
 
 ##### Example
 
@@ -476,8 +478,10 @@ A **GitHub filter** node narrows a stream of GitHub items down to the ones you c
 - `repos` / `exclude_repos` — one doublestar glob per line, matched against `owner/repo`.
 - `authors` / `exclude_authors` — one glob per line, matched case-insensitively.
 - `labels` / `exclude_labels` — one glob per line, matched against any of the item's labels.
-- `types` — `pr` and/or `issue`.
-- `reasons` — GitHub notification reasons (e.g. `mention`, `review_requested`). Items with no reason (search-only items) never match a reasons filter.
+- `types` - `pr` and/or `issue`.
+- `ci` - `passing`, `pending`, `failing`, and/or `none`. Only search-backed pull requests carry this field.
+- `review` - `open`, `draft`, `approved`, `changes_requested`, and/or `review_required`. Only search-backed pull requests carry this field.
+- `reasons` - GitHub notification reasons (for example, `mention` or `review_requested`). Items with no reason never match a reasons filter.
 
 ##### Behavior
 
@@ -492,6 +496,10 @@ message creates a durable `output_command` for the selected global action.
 Commands deduplicate on `(action_id, msg.Key)`, so retries or duplicate graph
 invocations cannot repeat a side effect.
 
+To start a session or chat from a flow that is the only caller, use a
+`launch-session` or `launch-chat` node instead; it carries the launch details
+itself.
+
 ##### Selecting an action
 
 The `action` field is an id from the global desktop `actions.yml` catalog. The
@@ -505,7 +513,7 @@ that flag or its `applies_to` kind scope.
 This node only selects which catalog action runs — it carries no execution
 semantics of its own. `action` resolves to one entry of type `launch-session`,
 `shell`, or `publish-message`, and that type's own doc (see
-`internal/app/actions/docs/`) is what defines how it runs. Action results are
+`cmd/desktop/internal/app/actions/docs/`) is what defines how it runs. Action results are
 typed to match: a successful run reports whatever that action type produces,
 and a failed run remains readable from the durable command record with its
 diagnostics.
@@ -526,6 +534,149 @@ A **feed** node is a terminal (1 input, 0 outputs): every message routed here cr
 A message routed here always lands — there's nothing downstream to wire. Items stay unread until triaged.
 
 A feed never interrupts: it is a place items live, read at the reader's own pace. To be notified about something, route it to a [notify](notify.md) node — typically a second branch off the same filter, so the items land in the feed *and* raise a banner.
+
+#### Launch chat — `launch-chat`
+
+A **launch-chat** node is a terminal (one input, no outputs). Every item that
+reaches it opens a chat in an agent workspace, with the rendered prompt as the
+chat's first message. It carries the launch details itself, so a flow that is
+the only place a chat starts does not need an entry in `actions.yml`. Use an
+`action` node instead when the same launch is also offered from the item menu.
+
+##### Fields
+
+- `workspace` (required) — the agent workspace's directory name under the
+  configured workspace root.
+- `prompt` (required) — the chat's opening message, a Go template.
+
+```yaml
+- id: triage
+  type: launch-chat
+  workspace: incident-triage
+  prompt: |
+    Triage this alert.
+
+    {{ untrustedNotice }}
+
+    {{ untrustedStart "source" "grafana" }}
+    {{ .Payload.title }}
+
+    {{ .Payload.description }}
+    {{ untrustedEnd }}
+```
+
+The workspace's `command:` must carry `.Prompt` through `shq`; otherwise Hive
+refuses the launch rather than dropping the item. The shipped command presets
+already do. The workspace's own agent runs the chat, so there is no `agent`
+field.
+
+##### Templates
+
+`prompt` renders over the same data a `launch-session` action sees: `.Payload`
+is the item, `.Key` its source id, and `.Raw` the item's JSON.
+
+Fence outside content with `{{ untrustedStart }}` and `{{ untrustedEnd }}`,
+and put `{{ untrustedNotice }}` before the fence, as the `launch-session`
+action docs describe. Hive does not fence anything for you. A prompt that
+renders blank fails the launch.
+
+##### One launch per item
+
+The node launches once per item, not once per update. An item that changes
+and reaches the node again with the same key does not open a second chat;
+an item that Hive deleted and that later returns counts as new. A
+failed launch retries a few times and then stays failed; its error is in
+Activity.
+
+##### On the item
+
+The chat is linked to the item that started it. The item's detail view lists
+the chat, and selecting it opens the chat.
+
+##### Replay
+
+Recomputing a flow on startup or deploy never launches anything: replay
+commits feed memberships only.
+
+#### Launch session — `launch-session`
+
+A **launch-session** node is a terminal (one input, no outputs). Every item
+that reaches it starts a repository-backed Hive coding session. It carries the
+launch details itself, so a flow that is the only place a launch happens does
+not need an entry in `actions.yml`. Use an `action` node instead when the same
+launch is also offered from the item menu.
+
+##### Fields
+
+- `repo` (required) — the remote URL of the repository the session is
+  created against, a Go template. `{{ .ItemRemote }}` is the item's own
+  repository, such as a pull request's, spelled as HTTPS or SSH
+  by `git.clone_protocol` and `rules[].clone_protocol`; a plain URL launches every item in
+  one repository. A remote that matches a configured checkout reuses it.
+- `prompt` (required) — the session's initial prompt, a Go template.
+- `agent` — a Hive agent profile (e.g. `claude`, `aider`). Omit it for the
+  default agent.
+- `sessionName` — the session's name, a Go template. The rendered text is
+  turned into a valid session name. Omit it to derive one from the node id and
+  the item key.
+- `tags` — tags for the new session, a list of Go templates. An entry that
+  renders blank is dropped. Tags let a later step find the session, such as
+  an agent that lists the sessions taged `auto`.
+
+```yaml
+- id: review-prs
+  type: launch-session
+  repo: "{{ .ItemRemote }}"
+  sessionName: "review-{{ .Payload.num }}"
+  tags: [review, "pr-{{ .Payload.num }}"]
+  prompt: |
+    Review pull request #{{ .Payload.num }} in {{ .Payload.repo }}.
+
+    {{ untrustedNotice }}
+
+    {{ untrustedStart "source" "github" }}
+    {{ .Payload.title }}
+
+    {{ .Payload.body }}
+    {{ untrustedEnd }}
+```
+
+##### Templates
+
+Every template renders over the same data a `launch-session` action sees:
+`.Payload` is the item, `.Key` its source id, and `.Raw` the item's JSON. A
+GitHub-shaped item exposes `{{ .Payload.repo }}`, `{{ .Payload.title }}`,
+`{{ .Payload.url }}`, `{{ .Payload.body }}`, `{{ .Payload.num }}`, and
+`{{ .Payload.author }}`.
+
+Fence outside content in the prompt with `{{ untrustedStart }}` and
+`{{ untrustedEnd }}`, and put `{{ untrustedNotice }}` before the fence, as the
+`launch-session` action docs describe. Hive does not fence anything for you.
+
+A prompt or repository that renders blank fails the launch rather than
+starting an empty session. A tag longer than 40 characters, or one with a
+comma, fails it too.
+
+##### One launch per item
+
+The node launches once per item, not once per update. A pull request that
+gets new commits, comments, or labels reaches the node again with the same
+key, and Hive does not start a second session for it. Two launch nodes in the
+same flow each launch once for the same item. An item that Hive deleted
+(an archived item past retention) and that later returns counts as new.
+
+A failed launch retries a few times and then stays failed; its error is in
+Activity.
+
+##### On the item
+
+The session is linked to the item that started it. The item's detail view
+lists the session, and selecting it opens the session's terminal.
+
+##### Replay
+
+Recomputing a flow on startup or deploy never launches anything: replay
+commits feed memberships only.
 
 #### Notify — `notify`
 

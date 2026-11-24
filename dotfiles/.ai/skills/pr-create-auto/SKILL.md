@@ -1,0 +1,197 @@
+---
+name: pr-create-auto
+description: Create a PR from current branch changes. Use when the user asks to open a PR, create a pull request, or says "pr this up".
+allowed-tools: "Read,Write,Glob,Bash(git status:*),Bash(git log:*),Bash(git diff:*),Bash(gh pr:*),Bash(git push:*),Bash(git checkout:*),Bash(git branch:*),Bash(git rev-parse:*),Bash(find:*),Bash(ls:*)"
+argument-hint: "[issue-tags]"
+---
+
+# PR Create
+
+Create a pull request for the current branch. If $ARGUMENTS is provided, include those issue tags in the PR body.
+
+This skill is the authority on PR body shape. The three-section Intent / What
+changed / Why this way structure in AGENTS.md governs **commit messages** and
+does not apply here.
+
+## Writing style
+
+Write the PR title and the PR body in Simplified Technical English. The rule
+list lives under "Commits and PRs: Simplified Technical English" in AGENTS.md,
+and it replaces the Human-first prose guidance for this text. The short version:
+active voice, one word per meaning, present or simple past tense, no `-ing`
+nouns, no idioms or hedging, and 25 words per sentence at most.
+
+STE governs wording only. Everything else in this skill still applies — the
+template wins on structure and headings, the source order decides what goes in,
+and "The cut pass" decides what stays. STE is also not a license to pad: a short
+sentence that says nothing still fails the cut pass.
+
+| Not STE | STE |
+|---|---|
+| A retry was added because the API returns 409 during a rollout. | The API returns 409 during a rollout, so the client retries. |
+| Refactoring the parser fixed the panic on empty input. | The new parser does not panic on empty input. |
+| This should hopefully make the timeout less flaky. | This change raises the timeout from 5s to 30s. The test no longer fails. |
+
+The commits on the branch may predate this rule, so treat them as a source and
+not as text. Rewrite their reasoning into STE sentences when you reflow it into
+the body, rather than pasting the wording across. Quoted material is the
+exception and stays verbatim: log output, error text, issue titles, and the
+template's own headings and prompts.
+
+## Workflow
+
+1. **Assess state**: `git status`, `git log --oneline origin/HEAD..HEAD`, `git diff origin/HEAD...HEAD --stat`
+2. **Create branch if needed**: if on `main`, ask the user for a branch name and create it
+3. **Commit uncommitted changes** if any exist (see "Commit & PR Messages" in AGENTS.md)
+4. **Push the branch**: `git push -u origin <branch>`, or `git push` if upstream is already set
+5. **Find the template** (below)
+6. **Write the body** (below) to a temp file
+7. **Create the PR**: `gh pr create --title "<title>" --body-file <tmpfile>`
+
+Title: imperative, ≤72 chars, and matches the repo's existing title convention
+— check `gh pr list --state merged --limit 10` for whether they use
+Conventional Commits prefixes.
+
+## Step 5: Find the template
+
+```bash
+root=$(git rev-parse --show-toplevel)
+find "$root" "$root/.github" "$root/.gitea" "$root/docs" -maxdepth 1 -iname 'pull_request_template*' 2>/dev/null
+```
+
+GitHub accepts the file in the repo root, `.github/`, or `docs/`, in any case
+variant; Gitea repos also read `.gitea/`. A `PULL_REQUEST_TEMPLATE/` **directory** means the repo has multiple
+templates — list it, pick the one matching the change type, and say which you
+picked.
+
+Read the template before writing anything. If one exists, it wins over
+everything in "Fallback shape" below.
+
+## Step 6: Write the body
+
+**Source order.** Write the body from, in priority order:
+
+1. The commit messages on this branch (`git log origin/HEAD..HEAD`) — the
+   reasoning is already there
+2. The linked issue, plan doc in `.hive/`, or this session's context — why the
+   work was started
+3. `--stat` output, only to confirm the scope claim is accurate
+
+Do not read the full diff to write the body. Reading the diff is what produces
+diff narration, and reviewers have the diff already.
+
+### Rendering: never hard-wrap
+
+Applies to both paths below, and to anything reflowed out of a commit message.
+
+Write each paragraph as **one unwrapped line**, however long, and separate
+paragraphs with a blank line. GitHub renders a newline inside a paragraph as a
+literal line break in PR and issue bodies, so a body wrapped at 72 or 80
+columns renders as a ragged column instead of flowing prose.
+
+Do not carry a commit body over verbatim: git shows commit text as-is, so those
+are conventionally wrapped, and pasting one into a PR renders ragged. Reflow it
+into single-line paragraphs first. The examples below show the PR form.
+
+Also render, don't dump: use ``` fences for code and logs, backticks for
+identifiers and paths, `> ` for quoted output, and a Markdown table if you have
+tabular data. Reference issues and PRs as `#12` so GitHub links them.
+
+### Sentence shape
+
+One idea per sentence, in the order a reader needs it. Plain and a little long
+beats compressed and clever.
+
+- **No dash-pair asides.** Never put two `--` in one sentence to bracket a
+  qualifier. If the qualifier matters, give it its own sentence or hang it off a
+  "because"; if it doesn't, cut it. One `--` per paragraph at most, and only
+  where a comma, colon, or full stop reads worse.
+- **Lead with the subject.** Don't stack a scene-setting clause in front of
+  it, and don't nest a clause inside another one.
+- **No intensifiers.** "genuinely", "simply", "actually", "quite" add
+  emphasis, not information.
+
+Bad, a bracketed aside with the subject arriving last:
+
+> On a genuinely quiet cell -- one with no organic archival traffic -- the archive canary cannot succeed.
+
+Good, same fact, read once:
+
+> A quiet cell has no archival traffic of its own, so the archive canary can never go green.
+
+### Filling a template
+
+- Keep the headings **exactly** as written — don't add, remove, reorder, or
+  rename them, and don't add a "Summary" or "Test plan" section the template
+  didn't ask for.
+- Answer only the question each section asks. Where a section genuinely doesn't
+  apply, write `N/A — <one-line reason>` rather than manufacturing content,
+  unless the template says to delete unused sections.
+- `<!-- HTML comments -->` are author instructions: follow them, then strip
+  them from the body.
+- Checkboxes: tick only what was actually done and verified in this session.
+  Never tick a box for something you didn't do.
+
+### Fallback shape (no template)
+
+Plain prose. No `## Summary` heading, no scaffolding, no bullet list of
+changes. Lead with why the change exists; add mechanics only where they aren't
+inferable from the diff.
+
+Length is capped by the nature of the change, not its diff size:
+
+| Change | Body |
+|---|---|
+| Mechanical, self-evident (rename, version bump, typo) | Empty — title only |
+| Single concern | One paragraph, 2–4 sentences |
+| Multi-commit feature, or a non-obvious decision | Up to 3 short paragraphs |
+
+Issue tags from $ARGUMENTS go on their own last line (`Closes #12`).
+
+### The cut pass
+
+Before creating the PR, delete every sentence a reviewer would learn by
+reading the diff. What survives is the body. If nothing survives, the title
+alone is the correct PR.
+
+Never include: a bullet per file, function, or commit; a "Changes" or "Files
+changed" section; restatements of what a function now does; test-passing
+claims for tests you didn't run.
+
+## Examples
+
+**Good** — a dependency source fix. Why first; the mechanical part comes last
+and stays short:
+
+```
+The upstream project moved its release repository. The package manager does not follow repository redirects, so new installs cannot find version v2.4.0. Existing installs did not show the failure because their lockfiles contain direct download URLs.
+
+This change updates the package source. The next lockfile refresh records the new download URLs.
+```
+
+Two paragraphs, two lines. Note the unwrapped lines — that is the shape that
+renders correctly. Every sentence is active, and no sentence is longer than 20
+words.
+
+**Bad** — same change, diff-narrated. Every line is recoverable from the diff,
+the actual reason (the redirect breaks the release list) never appears, and the
+headings were invented:
+
+```
+## Summary
+
+This PR updates the package source.
+
+## Changes
+
+- Updated the package configuration to use the new repository
+- Updated the lockfile with the new source and download URLs
+- Updated the install script to reference the new path
+
+## Testing
+
+Ran the package install and confirmed it works.
+```
+
+STE would not rescue this body. The rules above govern wording; the cut pass
+governs content. A body can obey every STE rule and still be worth deleting.

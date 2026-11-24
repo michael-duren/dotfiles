@@ -1,6 +1,6 @@
 ---
 name: hive-agent-workspaces
-description: "Author or edit an agent workspace: a named, durable directory where a CLI agent runs against a purpose-built MCP tool set, for work that has no repository. Use when configuring this in Hive Desktop (/home/mduren/.config/hive/desktop/workspaces)."
+description: "Author or edit an agent workspace: a named, durable directory where a CLI agent runs against a purpose-built MCP tool set, for work that has no repository. Use when configuring this in Hive Desktop (/Users/Z00HCXG/.config/hive/desktop/workspaces)."
 ---
 Author or edit a Hive Desktop agent workspace: a named, durable directory
 where a CLI agent runs against a purpose-built MCP tool set, for work that has
@@ -10,27 +10,27 @@ Hive Desktop is a desktop app that turns GitHub activity and webhook deliveries
 into triaged feeds and automated coding-agent sessions. Its configuration is
 plain text on this machine, meant to be edited directly:
 
-- /home/mduren/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
-- /home/mduren/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
-- /home/mduren/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
+- /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
+- /Users/Z00HCXG/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
+- /Users/Z00HCXG/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
 
-Every workspace lives under /home/mduren/.config/hive/desktop/workspaces:
+Every workspace lives under /Users/Z00HCXG/.config/hive/desktop/workspaces:
 
-    /home/mduren/.config/hive/desktop/workspaces/mcps.yaml                      — your own MCP server library
-    /home/mduren/.config/hive/desktop/workspaces/skills.yml                     — your skill package library
-    /home/mduren/.config/hive/desktop/workspaces/.shared/skills/<slug>/SKILL.md — skills you author
-    /home/mduren/.config/hive/desktop/workspaces/<dir>/agent-workspace.yaml     — one workspace's manifest
-    /home/mduren/.config/hive/desktop/workspaces/<dir>/AGENTS.md                — the workspace's own instructions, hand-edited
+    /Users/Z00HCXG/.config/hive/desktop/workspaces/mcps.yaml                      — your own MCP server library
+    /Users/Z00HCXG/.config/hive/desktop/workspaces/skills.yml                     — your skill package library
+    /Users/Z00HCXG/.config/hive/desktop/workspaces/.shared/skills/<slug>/SKILL.md — skills you author
+    /Users/Z00HCXG/.config/hive/desktop/workspaces/<dir>/agent-workspace.yaml     — one workspace's manifest
+    /Users/Z00HCXG/.config/hive/desktop/workspaces/<dir>/AGENTS.md                — the workspace's own instructions, hand-edited
 
 `<dir>` is the workspace's directory name and its whole identity — there is no
 separate id field, so create one by creating the directory. Opening a
 workspace regenerates everything else under `<dir>` (`CLAUDE.md`, `.mcp.json`,
 `.codex/config.toml`, `.claude/`, `.agents/`, an empty `docs/`) from the
 manifest and `AGENTS.md`. None of that generated output is meant to be
-hand-edited — it is silently replaced the next time the workspace opens. One
-directory is neither authored nor regenerated: `canvases/` holds artifacts a
-chat's agent wrote through the `hive-canvas` MCP tools, and Hive leaves it
-alone. Put
+hand-edited — it is silently replaced the next time the workspace opens. The
+documents a chat's agent writes through the `hive-drive` MCP
+tools are not here: they live in the workspace's Hive Drive space,
+`workspaces/<dir>` under hive's context directory. Put
 prose in `AGENTS.md`, not in the manifest: `agent-workspace.yaml` carries no
 `system_prompt` field.
 
@@ -46,9 +46,9 @@ Rules for every file above:
 - `name` — display name shown on the workspace's card.
 - `command` — the whole invocation, as a Go template rendered when a session starts. It is required, and it is the only thing that decides what runs. There is no `agent` key: Hive reads the label off the command's first word to pick the icon, the activity indicator and the resume probe, and a CLI it has never heard of is a normal workspace.
 
-  Available fields: `.Dir` (the workspace directory), `.MCPConfig` (the generated `.mcp.json`, written for every workspace whatever the agent), `.SessionID` (a uuid Hive minted), `.Resume` (true when reattaching to a conversation), and `.Prompt` (a scheduled chat's opening message; empty on a chat started by hand). `shq` quotes a value for the shell: use it on every path.
+  Available fields: `.Dir` (the workspace directory), `.MCPConfig` (the generated `.mcp.json`, written for every workspace whatever the agent), `.SessionID` (a uuid Hive minted), `.Resume` (true when reattaching to a conversation), and `.Prompt` (an optional opening message for a schedule, the New chat dialog, an action, or a chat started with `chat_create`, `hive dt chat create` or an applet's `hive.startChat`). `shq` quotes a value for the shell: use it on every interpolated value.
 
-  A workspace with `schedules:` needs a command that passes `.Prompt`, or Hive refuses the manifest: a scheduled chat whose prompt the command drops would sit idle with nobody watching. End the command with `{{ if .Prompt }}-- {{ .Prompt | shq }}{{ end }}`, which is what the shipped presets do.
+  A workspace with `schedules:` or one used by a prompted launch needs a command that passes `.Prompt` through `shq`. Hive refuses a prompt-dropping or unquoted command because the detached chat would either sit idle or let prompt text become shell syntax. Every launch that carries a prompt checks this: the New chat dialog disables such a workspace when a prompt is set, and the other launches refuse with `invalid`. A config migration that rewrites `command` can drop the tail, so check a migrated workspace's command (`workspace_list` reports it) before you point a prompt at it. End the command with `{{ if .Prompt }}-- {{ .Prompt | shq }}{{ end }}`, which is what the shipped presets do.
 
   The line runs as `cd <workspace> && <your command>` under a login shell, so an env prefix or a pipeline works. Break it across several lines for readability; they are folded before rendering.
 
@@ -66,7 +66,7 @@ Rules for every file above:
 
   `--dangerously-skip-permissions` (and codex's `--dangerously-bypass-approvals-and-sandbox`) skips prompting entirely. Hive flags a command carrying one, but the flag is yours to add: reserve it for a workspace you already trust completely, remembering that every enabled MCP server is in reach.
 - `mcps` — optional list of MCP server ids this workspace enables. Each id is either one of the shipped catalogue entries below or a key from your own mcps.yaml `servers:` map; an mcps.yaml entry can also replace a shipped entry of the same id.
-- `skills` — optional list of **skill package** names this workspace enables, each a key from skills.yml's `packages:` map. Packages are the unit, never individual skills: `skills: [hive]` carries every `hive-*` skill this build ships, because that is what the seeded package's pattern selects. Naming a skill slug here (`hive-mcp`) enables nothing — it is read as a package that does not exist and reported when the workspace opens. Opening renders the selected skills into `.claude/skills/` and `.agents/skills/`.
+- `skills` — optional list of **skill package** names this workspace enables, each a key from skills.yml's `packages:` map. Packages are the unit, never individual skills: `skills: [hive]` carries every `hive-*` skill this build ships, because that is what the seeded package's pattern selects. Naming a skill slug here (`hive-mcp`) enables nothing — it is read as a package that does not exist and reported when the workspace opens. Opening renders the selected skills into `.claude/skills/` and `.agents/skills/`. Hive removes only the skills it installed there, so a skill only this workspace needs can be written straight into `.claude/skills/<slug>/SKILL.md` (or `.agents/skills/` for an agent that reads that tree) and survives every open, unless an enabled package installs a skill of the same name.
 - `schedules` - optional list of recurring chats this workspace launches on its own, on a cron schedule. See "schedules schema" below.
 
 ## schedules schema
@@ -94,10 +94,21 @@ nothing back-fires: Hive only ever measures missed occurrences since the last
 time this exact `cron` ran, never since the schedule was first created. An
 edit to `schedules:` -- yours or the agent's -- takes effect the next time this
 workspace opens; no restart needed. With the `hive-desktop` MCP server
-declared in `mcps:`, `put_schedule`, `remove_schedule`, `list_schedules` and
-`preview_schedule` make the same edit in place, one entry at a time, without
-touching the rest of the file; a `put_schedule` on an existing id changes only
+declared in `mcps:`, `schedule_put`, `schedule_delete`, `schedule_list` and
+`schedule_preview` make the same edit in place, one entry at a time, without
+touching the rest of the file; a `schedule_put` on an existing id changes only
 the fields it passes.
+
+### Chats started by an agent or an applet
+
+A chat started with `chat_create` (the `hive-chats` MCP server), `hive dt chat create` or
+an applet's `hive.startChat` is not a scheduled chat. Hive passes the prompt as written
+and does not tell the agent to end the session, so use it for a chat that keeps running,
+such as an orchestrator. The same callers pin and unpin chats in the Code sidebar with
+`chat_pin_put` and `chat_pin_delete`, `hive dt chat-pin`, or `hive.pinChat`.
+
+To let a workspace's own agent start chats in other workspaces, add `hive-chats` to its
+`mcps:`. Each started chat runs its own workspace's command and permission settings.
 
 ### Prompt template variables
 
@@ -185,260 +196,49 @@ Node.js 20.19 or newer and a current stable Chrome installed and reachable
 from the workspace's environment. No credentials, and nothing
 workspace-specific: this entry ships with no configuration in M1.
 
-### Hive Canvas — `hive-canvas`
+### Hive Chats — `hive-chats`
 
-The `hive-canvas` MCP server is the chat's output surface: its tools put
-content in front of the user in a pane beside the conversation, in the Agents
-area, while the session keeps running. It is the difference between describing
-a document in terminal scrollback and handing the user one to read
-(ADR canvases-are-named-files-in-the-workspace-folder-served-over-their-own-mcp-entry).
+The `hive-chats` MCP server starts agent workspace chats and pins them to the
+Code sidebar. It is how an orchestrator agent hands work to another workspace:
+it starts a named chat with an opening prompt, and the user finds the chat in
+Chats, or in the Code sidebar when it is pinned.
 
-Like `hive-desktop`, the server is the running app itself — nothing to
-install, nothing to fetch. It is a separate entry so a workspace can have a
-canvas without granting the app-control tool set, and the other way around.
+| Tool | What it does |
+| --- | --- |
+| `chat_list` | Every chat, or one workspace's, with `running` and `pinnedAt`. |
+| `chat_create` | Start a chat: `workspace`, `name`, optional `prompt` and `pinToCode`. |
+| `chat_pin_put` | Pin a chat to the Code sidebar. |
+| `chat_pin_delete` | Unpin a chat. |
 
-#### What a canvas is
+The same operations are `hive dt chat list`, `hive dt chat create`, and
+`hive dt chat-pin put|delete`.
 
-A canvas is a named artifact in the workspace: an ordered list of blocks,
-saved as `canvases/<name>.json` in the workspace folder. A chat can make as
-many as it needs — name them by artifact (`release-notes`, `perf-report`),
-give each a display title, and they outlive the conversation that made them.
-Blocks are:
+#### Authority
 
-- **markdown** — a title (optional) and a body, rendered as GitHub-flavored
-  markdown. Raw HTML in the body is escaped, not rendered.
-- **html** — a title (optional) and a body of markup, for layout markdown
-  cannot express: a row of stat tiles, a two-column comparison, a card grid,
-  or a drawn diagram. See [Writing an html block](#writing-an-html-block).
-- **link** — a title and an `http`, `https`, or `mailto` URL, shown as an
-  openable link.
+`chat_create` runs the target workspace's command, with that workspace's MCP
+servers and permission settings. A workspace whose command bypasses
+permissions starts an agent that acts without asking. Grant `hive-chats` only
+to a workspace you trust to start others.
 
-Block ids are the agent's own: reusing an id updates that block in place,
-which is how a status line is revised instead of duplicated; a `before`
-anchor places or moves a block ahead of an existing one.
-
-#### Writing an html block
-
-How a block looks is yours. Any class, any `style` attribute, any colour or
-size — nothing in the allowlist is second-guessed, and a block renders inside
-the pane it was written for, so it cannot paint over the rest of the app.
-
-What a block may **reach** is not yours: no script, no event handler, no
-embedded document, and links only to `http`, `https` or `mailto`. A write that
-uses one of those fails and names it, rather than rendering something you
-believe is intact.
-
-Reach for the `hv-` classes below before you invent styling. They are what
-Hive styles for you: pick one and the block follows the user's theme, in light
-and dark, now and after a restyle, and two canvases written months apart still
-look like the same product. Write your own colours when the block needs
-something the vocabulary has no name for, and remember the user may be in
-either theme.
-
-##### Tags
-
-Sectioning and text (`div`, `section`, `article`, `header`, `footer`, `aside`,
-`figure`, `figcaption`, `h1`, `h2`, `h3`, `h4`, `h5`, `h6`, `p`, `span`,
-`strong`, `em`, `b`, `i`, `u`, `s`, `small`, `mark`, `sub`, `sup`, `abbr`,
-`q`, `time`, `br`, `hr`, `blockquote`), lists (`ul`, `ol`, `li`, `dl`, `dt`,
-`dd`), code (`pre`, `code`, `kbd`, `samp`, `var`), tables (`table`, `thead`,
-`tbody`, `tfoot`, `tr`, `th`, `td`, `caption`, `colgroup`, `col`), disclosure
-(`details`, `summary`), `a` with an `http`, `https` or `mailto` href, and the
-drawing tags in [Diagrams](#diagrams).
-
-Also `img`, with an `http`, `https` or base64 `data:` image source. Note that
-the app fetches whatever host you name, from the user's machine, every time
-the canvas is opened.
-
-Refused: `script`, `style` (the element — the `style` attribute is fine),
-`iframe`, `object`, `embed`, `form` and form controls, every `on*` handler,
-and `id`, which can shadow a global in the app's own page.
-
-Attributes are `class`, `style`, `title`, `lang`, `dir`, `href` on `a`, `src`
-and `alt` on `img`, `colspan`/`rowspan` and `scope` on cells, `open` on
-`details`, and the drawing attributes in [Diagrams](#diagrams).
-
-##### Classes
-
-**Layout** — `hv-stack` (vertical, evenly spaced), `hv-row` (horizontal,
-wraps), `hv-grid` with one of `hv-cols-2`, `hv-cols-3`, `hv-cols-4` (equal
-columns; they collapse to one when the pane is narrow, so pick for the
-content, not for a width you cannot see).
-
-**Containers** — `hv-card` (a bordered, raised box: one unit of content),
-`hv-panel` (a flat tinted region: a grouped aside), `hv-callout` (a
-left-ruled block for something the reader must not miss).
-
-**Data** — `hv-stat` wrapping an `hv-stat-value` and an `hv-stat-label` is one
-tile; `hv-kv` on a `<dl>` lays its `<dt>`/`<dd>` pairs out as an aligned
-key/value table.
-
-**Emphasis** — `hv-badge` (an inline pill), `hv-muted` (de-emphasised text),
-`hv-mono` (monospace, for ids, shas and figures).
-
-**Tones**, for `hv-callout`, `hv-badge` and the diagram roles — `hv-info`,
-`hv-success`, `hv-warn`, `hv-error`, `hv-accent`. Without one, each is
-neutral.
-
-##### Diagrams
-
-Prose and boxes cannot say which node feeds which, or which path is a return
-path. Draw that as an `svg`: you place the geometry, Hive picks the size and
-every colour, exactly as it does for the classes above.
-
-Give the `svg` a `viewBox` and it scales to whatever width the user dragged
-the pane to, which is usually what you want. State a `width` and `height`
-instead and it keeps that size, up to the width of the pane.
-
-The role classes below are defaults, not rules. An unclassed shape still
-follows the theme; a `fill` or `stroke` attribute, or a `style`, overrides
-whatever the app would have picked.
-
-**Tags** — `svg`, `g` (a group, to move or tone several shapes at once),
-`path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon`, `text`
-and `tspan`. There is no `defs`, `marker` or `use`: draw an arrowhead as a
-`polygon`.
-
-**Attributes** — the geometry (`viewBox`, `transform`, `d`, `points`, `x`,
-`y`, `dx`, `dy`, `width`, `height`, `rx`, `ry`, `cx`, `cy`, `r`, `x1`, `y1`,
-`x2`, `y2`, `preserveAspectRatio`) and the paint (`fill`, `stroke`,
-`stroke-width`, `stroke-dasharray`, `stroke-linecap`, `stroke-linejoin`,
-`opacity`, `fill-opacity`, `stroke-opacity`, `fill-rule`, `paint-order`,
-`vector-effect`, `font-size`, `font-family`, `font-weight`, `font-style`,
-`letter-spacing`, `text-anchor`, `dominant-baseline`).
-
-**Roles** — `hv-node` (a filled, bordered shape: one box in the diagram),
-`hv-edge` (a stroked connector), `hv-arrow` (a filled arrowhead or any other
-solid mark), `hv-label` (text the reader reads first), and `hv-dashed`
-alongside `hv-edge` for a path that is conditional, asynchronous, or a read
-rather than a write. A tone on the element — or on a `g` around a whole path
-— colours it; `hv-muted` and `hv-mono` work on `text` exactly as they do on a
-`span`.
-
-##### Worked examples
-
-A row of stat tiles:
-
-```html
-<div class="hv-grid hv-cols-3">
-  <div class="hv-card hv-stat">
-    <span class="hv-stat-value">1,284</span>
-    <span class="hv-stat-label">Requests</span>
-  </div>
-  <div class="hv-card hv-stat">
-    <span class="hv-stat-value">98.2%</span>
-    <span class="hv-stat-label">Success</span>
-  </div>
-  <div class="hv-card hv-stat">
-    <span class="hv-stat-value">412ms</span>
-    <span class="hv-stat-label">p95</span>
-  </div>
-</div>
-```
-
-A before/after comparison, and a status line:
-
-```html
-<div class="hv-grid hv-cols-2">
-  <section class="hv-panel">
-    <h3>Before</h3>
-    <p class="hv-mono">412ms</p>
-  </section>
-  <section class="hv-panel">
-    <h3>After</h3>
-    <p class="hv-mono">96ms</p>
-  </section>
-</div>
-<p class="hv-row">
-  <span class="hv-badge hv-success">passing</span>
-  <span class="hv-badge hv-warn">2 flaky</span>
-  <span class="hv-muted">last run 4m ago</span>
-</p>
-```
-
-Facts, and something the reader must not miss:
-
-```html
-<dl class="hv-kv">
-  <dt>Branch</dt><dd class="hv-mono">feat/canvas-html</dd>
-  <dt>Base</dt><dd class="hv-mono">main</dd>
-  <dt>Reviewer</dt><dd>unassigned</dd>
-</dl>
-<div class="hv-callout hv-error">
-  <strong>Migration 0042 is not reversible.</strong>
-  Take a backup before deploying.
-</div>
-```
-
-A pipeline with a return path:
-
-```html
-<svg viewBox="0 0 300 120">
-  <g class="hv-accent">
-    <rect class="hv-node" x="4" y="10" width="90" height="40" rx="7" />
-    <text class="hv-label" x="49" y="35" text-anchor="middle">Poller</text>
-  </g>
-  <rect class="hv-node" x="150" y="10" width="90" height="40" rx="7" />
-  <text class="hv-label" x="195" y="35" text-anchor="middle">Store</text>
-
-  <line class="hv-edge" x1="94" y1="30" x2="140" y2="30" />
-  <polygon class="hv-arrow" points="140,26 149,30 140,34" />
-
-  <path class="hv-edge hv-dashed" d="M195 50 L195 90 L49 90 L49 50" />
-  <polygon class="hv-arrow" points="45,58 49,50 53,58" />
-  <text class="hv-muted" x="122" y="105" text-anchor="middle">re-read on wake</text>
-</svg>
-```
-
-An html block is exported as its markup, so a canvas saved to a file keeps the
-structure and loses the styling — the `hv-` names mean nothing outside Hive,
-and a drawing that leans on them falls back to svg's own defaults, which are
-black boxes and no edges. What you write inline survives: a `style`, a `fill`,
-a `stroke`. Style a diagram yourself when the canvas is meant to leave the
-app. Reach for `markdown` for prose and `html` only when the layout is the
-point.
-
-#### Tools
-
-- `put_block` — create or replace one block; the first write under a new
-  canvas name creates that canvas. Answers with the canvas metadata and the
-  stored block, never the whole surface.
-- `put_blocks` — write a batch of blocks in one atomic call, for laying out
-  a canvas whole instead of block by block.
-- `remove_block` — remove one block by id.
-- `clear_canvas` — remove every block; the canvas, its name and title survive.
-- `delete_canvas` — remove a canvas entirely.
-- `read_canvas` — read one canvas exactly as the user sees it, every block
-  in order.
-- `list_canvases` — every canvas in the workspace, including ones earlier
-  chats made.
-- `open_canvas` / `close_canvas` — ask to show or hide the pane beside this
-  chat, optionally pinned to one canvas. Best-effort: it applies only while
-  the user is viewing this chat, and there is no acknowledgment either way.
-  Open when something is finished and worth looking at, not on every write —
-  a write while the pane is closed already lights an unseen dot.
-
-Every tool takes a `session` id naming the calling chat. Hive sets it in the
-launched process's environment as `HIVE_AGENT_SESSION`; a chat launched
-before canvas support existed does not have the variable until it is
-relaunched.
+A started chat is not a scheduled chat: Hive passes the prompt as written and
+does not tell the agent to end the session.
 
 #### Launch
 
-Hive reaches it over Streamable HTTP on the loopback server that also hosts
-the webhook listener:
+The server requires a bearer token
+(ADR chat-control-is-served-on-a-token-guarded-mcp-server-whose-token-the-endpoint-file-carries).
+The desktop mints the token on every start and writes it to the endpoint file
+in the hive data directory, readable only by the user. `hive mcp serve` reads
+it on every call, so a workspace's entry runs
+`hive --data-dir <dir> mcp serve --toolset chats` over stdio.
 
-```
-http://127.0.0.1:<port>/mcp/canvas
-```
+The entry has no HTTP form. When the `hive` command does not report the same
+version as the app, the catalogue reports a problem instead of an address.
 
-The port is allocated at startup, so this entry carries **no URL in the
-registry** — the live address is resolved when the catalogue is rendered
-(`Descriptor.RuntimeURL`), and the catalogue reports a problem instead when
-the loopback server is disabled.
+#### What it needs
 
-The server requires no token. It sits behind the loopback bind, spawns no
-processes, and writes only under the workspace's `canvases/` directory.
+`http.enabled` in `settings.yaml` (on by default), and the hive CLI at the
+app's version on the session PATH, or at `daemon.hive_path`.
 
 ### Hive Desktop — `hive-desktop`
 
@@ -468,20 +268,278 @@ That is also why the catalogue reports a problem, rather than a URL, when the
 loopback server is disabled: an entry that rendered an address nothing answers
 would fail silently inside the agent's own `/mcp` output.
 
-The server requires no token. It sits behind the loopback bind and spawns no
-processes — session control stays on the HTTP adapter's token-guarded terminal
-prefix (ADR terminal-transport, ADR a-workspace-declares-its-own-authority).
+The server requires no token. It sits behind the loopback bind and runs no
+command a caller writes: a source refresh runs only the command sources a flow
+already declares, and session control stays on the HTTP adapter's
+token-guarded terminal prefix (ADR terminal-transport, ADR
+a-workspace-declares-its-own-authority).
 
 #### Stability
 
-`beta`. The tool set is settled enough to build against, but it is new and
-still growing toward the rest of the app's surface; tool names may still
-change before it is called stable.
+`stable`. Each tool is declared once in the operation catalog, with a
+noun-first name (`inbox_list`, `schedule_put`), and the same operation is a
+`hive dt` command (`hive dt inbox list`).
 
 #### What it needs
 
 `http.enabled` in `settings.yaml`, which is on by default. Nothing else — no
 Node, no network access, and no per-workspace configuration.
+
+When the `hive` command reports the same version as the app, a workspace's
+entry runs `hive --data-dir <dir> mcp serve` with this server's toolsets over
+stdio instead of the HTTP address, so it holds no port.
+
+### Hive Drive — `hive-drive`
+
+The `hive-drive` MCP server is an agent's output surface. Its tools put
+documents in front of the user, in the Drive tab of a chat or a Code
+session, while the session keeps running. It is the difference
+between describing a plan in terminal scrollback and handing the user one to
+read (ADR hive-drive-is-one-document-tree-under-the-context-root-and-a-canvas-is-one-document-kind-in-it).
+
+Like `hive-desktop`, the server is the running app itself: nothing to
+install, nothing to fetch. It is a separate entry so a workspace can have the
+drive without granting the app-control tool set, and the other way around.
+
+#### Spaces and the caller argument
+
+Hive Drive is one folder tree under hive's context directory, split into
+spaces. A space is a repository (`owner/repo`), a Chats workspace
+(`workspaces/<name>`), or the one `shared` space. Every tool works inside the
+space of the caller, and every tool takes a `caller` that names the caller.
+It is one of three things:
+
+- In a Hive chat it is the `HIVE_AGENT_SESSION` environment variable, which
+  Hive sets in the launched process. The space is the chat's workspace, so
+  every chat of a workspace sees the same documents. A chat launched before
+  the variable existed does not have it until it is relaunched.
+- Anywhere else it is the absolute path of your working directory. Hive finds
+  the hive session whose checkout holds it, and the space is that session's
+  repository: the folder the checkout links as `.hive`. Every session of a
+  repository sees the same documents, and nothing is written into the
+  checkout itself.
+- Outside a chat and a hive session it is the word `global`, and the space is
+  `shared`. A directory inside no hive session is `not_found`, not global:
+  pass `global` yourself. The shared space sits beside no chat or session and has
+  no tabs, so `tab_open` and `tab_close` refuse it; the user reads it in the
+  Drive page.
+
+#### Paths and kinds
+
+A path is relative to the space root, with forward slashes, no empty segment,
+no segment that starts with a dot, and nothing that climbs out with `..`.
+The empty path is the space root, which only `document_list` takes.
+
+What a document is follows from its name:
+
+- **markdown**, `.md`: GitHub-flavored markdown, optionally opening with
+  YAML front matter. Raw HTML in the body is escaped, not rendered.
+- **html**, `.html`: a page of its own, shown in a sandboxed frame. Inline
+  styles and scripts run. Scripts, styles and fetches load only over `https`;
+  images, fonts and media load over `https` or as a `data:` URL. Forms and
+  frames do not work. A `#fragment` link scrolls the page; a relative link
+  does nothing, so link to other documents from markdown.
+- **file**: anything else in the folder. Hive lists it and leaves it alone,
+  and `document_get` reads it when it is UTF-8 text.
+
+Folders are created as needed when you write, so file a plan as
+`plans/auth-rewrite.md` without making `plans/` first. Name documents by
+artifact (`release-notes`, `perf-report`), not by conversation: they outlive
+the chat or session that made them, and other agents and the user read the
+same tree. List before you write over something you did not make.
+
+#### Front matter
+
+A markdown document may open with YAML front matter between two `---` lines.
+`title` is the name the user sees in the tree; any other keys are yours.
+`document_put` refuses front matter that does not parse, and front matter
+that does not close within the first 8 KiB, rather than saving a document
+Hive would show without its title. Hive does not add or change anything in a
+markdown document's front matter.
+
+#### Document tools
+
+- `document_list`: a folder's entries, folders first. Each entry has a
+  `kind` (`dir`, `markdown`, `html`, `file`), `path`, `name`,
+  `title`, `size`, `modified`, and `front` for markdown. `detail`
+  defaults to `children`, one level down; `tree` returns the whole subtree.
+  The answer names the `space` and echoes the `detail` it used. A missing
+  folder is `not_found`.
+- `document_get`: one markdown or html document, or any other UTF-8 text
+  file, its entry plus `body` exactly as stored. A binary file is refused.
+- `document_put`: create or replace a whole `.md` or `.html` document,
+  up to 2 MiB. Answers with the entry as stored.
+- `document_move`: rename or move a document or a folder inside
+  the space. The target must not exist, and a document keeps its extension.
+  Answers with the entry at its new path.
+- `document_delete`: delete a document or an empty folder, and
+  answer with the path deleted. There is no recursive delete and no trash.
+
+A write while a Drive tab is open behind another tab lights a dot on that tab.
+With no Drive tab open, a write shows nothing until the user opens Drive, so
+call `tab_open` when something is finished and worth reading now, not on every
+write.
+
+#### Tabs and layout
+
+Drive, Diff, Tasks and terminals open as tabs in panels beside a chat or Code
+session. A panel holds tabs, and a split joins two panels side by side or
+stacked. You can do with the layout what the user can. Every call below is a
+request to the app: the tab change applies only while the user is viewing this
+chat or session, and there is no acknowledgment. The tmux side of `terminal`
+is the exception: `tab_open` starts or finds the window and `tab_close` kills
+it whether or not the session is on screen.
+
+A tab reference names one tab, in a `tab` or `anchor` input:
+
+- `drive`, `diff` or `tasks` name that view. A chat has only `drive`.
+- `terminal` names a chat's one terminal.
+- `applet:<id>` names an applet's tab. `tab_open` opens it if the applet's
+  `applet.yaml` lists `surfaces.tab`, which runs its page, and `tab_close` ends
+  it.
+- Anything else is a tmux window of a Code session, by id (`@3`) or exact
+  name. A Code session must name its window; `terminal` alone is refused.
+
+The tools:
+
+- `tab_open`: open the tab for a `view` (`drive`, `diff`, `tasks`, `terminal`
+  or `applet:<id>`). `path`, for `drive`, is a document by its path in the
+  space; it must exist, and a folder is refused. `placement` is `behind` (the default; behind
+  a tab, with an unseen dot, never takes the screen), `beside` (a split to the
+  right) or `below` (a split downward). `anchor` is the tab to place relative
+  to; omit it for the tab in front of the focused panel. A tab that is already
+  open stays where it is. The answer names the `view`, the resolved `path` and,
+  for `terminal`, the `window` id.
+- `tab_close`: close the tab for `drive`, `diff` or `tasks`. Documents are
+  untouched. `terminal` needs `window` and kills that tmux window
+  and what runs in it; only close a window you started. A chat's terminal is
+  the chat, so it is refused.
+- `tab_move`: move `tab`. `placement` `behind` puts it in the anchor's panel
+  right after the anchor, or at the end of the focused panel with no anchor.
+  `beside` and `below` split the anchor's panel (or the focused one) and move
+  the tab into the new panel.
+- `tab_focus`: bring `tab` forward and focus its panel. A window is also
+  selected in tmux, by the app and only while the session is on screen.
+- `panel_close`: close the panel that holds `tab`. Its tabs join the
+  neighbouring panel, and the last panel stays.
+- `split_resize`: give the side that holds `tab` a `share` of its nearest
+  split, from 0.2 to 0.8.
+- `split_turn`: turn the nearest split of `tab` between side by side and
+  stacked.
+- `layout_get`: read the layout the app last reported: `panels` with their
+  `tabs` (each spelled the way the tools take it, with `kind`, the window
+  `name` for a Code session, and `shown` for the panel's front tab),
+  `focusedPanel`, `splits` (`axis` `row` is side by side, `column` is
+  stacked; `first` and `second` are panel or split ids), and `onScreen`. When
+  `known` is `false` the app has not reported this layout yet, for instance
+  just after it started or when the session has never been open in Code; act
+  without it.
+
+Call `layout_get` first when you are not sure what is open. Layout changes may
+land after the call returns, so read again before you build on one.
+
+`tab_focus` and `tab_close` on a terminal are the two that take something from
+the user: the first takes the screen, the second ends a running process. Use
+`tab_focus` when the user asked to see something, not to show off a result;
+for a result use `tab_open`, which leaves the focus where it is. Close only a
+window you started.
+
+A `terminal` opens detached, so it never takes the keyboard or the screen. A
+new one is a shell in the session's checkout with nothing running in it: the
+tool takes no command, so run your own work yourself and open a terminal for
+the user to type in. The session must be running; start it in Code first. Two
+inputs apply to `tab_open` with `terminal` only, and either with another view
+is refused:
+
+- `name`: the name of the new window.
+- `window`: an existing window of the session, by tmux id (`@3`) or exact
+  window name. It is placed instead of starting one, so it excludes `name`. A
+  window the session does not have is `not_found`.
+
+#### Diff reviews
+
+When the user asks you to review a Code session's changes, write the review
+with these tools instead of pasting it into the terminal. The Diff view draws
+each comment under the lines it is about. The user dismisses the ones they
+disagree with, can reply to one with context, and Send delivers the rest to the
+session's agent with their own comments. The user's replies to a comment reach
+the session's agent inside that comment, in order; they do not come back
+through `diff_review_get`. A review is about the branch
+against its base, the Branch comparison, which is what a pull request shows.
+
+- `diff_review_put`: store your review: a `summary` and `comments`. In a hive
+  session it reviews your own session; in a chat, name one in `sessionId`, by
+  id or name from `session_list`. Each comment has a `path`, `text`, a
+  `severity` (`issue`, `suggestion` by default, or `note`), and either
+  `startLine` and `endLine` or `kind` `file` for the whole file. Lines count
+  as the branch has them; with `startSide` `deletions` they count as the base
+  had them, for a removed line. Hive quotes the rows itself. Set `agent` to
+  `claude`, `codex` or `pi` so the view draws your mark. A second review from
+  the same `author` replaces the first, so send the whole review each time.
+- `diff_review_get`: the reviews still waiting. A comment the user dismissed or
+  sent is gone from it.
+- `diff_review_clear`: withdraw your review, or every review of the session.
+
+Every comment must name a file in the branch diff, and a lines comment must
+name rows the diff shows: changed lines or the context around them. Read the
+diff with `git diff $(git merge-base HEAD origin/<base>)` in the checkout to
+get the numbers right. A refused review lists every comment to fix and stores
+nothing. Keep each comment to one actionable point and put the overview in
+`summary`. When the review is stored, open the `diff` tab with `tab_open`.
+
+#### Writing a Mermaid diagram
+
+Put a standalone `mermaid` fence in a markdown document:
+
+````markdown
+```mermaid
+flowchart LR
+  Poller --> Store
+  Store -. re-read .-> Poller
+```
+````
+
+Hive renders diagrams with Mermaid's strict security mode. Diagram scripts,
+HTML labels and interactive links stay disabled. A diagram that does not parse
+shows an error in place without breaking the surrounding markdown. Theme
+changes redraw the diagram with the current theme colours.
+
+Each diagram sits in a pan-and-zoom viewport. Drag to pan, use the controls to
+zoom or fit the whole diagram, or hold Control/Command while scrolling to zoom
+around the pointer.
+
+Copy and save preserve the source fence, so Markdown viewers with Mermaid
+support can render the exported diagram too.
+
+#### Launch
+
+Hive reaches it over Streamable HTTP on the loopback server that also hosts
+the webhook listener:
+
+```text
+http://127.0.0.1:<port>/mcp/drive
+```
+
+The port is allocated at startup, so this entry carries **no URL in the
+registry**: the live address is resolved when the catalogue is rendered
+(`Descriptor.RuntimeURL`), and the catalogue reports a problem instead when
+the loopback server is disabled. The first allocated port is written to
+`settings.yaml` as `http.port`, so the address stays the same across
+restarts.
+
+A workspace that lists `hive-drive` gets this server in its generated MCP
+configuration. When the `hive` command (`daemon.hive_path`, else the
+login-shell PATH) reports the same version as the app, the entry is a stdio
+server, `hive --data-dir <dir> mcp serve --toolset drive,layout`. It finds
+the app through its endpoint file on every call and fills `caller` itself, so
+the entry holds no port and the agent passes no caller. Otherwise the entry is
+the HTTP address above. Any other agent, such as the one a hive session runs,
+gets the same entry when the user presses Add in Settings ▸ MCP servers; Hive
+edits an agent's own configuration only then.
+
+The HTTP server requires no token. It sits behind the loopback bind, runs no
+command a caller writes, and writes only inside the caller's space under
+hive's context directory.
 
 ### Playwright — `playwright`
 

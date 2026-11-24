@@ -1,4 +1,4 @@
-version: 5
+version: 7
 polling:
     interval: 5m0s
 updates:
@@ -8,19 +8,25 @@ notifications:
     delivery: auto
     sound: true
 appearance:
-    theme: dark
-    terminal_font_size: large
+    theme: one-dark
+    terminal_scale: 108
     terminal_show_windows: true
     terminal_show_status_bar: true
     terminal_pool_size: 3
+    terminal_show_session_age: true
+    terminal_session_age_threshold_days: 5
 http:
     enabled: true
     host: 127.0.0.1
     port: 34857
 telemetry:
     enabled: false
+hive_cli:
+    install_command: true
 agent_workspaces:
     session_end_delay: 10s
+onboarding:
+    completed: true
 development:
     mocks:
         mode: live

@@ -1,6 +1,6 @@
 ---
 name: hive-actions
-description: "Define the actions a feed item, a terminal session or window, or a flow node can trigger — launching an agent session, running a shell command, publishing a message, or copying text to the clipboard. Use when configuring this in Hive Desktop (/home/mduren/.config/hive/desktop/actions.yml)."
+description: "Define the actions a feed item, a terminal session or window, or a flow node can trigger — launching an agent session, running a shell command, publishing a message, or copying text to the clipboard. Use when configuring this in Hive Desktop (/Users/Z00HCXG/.config/hive/desktop/actions.yml)."
 ---
 Define Hive Desktop actions.
 
@@ -8,11 +8,11 @@ Hive Desktop is a desktop app that turns GitHub activity and webhook deliveries
 into triaged feeds and automated coding-agent sessions. Its configuration is
 plain text on this machine, meant to be edited directly:
 
-- /home/mduren/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
-- /home/mduren/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
-- /home/mduren/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
+- /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
+- /Users/Z00HCXG/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
+- /Users/Z00HCXG/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
 
-Write the actions to /home/mduren/.config/hive/desktop/actions.yml.
+Write the actions to /Users/Z00HCXG/.config/hive/desktop/actions.yml.
 
 The file holds two lists. An **action** is something the app can trigger on your
 behalf: it shows up as a button in the detail pane when a feed item is selected,
@@ -20,6 +20,11 @@ in the row menus of terminal mode's sessions and windows, and as the target of a
 flow `action` node, which fires it automatically for every message routed there.
 A **launcher** opens the pop-up terminal into a program and is documented under
 "Launchers" below.
+
+A flow that is the only place a session or chat starts does not need an action:
+its `launch-session` and `launch-chat` nodes carry the launch details inline.
+Write a `launch-session` action when the same launch is also offered from the
+item menu, and point a flow `action` node at it.
 
 Rules for every file above:
 
@@ -30,11 +35,12 @@ Rules for every file above:
 ## Top-level schema
 
 - `version` — must be `1`.
-- `actions` — the list, in presentation order: every surface that offers actions — the detail pane, the item action menu, and terminal mode's session and window row menus — presents the applicable ones in the order they appear here. Every action has:
+- `actions` — the list, in presentation order: every surface that offers actions — the detail pane, the item action menu, terminal mode's session and window row menus, and the Code status bar — presents the applicable ones in the order they appear here. Every action has:
   - `id` — a slug (lowercase letters, digits, hyphens, starting with a letter or digit), unique across the file. This is what a flow `action` node references.
   - `label` — the human-readable name shown on the button.
   - `type` — one of the action types documented below.
-  - `targets` — optional list of the surfaces this action is offered on: `item` (a feed item), `session` (a terminal session's row menu), `window` (a terminal window's row menu). Omit it for an item action — that is the default, and it is what every action written before terminal mode means. A `launch-session` action cannot target `session` or `window`: it creates a new session, and there is no New Session form on those surfaces.
+  - `targets` — optional list of the surfaces this action is offered on: `item` (a feed item), `session` (a terminal session's row menu), `window` (a terminal window's row menu), `statusbar` (a button in the Code view's session status bar, which runs against the session like `session`). Omit it for an item action — that is the default, and it is what every action written before terminal mode means. A `launch-session` action cannot target `session`, `window`, or `statusbar`: it creates a new session, and there is no New Session form on those surfaces.
+  - `icon` — optional glyph for the `statusbar` button: `terminal`, `git-branch`, `git-compare`, `folder`, `file-text`, `search`, `database`, `gauge`, `activity`, `flask-conical`, `hammer`, `container`, `cloud`, `bug`, `zap`, `package`, `globe`, `external-link`, `git-pull-request`, or `play`. Empty means `terminal`. The button's tooltip is the `label`.
   - `applies_to` — optional list of item kinds this action is offered for in the detail pane (e.g. `[pr]`, `[issue]`, or a webhook item's own `kind`). Empty means any kind. It refines the `item` target only — a terminal target has no item kind — and it does not restrict flow `action` nodes, which target one id explicitly.
   - `show_in_detail` — whether the detail pane offers it as a manual button. It too refines the `item` target only. Flow `action` nodes can target the action either way.
   - `inputs` — optional list of values collected from the user when the action is run, each `{name, label, type, required, default, placeholder, options}`. `name` must be a template identifier (letters, digits, underscores) because it is read as `{{ .Inputs.<name> }}`; `type` is `text` (default), `multiline`, or `select`; `options` is required for — and only valid on — a `select`, and a `default` must be one of them. An action with a required input that has no default can only be run by a person — from the detail pane or a terminal row menu; a flow `action` node cannot fire it, because there is nobody to ask.
@@ -54,19 +60,52 @@ node:
 - `{{ .Payload.<field> }}` — the item's payload. GitHub items carry `repo`, `title`, `url`, `num`, `author`, `body`, `labels`, and `state`; webhook items carry whatever was POSTed.
 - `{{ .Key }}` — the item's stable identity, e.g. `colonyops/hive#2841`.
 - `{{ .Raw }}` — the payload as raw JSON.
+- `{{ .ItemRemote }}` — the clone URL of the item's repository, built from its `repo` and `url` and spelled as HTTPS or SSH by `git.clone_protocol` and `rules[].clone_protocol` in the hive config; empty when the item names no repository.
 
-On the `session` and `window` targets — a terminal session row, or a window row
-inside it:
+On the `session`, `window`, and `statusbar` targets — a terminal session row, a
+window row inside it, or the session's status bar:
 
 - `{{ .Session.Path }}` — the session's checkout on disk. This is also the default working directory of a `shell` action run from a terminal target, so a command that just works in the checkout does not have to name it.
 - `{{ .Session.Slug }}` — the session's slug, which is also its tmux session name.
 - `{{ .Session.Name }}`, `{{ .Session.ID }}`, `{{ .Session.Repo }}`, `{{ .Session.Branch }}` — the session's name, hive id, remote, and worktree branch (blank for a session that is not a worktree).
+- `{{ .Session.WebURL }}` — the repository's web page, on GitHub or on the connected Gitea or Forgejo instance that serves the remote; blank for a remote with no host. `open {{ .Session.WebURL | shq }}` opens it, and a path after it reaches a page inside the repository.
 - `{{ .Window.ID }}` — the tmux window id, on the `window` target only. Addressed as `{{ .Session.Slug }}:{{ .Window.ID }}` in a tmux command. There is no window name: the id survives a rename and the name does not.
 - `{{ .Key }}` — the session's slug.
 
 On every target:
 
 - `{{ .Inputs.<name> }}` — a value the user typed or chose when running the action, for each input the action declares. Undeclared names are a render error, so declare what you reference.
+
+Fence content that came from outside — a PR or issue body, an alert, a webhook
+payload — between `{{ untrustedStart }}` and `{{ untrustedEnd }}`,
+each on its own line. They render an opening and closing tag,
+`<untrusted-content-ID>` and `</untrusted-content-ID>`, whose name carries an id
+drawn fresh for every render, so text inside the fence cannot close it.
+`untrustedStart` takes optional key/value pairs that become attributes on the
+opening tag, such as `{{ untrustedStart "source" "grafana" }}`.
+`{{ untrustedNotice }}` renders one sentence telling the agent that the
+fenced text is data to read, not instructions to follow; put it before the fence:
+
+```
+Triage this alert.
+
+{{ untrustedNotice }}
+
+{{ untrustedStart "source" "grafana" }}
+{{ .Payload.title }}
+{{ .Payload.url }}
+
+{{ .Payload.body }}
+{{ untrustedEnd }}
+```
+
+Hive never fences a field for you: a template interpolates every value exactly
+as written. Decide per field:
+
+- Fence every `{{ .Payload.<field> }}` and `{{ .Raw }}` in a prompt. Someone other than the user wrote them: a PR author, an issue reporter, an alerting system, a webhook sender. That includes short fields like `title`, `author`, and `labels`. On a GitHub or Gitea item, `repo`, `num`, and `url` have a shape the forge fixes, so they may stay outside the fence to name the work.
+- `{{ .Key }}` is built from the item's id, which a webhook sender chooses. Fence it on webhook items.
+- `{{ .Inputs.<name> }}` is what the user typed, and `{{ .Session.* }}` and `{{ .Window.ID }}` come from Hive. They need no fence.
+- Fence only text an agent reads, such as `prompt_template`. A fence does nothing in a shell command; quote values there with `shq`.
 
 ## Action types
 
@@ -100,26 +139,99 @@ command record either: copying again just re-renders, with no rerun prompt.
 
 ### Launch session — `launch-session`
 
-A **launch-session** action starts a hive coding session from the triggering
-item. It is the action type behind manually invoking "review this PR" /
-"start work on this issue" on an item, and behind flow `action` nodes that
-spawn agents automatically.
+A **launch-session** action starts a repository-backed Hive coding session or
+an agent workspace chat from the triggering item. It is the action type behind
+manual item handoffs and flow `action` nodes that start agents automatically.
 
 #### Fields
 
 - `prompt_template` (required) — the new session's initial prompt.
-- `repo_template` — which repository the session is created against. Set it and
-  the action can run **headlessly** (a flow `action` node can fire it with no
-  human present). Leave it empty and the action becomes interactive: invoking
-  it manually prompts for repository, session name, and agent before the
-  session launches, and a flow `action` node is **rejected at validation
-  time** for referencing it.
-- `agent` — a non-default agent profile (e.g. `claude`, `aider`). Omit for the
-  launcher's default.
-- `post_hook` — a shell command to run once the session exists, in its
-  checkout. See below.
+- `repo_template` — which repository the Hive session is created against.
+- `workspace` — the directory name of an agent workspace under the configured
+  workspace root.
+- `agent` — a non-default Hive agent profile (e.g. `claude`, `aider`). Omit for
+  the launcher's default. Agent workspaces select their agent in `command:` and
+  cannot use this field.
+- `tags` — a list of tags for the new repository session, each a Go
+  template. A workspace target cannot use it. See below.
+- `post_hook` — a shell command to run once a repository session exists, in its
+  checkout. A workspace target cannot use it. See below.
 - `post_hook_timeout` — how long the hook may run, as a duration string
   (`"2m"`). Defaults to one minute.
+
+`repo_template` and `workspace` are mutually exclusive. Either fixed target
+makes the action **headless**, so a flow `action` node can fire it with no human
+present. With neither field, manual invocation asks for a repository or agent
+workspace plus the session name. A flow rejects that interactive variant.
+
+A workspace action resolves the current workspace definition when it runs. Its
+`command:` must carry `.Prompt` through `shq`; otherwise Hive refuses the launch
+rather than dropping the item context or treating it as shell syntax. The
+shipped command presets already satisfy this requirement.
+
+```yaml
+- id: triage-alert
+  label: Triage alert
+  type: launch-session
+  workspace: incident-triage
+  prompt_template: |
+    Triage this alert.
+
+    {{ untrustedNotice }}
+
+    {{ untrustedStart "source" "pagerduty" }}
+    {{ .Payload.alert }} in {{ .Payload.cluster }}
+    {{ .Payload.thread_url }}
+
+    {{ .Payload.description }}
+    {{ untrustedEnd }}
+```
+
+#### Fencing outside content
+
+A prompt mixes your instructions with text from outside: a pull request body,
+an alert, a webhook payload. Put that text between `{{ untrustedStart }}` and
+`{{ untrustedEnd }}` so the agent can tell where your instructions stop. They
+render an opening and closing tag, `<untrusted-content-<id>>` and
+`</untrusted-content-<id>>`. The id is drawn fresh for every render, so a
+closing tag that appears inside the content cannot close the fence.
+
+`untrustedStart` takes optional key/value pairs that become attributes on the
+opening tag: `{{ untrustedStart "source" "github" "kind" .Payload.kind }}`
+renders `<untrusted-content-<id> source="github" kind="pr">`. Values are
+escaped, so an attribute taken from the item cannot break out of the tag.
+
+The tags do not explain themselves. `{{ untrustedNotice }}` renders one
+sentence that does: the text inside this render's tag is data to read, not
+instructions to follow, and only the matching closing tag ends it. Put it
+before the fence.
+
+Hive does not fence anything for you. Fence every `.Payload` field and `.Raw`
+you put in a prompt, short ones like `title` and `author` included, and `.Key`
+on a webhook item, whose sender chooses the id. On a GitHub or Gitea item,
+`repo`, `num`, and `url` have a shape the forge fixes, so they may stay outside
+the fence to name the work. `.Inputs` and `.Session` come
+from the user and from Hive, and need no fence.
+
+#### Tags
+
+`tags` puts tags on the new session, so a later step can find it: a
+filter, a view, or an agent that lists sessions by tag. Each entry renders
+over the same data as the other templates. An entry that renders blank is
+dropped, and tags that differ only in case collapse to the first one.
+
+```yaml
+- id: implement-issue
+  label: Implement issue
+  type: launch-session
+  applies_to: [issue]
+  repo_template: "{{ .ItemRemote }}"
+  prompt_template: "Work on the issue at {{ .Payload.url }}"
+  tags: [auto, "issue-{{ .Payload.num }}"]
+```
+
+A tag is at most 40 characters and cannot contain a comma. A rendered tag
+that breaks either rule fails the launch, before any session is created.
 
 #### Post hook
 
@@ -134,7 +246,7 @@ about, then open an editor on it:
   label: Review PR
   type: launch-session
   applies_to: [pr]
-  repo_template: "https://github.com/{{ .Payload.repo }}.git"
+  repo_template: "{{ .ItemRemote }}"
   prompt_template: "Review pull request #{{ .Payload.num }}"
   post_hook: "gh pr checkout {{ .Payload.num }} && zed ."
 ```
@@ -154,7 +266,7 @@ log instead, under the item it ran for.
 #### Item target only
 
 A launch-session action creates a *new* session, so it cannot declare
-`targets: [session]` or `targets: [window]` — the terminal's row menus have no
+`targets: [session]`, `[window]`, or `[statusbar]` — the terminal surfaces have no
 New Session form to collect the interactive variant's repository and name, and
 the headless variant's `repo_template` renders over a feed item's payload,
 which a terminal target carries none of. Declaring one is rejected when the
@@ -162,10 +274,12 @@ catalog is parsed.
 
 #### Templates
 
-`prompt_template` and `repo_template` are Go `text/template` strings rendered
+`prompt_template`, `repo_template`, and each of `tags` are Go `text/template` strings rendered
 over the triggering message (see "Template data" above). A GitHub-shaped item
 exposes `{{ .Payload.repo }}`, `{{ .Payload.title }}`, `{{ .Payload.url }}`,
-`{{ .Payload.body }}`, `{{ .Payload.num }}`, and `{{ .Payload.author }}`. A
+`{{ .Payload.body }}`, `{{ .Payload.num }}`, and `{{ .Payload.author }}`. `{{ .ItemRemote }}` is the clone URL of the item's
+repository, spelled as HTTPS or SSH by `git.clone_protocol` and
+`rules[].clone_protocol`. A
 webhook-sourced item exposes whatever its payload carries, so reshape it with a
 `function` node first if you want stable names.
 
@@ -187,7 +301,7 @@ another agent or process that is listening on a topic.
 
 `message_template` is a Go `text/template` rendered over the target's data (see
 "Template data" above). On an `item` target the payload is at `.Payload` — e.g.
-`{{ .Payload.title }} ({{ .Payload.url }})`; on a `session` or `window` target
+`{{ .Payload.title }} ({{ .Payload.url }})`; on a `session`, `window`, or `statusbar` target
 the session is at `.Session` — e.g. `{{ .Session.Name }} needs a look`.
 
 ### Shell — `shell`
@@ -199,7 +313,7 @@ script, a `curl` to an internal service.
 #### Fields
 
 - `command_template` (required) — the command line to run.
-- `cwd` — working directory. On a `session` or `window` target it defaults to
+- `cwd` — working directory. On a terminal target (`session`, `window`, `statusbar`) it defaults to
   the session's checkout, so `mise run test` is a complete action; on an `item`
   target it defaults to the desktop process's own. Setting it wins either way.
 - `timeout` — a duration string like `"30s"` bounding the run. Must be quoted:
@@ -223,12 +337,26 @@ targets: [session]
 command_template: 'zed {{ .Session.Path | shq }}'
 ```
 
+#### Execution and lifetime
+
+The action stays running until the command exits. Starting a child process or
+opening a browser does not mark it complete. Item actions run through bounded
+manual or automatic capacity, so one long command does not block unrelated
+work. Hiding the Hive window leaves the command running. Quitting Hive cancels
+the owned process group and waits briefly for it to exit.
+
+Shell actions capture stdout and stderr but provide no terminal or stdin. Use a
+terminal launcher or session for a command that needs interactive terminal
+input.
+
 #### Where a failure shows up
 
-On an `item` target the run is a durable command, and failures keep bounded
-stdout/stderr diagnostics on that record, readable from the activity view.
+On an `item` target the run is a durable command. The action card and jobs list
+show its queued or running state and allow cancellation. Its stdout and stderr,
+interleaved in the order they were written, are kept in the run's log in
+**Action runs**, along with the command line and exit status.
 
-A `session` or `window` run is deliberately not durable — it is a manual
+A terminal-target run is deliberately not durable — it is a manual
 operation against live local state, so it must stay repeatable and must not
 replay after a restart. There is no record to hold its streams, so its failure
 reason carries the tail of stderr instead, in the jobs list.
@@ -322,7 +450,7 @@ actions:
     type: launch-session
     show_in_detail: true
     applies_to: [pr]
-    repo_template: "https://github.com/{{ .Payload.repo }}.git"
+    repo_template: "{{ .ItemRemote }}"
     prompt_template: |
       Review pull request {{ .Payload.title }}
 
@@ -333,13 +461,28 @@ actions:
     show_in_detail: true
     applies_to: [issue]
     agent: claude
-    repo_template: "https://github.com/{{ .Payload.repo }}.git"
+    repo_template: "{{ .ItemRemote }}"
+    tags: [auto, "issue-{{ .Payload.num }}"]
     prompt_template: |
-      Work on {{ .Payload.title }}
+      Work on the issue at {{ .Payload.url }}.
 
-      {{ .Payload.url }}
+      {{ untrustedNotice }}
+
+      {{ untrustedStart "source" "github" }}
+      {{ .Payload.title }}
 
       {{ .Payload.body }}
+      {{ untrustedEnd }}
+  - id: triage-alert
+    label: Triage alert
+    type: launch-session
+    show_in_detail: true
+    applies_to: [alert]
+    workspace: incident-triage
+    prompt_template: |
+      Triage {{ .Payload.title }}
+
+      {{ .Payload.url }}
   - id: open-in-editor
     label: Open in editor
     type: shell
@@ -360,6 +503,12 @@ actions:
     targets: [session]
     timeout: "10m"
     command_template: 'mise run test'
+  - id: open-ci
+    label: Open CI
+    type: shell
+    targets: [statusbar]
+    icon: activity
+    command_template: 'open {{ printf "%s/actions" .Session.WebURL | shq }}'
   - id: interrupt-window
     label: Interrupt agent
     type: shell

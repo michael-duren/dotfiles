@@ -9,9 +9,9 @@ Hive Desktop is a desktop app that turns GitHub activity and webhook deliveries
 into triaged feeds and automated coding-agent sessions. Its configuration is
 plain text on this machine, meant to be edited directly:
 
-- /home/mduren/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
-- /home/mduren/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
-- /home/mduren/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
+- /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
+- /Users/Z00HCXG/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
+- /Users/Z00HCXG/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
 
 This install's webhook base URL is:
 
@@ -24,7 +24,7 @@ POSTed to `http://127.0.0.1:34857/hooks//ci-alerts`.
 There are two halves to this, and you may need either or both:
 
 1. **The sender** — code in the external system that POSTs JSON to the endpoint.
-2. **The receiver** — a `sources.webhook` node in a Hive flow at /home/mduren/.config/hive/desktop/flows/<id>.yaml, wired to a `feed` node so deliveries land in the sidebar.
+2. **The receiver** — a `sources.webhook` node in a Hive flow at /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml, wired to a `feed` node so deliveries land in the sidebar.
 
 ## The receiver: the `sources.webhook` node
 

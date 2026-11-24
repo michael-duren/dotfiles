@@ -6,12 +6,11 @@ repo_dirs:
   - ~/Code/cia
 agents:
   agent_selector: true
-  default: claude
+  default: dayton
   neovim:
     command: nvim
-  claude:
-    command: claude
-    flags: ["--dangerously-skip-permissions"]
+  dayton:
+    command: dayton
   codex:
     command: codex
     flags: ["--dangerously-bypass-approvals-and-sandbox"]

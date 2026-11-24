@@ -1,6 +1,6 @@
 ---
 name: hive-settings
-description: "Tune polling, updates, notifications, appearance, and the webhook listener in settings.yaml. Use when configuring this in Hive Desktop (/home/mduren/.config/hive/desktop/settings.yaml)."
+description: "Tune polling, updates, notifications, appearance, and the webhook listener in settings.yaml. Use when configuring this in Hive Desktop (/Users/Z00HCXG/.config/hive/desktop/settings.yaml)."
 ---
 Configure Hive Desktop's application settings.
 
@@ -8,11 +8,11 @@ Hive Desktop is a desktop app that turns GitHub activity and webhook deliveries
 into triaged feeds and automated coding-agent sessions. Its configuration is
 plain text on this machine, meant to be edited directly:
 
-- /home/mduren/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
-- /home/mduren/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
-- /home/mduren/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
+- /Users/Z00HCXG/.config/hive/desktop/flows/<id>.yaml — flows: the graph that decides what reaches which feed and what fires an action.
+- /Users/Z00HCXG/.config/hive/desktop/actions.yml — actions: what a feed item, a terminal session or window, or a flow node can trigger.
+- /Users/Z00HCXG/.config/hive/desktop/settings.yaml — app settings: polling, updates, notifications, appearance, keyboard shortcuts.
 
-Edit /home/mduren/.config/hive/desktop/settings.yaml. Every key is optional; omitted values use safe
+Edit /Users/Z00HCXG/.config/hive/desktop/settings.yaml. Every key is optional; omitted values use safe
 compiled defaults. The app reloads user-facing settings on save. The HTTP
 listener and the development listeners are startup configuration: they are
 read once and take effect on the next launch.
@@ -34,20 +34,36 @@ notifications:
 
 appearance:
   theme: dark             # frontend theme id
-  terminal_font_size: ""  # small, medium, large, xl, or xxl; empty means medium
+  canvas_line_spacing: "" # compact, standard, or relaxed; empty means standard
+  canvas_page_width: ""   # narrow, wide, or full; empty means narrow
+  interface_scale: 0 # chrome, menus, and the feed, percent, 75-150; 0 means 100
+  document_scale: 0 # Drive documents, percent, 75-200; 0 means 100
+  code_scale: 0 # diffs and code fields, percent, 75-200; 0 means 100
+  terminal_scale: 0 # terminals and chats, percent, 60-500; 0 means 100 (13px)
   terminal_font_family: "" # any installed monospace family; empty is the bundled JetBrains Mono
   terminal_font_weight: 0 # 300, 350, 400, 600, or 700; 0 means the default, 350
   terminal_font_weight_bold: 0 # weight bold cells draw at; 0 means the default, 700
   terminal_line_height: 0 # 1 to 1.6 in tenths; 0 means the default, 1.2
   terminal_letter_spacing: 0 # extra tracking in device pixels, 0 to 3
+  terminal_show_scrollbars: false # draggable scrollbars in single-pane and zoomed Code terminals; hidden in splits
+  terminal_monochrome_agent_icons: false # draw Code's agent icons in the color of the icons around them
   terminal_show_windows: true # list every active session's windows in the terminal sidebar
   terminal_show_status_bar: true # git and pull-request state above the attached session
   terminal_pool_size: 3   # sessions kept attached for instant switching (1-6)
+  terminal_show_session_age: true # show age badges on old sessions in the Code sidebar
+  terminal_session_age_threshold_days: 5 # whole days since creation before a badge appears (1-365)
+applets:
+  disabled: [] # applet ids the user turned off; they stay listed and nothing of them runs
 
 profiles:                 # the profile rail
   order:                  # flow ids, top of the rail first. Ids left out sort
     - personal            # alphabetically after every id named here, and an id
     - hive                # naming no flow is ignored.
+
+menu_bar:                 # the menu bar (tray) dropdown
+  feeds:                  # at most 3 pinned feeds, top first
+    - feed: work/reviews  # <profile id>/<feed node id>
+      limit: 3            # items listed, 1-10; omitted means 3
 
 http:                     # the local loopback server; webhook ingress and the
                           # terminal transport both ride it
@@ -61,6 +77,32 @@ keybindings:               # sparse overrides keyed by command id
 paths:
   tmux: ""                 # absolute path to a tmux binary; empty discovers one
 
+daemon:
+  hive_path: ""            # absolute path to the hive binary that runs the
+                           # experimental daemon (experimental.daemon in the
+                           # Hive config); empty uses the desktop executable
+
+hive_cli:
+  install_command: true    # install the hive command at ~/.local/bin/hive; absent means
+                           # not asked yet. The app writes it; it removes only a link it made
+
+retention:
+  action_runs: 100         # finished action runs kept, each with its full log (1-10000)
+
+review:
+  labels:                  # preset comments for Drive document review, at most 4;
+    - title: Clarify this  # key 1, then 2, 3, 4 by position
+      icon: circle-help    # a lucide name the app bundles; others draw a tag
+
+views:
+  code:                    # saved views in the Code sidebar's view switcher
+    - id: bugs             # unique; the app writes a UUID
+      name: Bugs
+      filter:
+        match: all         # all or any
+        conditions:
+          - { field: tag, op: any, values: [bug] }
+
 editor:
   command: ""              # single-word CLI launcher "Open in editor" actions run
                            # on a directory (zed, code, cursor, subl, or a path);
@@ -72,6 +114,10 @@ agent_workspaces:
   session_end_delay: 10s   # grace between a chat asking to end its own session
                            # (a scheduled chat does when its task is done) and
                            # the session being ended
+
+onboarding:
+  completed: false         # written by the app when first run ends; remove the
+                           # key to walk first run again
 
 telemetry:
   enabled: false           # export the app's own metrics, logs and traces over OTLP
@@ -107,15 +153,21 @@ development:
 
 ## Rules
 
-- Unknown keys, multiple YAML documents, invalid closed-set values, unsafe listener hosts, and invalid ports are rejected.
+- A key this version does not know is not rejected: startup logs a warning and ignores it, and the next settings save drops it. A misspelled key therefore does nothing. Check the spelling against the schema above.
+- Multiple YAML documents, invalid closed-set values, unsafe listener hosts, and invalid ports are rejected.
 - `version` is written and migrated by the app. Do not add or edit it.
 - `polling.interval` below 60s is rejected.
+- `appearance.terminal_session_age_threshold_days` must be between 1 and 365.
 - Durations are strings like `5m`; a bare number is not seconds.
 - `http` is on by default. `development.pprof` defaults off. Configured listener hosts must be loopback.
 - `telemetry.enabled` requires `telemetry.endpoint`, `telemetry.instance_id` and `telemetry.token`, and the endpoint must be https. It is the one URL setting that is deliberately not loopback-only.
 - `telemetry.host_id` is optional. When set, it becomes the OpenTelemetry `host.id` resource attribute and the `host_id` profile label. Use a stable unique id for the machine, not the OTLP `instance_id` username. Hive generates a new OpenTelemetry `service.instance.id` for each launch.
 - `telemetry.token` must be a reference (`env:`, `file:`, `op://`), never a pasted credential; a literal is a validation error. `telemetry.endpoint` and `telemetry.instance_id` accept either a reference or a written-out value, so one secret can hold a whole destination. Prefer `file:` or `op://` for an installed app, since a launched .app inherits almost no environment.
 - `profiles.order` never has to be exhaustive: name only the profiles whose position matters. Dragging a tile in the rail rewrites the whole key; editing it here takes effect on the next launch.
+- `retention.action_runs` must be between 1 and 10000; omit it for the default of 100. Each run keeps its whole log, up to 8 MiB per attempt, so a large value is a disk-size choice. A change takes effect on the next launch.
+- `menu_bar.feeds` names feeds by id, `<profile id>/<feed node id>`. A pin naming no feed is skipped. Settings ▸ Menu bar rewrites the whole list; a hand edit shows up on the next menu refresh.
+- `review.labels` replaces the shipped labels (Clarify this, Verify this, Needs tests, Looks good); omit it to keep them. Titles must be unique and non-empty. `icon` is one of circle-help, search-check, flask-conical, check, tag, triangle-alert, lightbulb, scissors, x. Settings ▸ Drive ▸ Comment labels rewrites the whole list; a hand edit shows the next time the comment box opens.
+- `views.code` holds the Code sidebar's saved views. Each needs a unique `id` and a non-empty `name`; `all` and `running` are taken by the built-in views. A condition's `field` is `tag` (`op` any, all, or none; `values`), `repo` (`op` any or none; `values` are repository identities such as `github.com/acme/site`), `status` (`op` is; `value` running or stopped), or `age` (`op` older or newer; `days`). The view switcher rewrites the whole list; a hand edit shows on the next launch.
 - `keybindings` has its own command-id vocabulary. Read the ids off Settings ▸ Keyboard rather than guessing them. A binding can be a single combo (`j`) or a space-separated sequence of combos pressed in order (`g i`).
 
 ---

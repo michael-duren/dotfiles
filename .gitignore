@@ -14,3 +14,4 @@ hosts.ini
 *_bak*
 dotfiles/.config/tmux/plugins/
 .claude/
+hive

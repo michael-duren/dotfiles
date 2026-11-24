@@ -1,12 +1,26 @@
 {
   "mcpServers": {
-    "hive-canvas": {
-      "type": "http",
-      "url": "http://127.0.0.1:34857/mcp/canvas"
-    },
     "hive-desktop": {
-      "type": "http",
-      "url": "http://127.0.0.1:34857/mcp"
+      "command": "/Users/Z00HCXG/.local/bin/hive",
+      "args": [
+        "--data-dir",
+        "/Users/Z00HCXG/.local/share/hive",
+        "mcp",
+        "serve",
+        "--toolset",
+        "actions,diagnostics,flows,inbox,sessions,workspaces"
+      ]
+    },
+    "hive-drive": {
+      "command": "/Users/Z00HCXG/.local/bin/hive",
+      "args": [
+        "--data-dir",
+        "/Users/Z00HCXG/.local/share/hive",
+        "mcp",
+        "serve",
+        "--toolset",
+        "drive,layout"
+      ]
     }
   }
 }

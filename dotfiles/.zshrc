@@ -151,3 +151,6 @@ unset __cmd
 export GOBIN=/Users/Z00HCXG/go/bin
 
 alias hv='tmux new-session -As hive hive'
+
+# dayton
+export PATH=/Users/Z00HCXG/.config/dayton/bin:$PATH

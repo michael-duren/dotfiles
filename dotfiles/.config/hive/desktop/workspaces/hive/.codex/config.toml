@@ -1,5 +1,7 @@
-[mcp_servers.hive-canvas]
-url = "http://127.0.0.1:34857/mcp/canvas"
-
 [mcp_servers.hive-desktop]
-url = "http://127.0.0.1:34857/mcp"
+command = "/Users/Z00HCXG/.local/bin/hive"
+args = ["--data-dir", "/Users/Z00HCXG/.local/share/hive", "mcp", "serve", "--toolset", "actions,diagnostics,flows,inbox,sessions,workspaces"]
+
+[mcp_servers.hive-drive]
+command = "/Users/Z00HCXG/.local/bin/hive"
+args = ["--data-dir", "/Users/Z00HCXG/.local/share/hive", "mcp", "serve", "--toolset", "drive,layout"]
